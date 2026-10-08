@@ -17,10 +17,18 @@ for (const path of pages) {
 
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
-      new RegExp(
-        `^${new URL(path, siteConfig.siteUrl).href.replace(/\/$/, "")}/?$`,
-      ),
+      path === "/" ? `${siteConfig.siteUrl}/` : `${siteConfig.siteUrl}${path}`,
     );
+
+    // internal links use the canonical no-trailing-slash form (only "/" ends in a slash)
+    const hrefs = await page
+      .locator('a[href^="/"]')
+      .evaluateAll((links) => links.map((a) => a.getAttribute("href")!));
+    expect(
+      hrefs.filter(
+        (href) => href !== "/" && href.split(/[?#]/)[0].endsWith("/"),
+      ),
+    ).toEqual([]);
     expect(errors).toEqual([]);
   });
 }

@@ -27,7 +27,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:e2e": "playwright test",
-    "test:e2e:report": "playwright show-report"
+    "test:e2e:report": "playwright show-report",
+    "og-image": "node --experimental-strip-types scripts/og-image.ts"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.2",

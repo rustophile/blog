@@ -56,6 +56,10 @@ const expressiveCode = {
 
 export default defineConfig({
   site: siteConfig.siteUrl,
+  // URLs never end in a slash (/blog, not /blog/): the dev server enforces it, canonical URLs
+  // and the sitemap follow it, and Cloudflare redirects /blog/ to /blog (html_handling in
+  // wrangler.jsonc)
+  trailingSlash: "never",
   integrations: [svelte(), sitemap()],
   prefetch: {
     prefetchAll: true,

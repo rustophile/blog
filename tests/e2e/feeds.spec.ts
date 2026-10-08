@@ -7,6 +7,9 @@ test("RSS feed lists published posts", async ({ request }) => {
   const xml = await response.text();
   expect(xml).toContain(`<title>${siteConfig.title}</title>`);
   expect(xml).toContain("<title>Hello, Rustophile</title>");
+  expect(xml).toContain(
+    `<link>${siteConfig.siteUrl}/blog/hello-rustophile</link>`,
+  );
 });
 
 test("pages link to the RSS feed", async ({ page }) => {
@@ -22,4 +25,15 @@ test("sitemap index and robots.txt are served", async ({ request }) => {
   expect(robots).toContain(
     `Sitemap: ${new URL("/sitemap-index.xml", siteConfig.siteUrl).href}`,
   );
+});
+
+test("the social preview image exists", async ({ page, request }) => {
+  await page.goto("/blog/hello-rustophile");
+  const image = await page
+    .locator('meta[property="og:image"]')
+    .getAttribute("content");
+  expect(image).toBe(`${siteConfig.siteUrl}/og-image.png`);
+  const response = await request.get(new URL(image!).pathname);
+  expect(response.ok()).toBe(true);
+  expect(response.headers()["content-type"]).toBe("image/png");
 });

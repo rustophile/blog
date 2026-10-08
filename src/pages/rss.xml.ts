@@ -13,11 +13,13 @@ export async function GET(context: APIContext) {
     title: siteConfig.title,
     description: siteConfig.description,
     site: context.site || siteConfig.siteUrl,
+    // match the site's canonical URLs, which never end in a slash
+    trailingSlash: false,
     items: sortedPosts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.pubDate,
       description: post.data.description,
-      link: `/blog/${post.id}/`,
+      link: `/blog/${post.id}`,
     })),
     customData: `<language>en-us</language>`,
   });
