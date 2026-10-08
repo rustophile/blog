@@ -369,6 +369,31 @@ const audioBtnDefault =
     const pageLang = document.documentElement.lang || "en";
     const targetLang = pageLang.startsWith("pt") ? "pt-BR" : "en-US";
 
+    // The browser's default voice is often an old, robotic one. Prefer the most natural
+    // installed voice for the language: Edge's "Natural" neural voices, macOS/iOS "Premium"
+    // and "Enhanced" downloads, then Google's online voices, then any local voice.
+    const VOICE_RANKS = [
+      /natural|neural/i,
+      /premium/i,
+      /enhanced/i,
+      /^google/i,
+    ];
+    let voice: SpeechSynthesisVoice | null = null;
+    function pickVoice() {
+      const lang = targetLang.toLowerCase();
+      const candidates = synth
+        .getVoices()
+        .filter((v) => v.lang.toLowerCase().replace("_", "-").startsWith(lang));
+      const rank = (v: SpeechSynthesisVoice) => {
+        const i = VOICE_RANKS.findIndex((re) => re.test(v.name));
+        return i === -1 ? VOICE_RANKS.length + (v.localService ? 0 : 1) : i;
+      };
+      voice = candidates.sort((a, b) => rank(a) - rank(b))[0] ?? null;
+    }
+    pickVoice();
+    // voices load asynchronously in Chrome
+    synth.addEventListener("voiceschanged", pickVoice);
+
     function setExpanded(expanded: boolean) {
       if (expanded) {
         root?.classList.add("is-expanded");
@@ -447,7 +472,13 @@ const audioBtnDefault =
       }
     }
 
-    function playCurrentPart() {
+    // the utterance currently meant to be speaking; events from cancelled ones are ignored
+    // (Safari fires onend for a cancelled utterance)
+    let currentUtterance: SpeechSynthesisUtterance | null = null;
+
+    // Called with interrupt=false only to move on after a part finishes: cancelling then
+    // tears down the speech engine between parts, which crackles on some platforms.
+    function playCurrentPart(interrupt = true) {
       if (currentIndex >= parts.length) {
         stopPlayback();
         return;
@@ -458,13 +489,16 @@ const audioBtnDefault =
         root?.classList.add("is-sticky");
       }
 
-      synth.cancel();
+      if (interrupt) synth.cancel();
       const text = parts[currentIndex];
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = targetLang;
+      if (voice) utterance.voice = voice;
       utterance.rate = rates[currentRateIdx];
+      currentUtterance = utterance;
 
       utterance.onstart = () => {
+        if (utterance !== currentUtterance) return;
         isPlaying = true;
         isPaused = false;
         highlightCurrent();
@@ -472,16 +506,18 @@ const audioBtnDefault =
       };
 
       utterance.onend = () => {
+        if (utterance !== currentUtterance) return;
         currentIndex++;
         updateProgress();
         if (currentIndex < parts.length && isPlaying) {
-          playCurrentPart();
+          playCurrentPart(false);
         } else {
           stopPlayback();
         }
       };
 
       utterance.onerror = (e) => {
+        if (utterance !== currentUtterance) return;
         if (e.error === "canceled" || e.error === "interrupted") return;
         stopPlayback();
       };
@@ -534,6 +570,7 @@ const audioBtnDefault =
     });
 
     function stopPlayback() {
+      currentUtterance = null;
       synth.cancel();
       isPlaying = false;
       isPaused = false;
