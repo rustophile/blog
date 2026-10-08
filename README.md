@@ -54,6 +54,22 @@ The projects page shows "Nothing built yet." until the first one is added.
 | `pnpm check`   | Type-check with `astro check`       |
 | `pnpm qa`      | Type-check, then build              |
 
+## Testing
+
+End-to-end tests use [Playwright](https://playwright.dev) and run against the production build in Chromium, Firefox, and WebKit.
+
+```bash
+pnpm exec playwright install   # first time only
+pnpm test:e2e
+```
+
+The `visual` project takes full-page screenshots of every page in each theme at desktop and phone widths. Baselines are platform-specific, so they're gitignored: generate them before a refactor that shouldn't change the look, then compare after.
+
+```bash
+pnpm test:e2e --project visual --update-snapshots   # before
+pnpm test:e2e --project visual                      # after
+```
+
 ## License
 
 [MIT](LICENSE)

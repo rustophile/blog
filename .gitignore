@@ -26,3 +26,11 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Playwright output
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+# local-only screenshot baselines (see tests/e2e/visual.spec.ts)
+tests/e2e/visual.spec.ts-snapshots/
