@@ -82,7 +82,7 @@ const showImageZoom = features.imageZoom !== false;
     />
     <Font cssVariable="--font-source-code-pro" />
 
-    <!-- browser chrome color, kept in step with the theme by the script below and ThemeToggle -->
+    <!-- browser chrome color, kept in step with the theme by the script below and src/lib/theme.ts -->
     <meta name="theme-color" content="#f7f4ea" />
 
     <!-- The page background before the stylesheet arrives, so a page change never shows the
@@ -105,12 +105,14 @@ const showImageZoom = features.imageZoom !== false;
     </style>
 
     <!-- Set the theme before first paint so the page never flashes the wrong one. The stored
-         choice is "paper", "dark", or "auto" (follow the OS); keep in sync with ThemeToggle. -->
+         choice is "paper", "dark", or "auto" (follow the OS); keep in sync with src/lib/theme.ts.
+         data-theme-mode lets the theme menu's button show the right icon before it hydrates. -->
     <script is:inline>
       (function () {
         let mode = "auto";
         try {
-          mode = localStorage.getItem("rustophile_theme") || "auto";
+          const stored = localStorage.getItem("rustophile_theme");
+          if (stored === "paper" || stored === "dark") mode = stored;
         } catch {
           // storage blocked: follow the OS
         }
@@ -122,6 +124,7 @@ const showImageZoom = features.imageZoom !== false;
           "data-theme",
           dark ? "dark" : "paper",
         );
+        document.documentElement.setAttribute("data-theme-mode", mode);
         document
           .querySelector('meta[name="theme-color"]')
           ?.setAttribute("content", dark ? "#353535" : "#f7f4ea");

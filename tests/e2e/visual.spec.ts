@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { openMenu } from "./helpers";
 import { pages } from "./pages";
 
 // Full-page screenshots of every route in each theme at desktop and phone widths, so
@@ -67,12 +68,19 @@ const states: {
   {
     name: "theme-menu",
     path: "/",
-    open: (page) => page.locator("#theme-toggle-btn").click(),
+    open: async (page) => {
+      await openMenu(page, page.locator("#theme-toggle-btn"));
+      // let the open animation finish
+      await page.waitForTimeout(200);
+    },
   },
   {
     name: "social-menu",
     path: "/",
-    open: (page) => page.locator("#social-menu-btn").click(),
+    open: async (page) => {
+      await openMenu(page, page.locator("#social-menu-btn"));
+      await page.waitForTimeout(200);
+    },
   },
   {
     name: "share-dialog",

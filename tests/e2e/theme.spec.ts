@@ -1,17 +1,21 @@
 import { expect, test, type Page } from "@playwright/test";
+import { openMenu } from "./helpers";
 
 const html = (page: Page) => page.locator("html");
 const themeColor = (page: Page) => page.locator('meta[name="theme-color"]');
 
 async function pick(page: Page, name: string) {
-  await page.getByRole("button", { name: "Select color theme" }).click();
-  await page.getByRole("menuitemradio", { name }).click();
+  const menu = await openMenu(
+    page,
+    page.getByRole("button", { name: "Select color theme" }),
+  );
+  await menu.getByRole("menuitemradio", { name }).click();
 }
 
 test.describe("with a light OS", () => {
   test.use({ colorScheme: "light" });
 
-  test("follows the OS: Warm Paper", async ({ page }) => {
+  test("follows the OS: Light", async ({ page }) => {
     await page.goto("/");
     await expect(html(page)).toHaveAttribute("data-theme", "paper");
     await expect(themeColor(page)).toHaveAttribute("content", "#f7f4ea");
@@ -27,9 +31,17 @@ test.describe("with a light OS", () => {
 
     await page.reload();
     await expect(html(page)).toHaveAttribute("data-theme", "dark");
-    await page.getByRole("button", { name: "Select color theme" }).click();
+    // the button shows the moon from the first paint (data-theme-mode), not after hydrating
+    const button = page.getByRole("button", { name: "Select color theme" });
+    await expect(button.locator(".lucide-moon")).toBeVisible();
+    await expect(button.locator(".lucide-sun")).toBeHidden();
+    await expect(button.locator(".lucide-monitor")).toBeHidden();
+    const menu = await openMenu(
+      page,
+      page.getByRole("button", { name: "Select color theme" }),
+    );
     await expect(
-      page.getByRole("menuitemradio", { name: "std Dark" }),
+      menu.getByRole("menuitemradio", { name: "std Dark" }),
     ).toHaveAttribute("aria-checked", "true");
   });
 });
@@ -42,11 +54,9 @@ test.describe("with a dark OS", () => {
     await expect(html(page)).toHaveAttribute("data-theme", "dark");
   });
 
-  test("Warm Paper overrides the OS until System is picked", async ({
-    page,
-  }) => {
+  test("Light overrides the OS until System is picked", async ({ page }) => {
     await page.goto("/");
-    await pick(page, "Warm Paper");
+    await pick(page, "Light");
     await expect(html(page)).toHaveAttribute("data-theme", "paper");
 
     await pick(page, "System");

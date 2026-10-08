@@ -5,8 +5,14 @@ import { defineConfig, devices } from "@playwright/test";
 const PORT = Number(process.env.E2E_PORT ?? 4322);
 const baseURL = `http://localhost:${PORT}`;
 
+// `astro dev`, for the dev smoke test: the other tests only see the production build, and a
+// config change once broke every page in dev while the build stayed fine
+const DEV_PORT = PORT + 10;
+
 // screenshot baselines are platform-specific and local-only (see tests/e2e/visual.spec.ts)
 const visual = /visual\.spec\.ts/;
+const dev = /dev\.spec\.ts/;
+const notBuild = [visual, dev];
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -25,18 +31,26 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      testIgnore: visual,
+      testIgnore: notBuild,
       use: { ...devices["Desktop Chrome"] },
     },
     {
       name: "firefox",
-      testIgnore: visual,
+      testIgnore: notBuild,
       use: { ...devices["Desktop Firefox"] },
     },
     {
       name: "webkit",
-      testIgnore: visual,
+      testIgnore: notBuild,
       use: { ...devices["Desktop Safari"] },
+    },
+    {
+      name: "dev",
+      testMatch: dev,
+      use: {
+        ...devices["Desktop Chrome"],
+        baseURL: `http://localhost:${DEV_PORT}`,
+      },
     },
     ...(process.env.CI
       ? []
@@ -48,14 +62,25 @@ export default defineConfig({
           },
         ]),
   ],
-  webServer: {
-    // --ignore-lock: run alongside any other preview server
-    // CI builds dist/ in an earlier step and deploys that same build, so don't rebuild here
-    command: `${process.env.CI ? "" : "pnpm build && "}pnpm preview --port ${PORT} --ignore-lock`,
-    // Astro backgrounds `preview` when it detects an AI agent; Playwright needs it in the foreground
-    env: { ASTRO_PREVIEW_BACKGROUND: "0" },
-    url: baseURL,
-    timeout: 180_000,
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: [
+    {
+      // --ignore-lock: run alongside any other preview server
+      // CI builds dist/ in an earlier step and deploys that same build, so don't rebuild here
+      command: `${process.env.CI ? "" : "pnpm build && "}pnpm preview --port ${PORT} --ignore-lock`,
+      // Astro backgrounds `preview` when it detects an AI agent; Playwright needs it in the foreground
+      env: { ASTRO_PREVIEW_BACKGROUND: "0" },
+      url: baseURL,
+      timeout: 180_000,
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      // --ignore-lock: run alongside your own `astro dev`
+      command: `pnpm astro dev --port ${DEV_PORT} --ignore-lock`,
+      // Astro backgrounds `dev` when it detects an AI agent; Playwright needs it in the foreground
+      env: { ASTRO_DEV_BACKGROUND: "0" },
+      url: `http://localhost:${DEV_PORT}`,
+      timeout: 180_000,
+      reuseExistingServer: !process.env.CI,
+    },
+  ],
 });

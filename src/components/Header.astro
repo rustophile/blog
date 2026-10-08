@@ -1,8 +1,8 @@
 ---
 import { siteConfig } from "../config/site";
-import ThemeToggle from "./ThemeToggle.astro";
+import ThemeMenu from "./ThemeMenu.svelte";
 import RustR from "./RustR.astro";
-import SocialDropdown from "./SocialDropdown.astro";
+import SocialMenu from "./SocialMenu.svelte";
 
 interface Props {
   currentPath?: string;
@@ -111,8 +111,8 @@ const showThemeSwitcher = features.themeSwitcher !== false;
 
       <!-- Clustered Controls: Social + Theme Dropdowns -->
       <div class="flex items-center gap-[0.4rem]">
-        <SocialDropdown />
-        {showThemeSwitcher && <ThemeToggle />}
+        <SocialMenu client:load />
+        {showThemeSwitcher && <ThemeMenu client:load />}
       </div>
     </div>
   </div>

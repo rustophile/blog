@@ -115,13 +115,23 @@ export default defineConfig({
     // dev only: pre-bundle shadcn-svelte's dependencies at startup instead of discovering
     // them page by page, which stops and reloads the first page that needs each one (as in the
     // Solobroneur blog). Add a Lucide icon here when a component starts importing a new one.
+    // (Don't also pre-bundle bits-ui for SSR: on this project that made every page in
+    // `astro dev` fail with "unable to find a component instance".)
     optimizeDeps: {
-      include: ["bits-ui", "cn", "tailwind-variants"],
-    },
-    ssr: {
-      optimizeDeps: {
-        include: ["bits-ui"],
-      },
+      include: [
+        "bits-ui",
+        "cn",
+        "tailwind-variants",
+        ...[
+          "at-sign",
+          "check",
+          "chevron-down",
+          "mail",
+          "monitor",
+          "moon",
+          "sun",
+        ].map((icon) => `@lucide/svelte/icons/${icon}`),
+      ],
     },
   },
 });

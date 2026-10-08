@@ -18,7 +18,7 @@ export interface SiteFeatures {
   tags?: boolean;
   /** Notion-style share modal and trigger bar in blog posts */
   socialShare?: boolean;
-  /** Theme picker: Warm Paper, std Dark, or follow the OS */
+  /** Theme picker: Light, std Dark, or follow the OS */
   themeSwitcher?: boolean;
   /** Floating smooth-scroll back-to-top button */
   backToTop?: boolean;

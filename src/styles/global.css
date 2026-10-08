@@ -77,7 +77,7 @@
 }
 
 @layer base {
-  /* Two themes. Warm Paper is Minrock's cream reading palette with rustdoc's dark-theme
+  /* Two themes. Light ("paper") is Minrock's cream reading palette with rustdoc's dark-theme
      accents; std Dark is rustdoc's dark theme. Each accent comes in two shades: "-bright" is
      rustdoc's own color, for bars, borders, focus rings and fills; the plain one is the same hue
      adjusted to 4.5:1 or better on that theme's page, surface and subtle backgrounds, for text. */
