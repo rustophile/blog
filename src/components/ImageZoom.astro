@@ -1,15 +1,27 @@
 ---
 // src/components/ImageZoom.astro
-// PhotoSwipe 5 lightbox with dynamic image sizing & gallery support
-import "photoswipe/style.css";
+// PhotoSwipe 5 lightbox with dynamic image sizing & gallery support. PhotoSwipe and its
+// stylesheet load on the first click on an image, not with the page.
 ---
 
 <script>
-  import PhotoSwipe, { type Bounds } from "photoswipe";
+  import type PhotoSwipe from "photoswipe";
+  import type { Bounds } from "photoswipe";
 
   let activePswp: PhotoSwipe | null = null;
 
-  function openPhotoSwipe(targetImg: HTMLImageElement) {
+  // fetched once, on the first image click; later opens reuse the module
+  let loadingPhotoSwipe: Promise<typeof PhotoSwipe> | null = null;
+  function loadPhotoSwipe() {
+    loadingPhotoSwipe ??= Promise.all([
+      import("photoswipe"),
+      import("photoswipe/style.css"),
+    ]).then(([module]) => module.default);
+    return loadingPhotoSwipe;
+  }
+
+  async function openPhotoSwipe(targetImg: HTMLImageElement) {
+    const PhotoSwipe = await loadPhotoSwipe();
     if (activePswp) {
       try {
         activePswp.destroy();
@@ -145,7 +157,7 @@ import "photoswipe/style.css";
 
     e.preventDefault();
     e.stopPropagation();
-    openPhotoSwipe(target);
+    void openPhotoSwipe(target);
   }
 
   // Initialize listener once globally on window/document

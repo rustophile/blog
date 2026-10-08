@@ -160,3 +160,16 @@ test("Typst math renders as labelled SVG in the text color", async ({
   ]);
   expect(glyphColor).toBe(textColor);
 });
+
+test("the image viewer loads PhotoSwipe only when an image is clicked", async ({
+  page,
+}) => {
+  const requested: string[] = [];
+  page.on("request", (req) => requested.push(req.url()));
+  await page.reload();
+  expect(requested.some((url) => /photoswipe\.esm/.test(url))).toBe(false);
+
+  await page.locator("article img[src*='string-move']").click();
+  await expect(page.locator(".pswp")).toBeVisible();
+  expect(requested.some((url) => /photoswipe\.esm/.test(url))).toBe(true);
+});
