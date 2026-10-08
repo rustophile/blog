@@ -7,22 +7,41 @@
   },
   "tokenColors": [
     {
-      "name": "comment (rustdoc #8d8d8b, lifted to 4.5:1 on #2a2a2a)",
-      "scope": ["comment", "punctuation.definition.comment"],
-      "settings": { "foreground": "#959593" }
+      "name": "rustdoc colors few tokens: everything not listed below (types, functions, variables, operators, paths) stays plain",
+      "scope": [
+        "source",
+        "variable",
+        "entity.name",
+        "support",
+        "keyword.operator",
+        "punctuation",
+        "storage.modifier.lifetime"
+      ],
+      "settings": {
+        "foreground": "#dddddd"
+      }
     },
     {
-      "name": "doc comment",
+      "name": "comment",
+      "scope": ["comment", "punctuation.definition.comment"],
+      "settings": {
+        "foreground": "#8d8d8b"
+      }
+    },
+    {
+      "name": "doccomment",
       "scope": [
         "comment.line.documentation",
         "comment.block.documentation",
         "comment.line.documentation punctuation.definition.comment",
         "comment.block.documentation punctuation.definition.comment"
       ],
-      "settings": { "foreground": "#8ca375" }
+      "settings": {
+        "foreground": "#8ca375"
+      }
     },
     {
-      "name": "keyword (kw)",
+      "name": "kw",
       "scope": [
         "keyword",
         "keyword.control",
@@ -31,94 +50,101 @@
         "storage.type",
         "storage.modifier"
       ],
-      "settings": { "foreground": "#ab8ac1" }
+      "settings": {
+        "foreground": "#ab8ac1"
+      }
     },
     {
-      "name": "operators and punctuation stay plain",
-      "scope": ["keyword.operator", "punctuation"],
-      "settings": { "foreground": "#dddddd" }
+      "name": "operators stay plain",
+      "scope": ["keyword.operator"],
+      "settings": {
+        "foreground": "#dddddd"
+      }
     },
     {
-      "name": "& and mut (kw-2)",
-      "scope": ["keyword.operator.borrow", "storage.modifier.mut"],
-      "settings": { "foreground": "#769acb" }
+      "name": "kw-2: & (rustdoc's ref keyword)",
+      "scope": ["keyword.operator.borrow"],
+      "settings": {
+        "foreground": "#769acb"
+      }
     },
     {
-      "name": "types (prelude-ty)",
-      "scope": ["entity.name.type", "support.type", "support.class"],
-      "settings": { "foreground": "#769acb" }
-    },
-    {
-      "name": "Some, None, Ok, Err (prelude-val)",
+      "name": "prelude-val: Some, None, Ok, Err",
       "scope": ["entity.name.type.option", "entity.name.type.result"],
-      "settings": { "foreground": "#ee6868" }
+      "settings": {
+        "foreground": "#ee6868"
+      }
     },
     {
-      "name": "self and literals",
+      "name": "self, Self, true, false",
       "scope": [
         "variable.language.self",
         "variable.language",
-        "constant.language",
-        "constant.other"
+        "constant.language"
       ],
-      "settings": { "foreground": "#ee6868" }
+      "settings": {
+        "foreground": "#ee6868"
+      }
     },
     {
-      "name": "attributes",
+      "name": "attr: the whole #[...] (literals inside keep their own color)",
       "scope": [
         "meta.attribute",
         "meta.attribute entity.name.type",
-        "meta.attribute punctuation"
+        "meta.attribute punctuation",
+        "meta.attribute variable",
+        "meta.attribute keyword.operator"
       ],
-      "settings": { "foreground": "#ee6868" }
+      "settings": {
+        "foreground": "#ee6868"
+      }
     },
     {
-      "name": "strings and numbers",
+      "name": "string and number, placeholders included",
       "scope": [
         "string",
+        "string meta.interpolation",
+        "string punctuation",
         "constant.numeric",
         "constant.character",
-        "punctuation.definition.string"
+        "constant.numeric punctuation"
       ],
-      "settings": { "foreground": "#83a300" }
+      "settings": {
+        "foreground": "#83a300"
+      }
     },
     {
-      "name": "format-string placeholders",
-      "scope": ["string meta.interpolation"],
-      "settings": { "foreground": "#dddddd" }
-    },
-    {
-      "name": "macros (rustdoc #3e999f, lifted to 4.5:1 on #2a2a2a)",
+      "name": "macro",
       "scope": ["entity.name.function.macro", "support.function.macro"],
-      "settings": { "foreground": "#4aa9ae" }
+      "settings": {
+        "foreground": "#3e999f"
+      }
     },
     {
-      "name": "lifetimes",
-      "scope": [
-        "entity.name.type.lifetime",
-        "punctuation.definition.lifetime",
-        "storage.modifier.lifetime"
-      ],
-      "settings": { "foreground": "#d97f26" }
+      "name": "lifetime",
+      "scope": ["entity.name.type.lifetime", "punctuation.definition.lifetime"],
+      "settings": {
+        "foreground": "#d97f26"
+      }
     },
     {
-      "name": "? operator",
+      "name": "question-mark (bold, as rustdoc draws it)",
       "scope": ["keyword.operator.question"],
-      "settings": { "foreground": "#ff9011" }
+      "settings": {
+        "foreground": "#ff9011",
+        "fontStyle": "bold"
+      }
     },
     {
-      "name": "functions and variables stay plain, as in rustdoc",
-      "scope": ["entity.name.function", "variable", "variable.other"],
-      "settings": { "foreground": "#dddddd" }
-    },
-    {
-      "name": "TOML keys and tables, shell commands",
+      "name": "Other languages (TOML, shell) get rustdoc's string and keyword colors for keys and commands",
       "scope": [
         "support.type.property-name",
         "entity.name.tag",
         "entity.name.command"
       ],
-      "settings": { "foreground": "#769acb" }
+      "settings": {
+        "foreground": "#769acb"
+      }
     }
   ]
 }
