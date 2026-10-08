@@ -28,8 +28,11 @@ const showThemeSwitcher = features.themeSwitcher !== false;
       </span>
     </a>
 
-    <!-- Main Nav -->
-    <nav class="flex items-center gap-6" aria-label="Main Navigation">
+    <!-- Main Nav: on narrow screens it takes its own row under the brand and controls -->
+    <nav
+      class="flex items-center gap-6 max-md:order-3 max-md:w-full max-md:gap-x-5 max-md:overflow-x-auto"
+      aria-label="Main Navigation"
+    >
       {siteConfig.navLinks.map((link) => {
         const isActive =
           currentPath === link.href ||
@@ -50,7 +53,7 @@ const showThemeSwitcher = features.themeSwitcher !== false;
     </nav>
 
     <!-- Header Actions -->
-    <div class="flex items-center gap-[0.85rem] max-md:mt-[0.2rem] max-md:w-full max-md:justify-center">
+    <div class="flex items-center gap-[0.85rem] max-md:order-2 max-md:gap-[0.4rem]">
       <!-- Search Trigger (Desktop) -->
       {showSearch && (
         <button
@@ -111,8 +114,8 @@ const showThemeSwitcher = features.themeSwitcher !== false;
 
       <!-- Clustered Controls: Social + Theme Dropdowns -->
       <div class="flex items-center gap-[0.4rem]">
-        <SocialMenu client:load />
-        {showThemeSwitcher && <ThemeMenu client:load />}
+        <SocialMenu client:idle />
+        {showThemeSwitcher && <ThemeMenu client:idle />}
       </div>
     </div>
   </div>

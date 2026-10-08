@@ -7,6 +7,7 @@ import AudioPlayer from "../../components/AudioPlayer.astro";
 import StructuredData from "../../components/StructuredData.astro";
 import { getCollection, render } from "astro:content";
 import { siteConfig } from "../../config/site";
+import TagBadge from "../../components/TagBadge.svelte";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
@@ -106,12 +107,7 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
                 <span class="text-muted-foreground opacity-50">·</span>
                 <span class="inline-flex flex-wrap items-center gap-[0.35rem]">
                   {post.data.tags.map((tag: string) => (
-                    <a
-                      href={`/tags/${tag}`}
-                      class="inline-flex items-center rounded-sm border border-transparent bg-transparent px-[0.45rem] py-[0.1rem] text-[0.82rem] font-medium text-link no-underline transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[1.5px] hover:scale-[1.04] hover:border-link hover:bg-muted hover:text-link hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] active:translate-y-0 active:scale-[0.98]"
-                    >
-                      #{tag}
-                    </a>
+                    <TagBadge tag={tag} />
                   ))}
                 </span>
               </>

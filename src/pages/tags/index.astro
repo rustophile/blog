@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import TagBadge from "../../components/TagBadge.svelte";
 
 const posts = await getCollection("blog", ({ data }) => !data.draft);
 const projects = await getCollection("projects");
@@ -31,15 +32,7 @@ const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
 
   <div class="flex flex-wrap gap-3 py-4">
     {sortedTags.map(([tag, count]) => (
-      <a
-        href={`/tags/${tag}`}
-        class="inline-flex items-center gap-2 py-2 px-4 bg-card border border-border rounded-[9999px] text-[0.95rem] text-foreground no-underline transition-[background-color,border-color,color] duration-200 ease-[ease] hover:bg-muted hover:border-link hover:text-link"
-      >
-        <span class="font-semibold">#{tag}</span>
-        <span class="text-[0.8rem] text-muted-foreground bg-muted py-[0.15rem] px-[0.45rem] rounded-[9999px]">
-          {count}
-        </span>
-      </a>
+      <TagBadge tag={tag} variant="pill" count={count} />
     ))}
   </div>
 </BaseLayout>

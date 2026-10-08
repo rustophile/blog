@@ -1,6 +1,7 @@
 # Rustophile
 
-> Learning Rust in public, one compiler error at a time.
+> Learn Rust, one borrow at a time.  
+> A journey through compiler errors toward a language you’ll love.
 
 The home of Rustophile on the internet: notes, exercises, and small projects from learning the Rust programming language.
 

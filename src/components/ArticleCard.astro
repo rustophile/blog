@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { siteConfig } from "../config/site";
+import TagBadge from "./TagBadge.svelte";
 
 interface Props {
   post: CollectionEntry<"blog">;
@@ -22,12 +23,7 @@ const showTags = siteConfig.features?.tags !== false;
     {showTags && post.data.tags && post.data.tags.length > 0 && (
       <span class="inline-flex flex-wrap items-center gap-[0.35rem]">
         {post.data.tags.map((tag) => (
-          <a
-            href={`/tags/${tag}`}
-            class="inline-flex items-center rounded-sm border border-transparent bg-transparent px-[0.45rem] py-[0.12rem] text-[0.8rem] font-medium text-link no-underline transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[1.5px] hover:scale-[1.04] hover:border-link hover:bg-muted hover:text-link hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] active:translate-y-0 active:scale-[0.98]"
-          >
-            #{tag}
-          </a>
+          <TagBadge tag={tag} />
         ))}
       </span>
     )}

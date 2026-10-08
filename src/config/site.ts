@@ -57,7 +57,7 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   title: "Rustophile",
-  tagline: "Learning Rust in public, one compiler error at a time.",
+  tagline: "A journey through compiler errors toward a language you’ll love.",
   description:
     "Notes, exercises, and mistakes from learning the Rust programming language.",
   author: "Rustophile",
