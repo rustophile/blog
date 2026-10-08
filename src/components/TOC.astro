@@ -5,7 +5,7 @@ export interface Props {
   title?: string;
 }
 
-const { headings, title = 'On This Page' } = Astro.props;
+const { headings, title = "On This Page" } = Astro.props;
 const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
 
@@ -63,7 +63,10 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     padding: 0.35rem 0 0.35rem 0.75rem;
     border-left: 2px solid transparent;
     line-height: 1.45;
-    transition: color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease,
+      transform 0.15s ease;
     text-decoration: none;
   }
 
@@ -98,8 +101,12 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
       clickTimeout = undefined;
     }
 
-    const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.toc-link'));
-    const headings = Array.from(document.querySelectorAll<HTMLElement>('article h2[id], article h3[id]'));
+    const tocLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>(".toc-link"),
+    );
+    const headings = Array.from(
+      document.querySelectorAll<HTMLElement>("article h2[id], article h3[id]"),
+    );
 
     if (!tocLinks.length || !headings.length) return;
 
@@ -112,11 +119,11 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     function setActive(id: string) {
       if (!id) return;
       tocLinks.forEach((link) => {
-        const href = link.getAttribute('href')?.replace(/^#/, '');
+        const href = link.getAttribute("href")?.replace(/^#/, "");
         if (href === id) {
-          link.classList.add('active');
+          link.classList.add("active");
         } else {
-          link.classList.remove('active');
+          link.classList.remove("active");
         }
       });
     }
@@ -158,9 +165,9 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 
     tocLinks.forEach((link) => {
       link.addEventListener(
-        'click',
+        "click",
         () => {
-          const targetId = link.getAttribute('href')?.replace(/^#/, '');
+          const targetId = link.getAttribute("href")?.replace(/^#/, "");
           if (targetId) {
             setActive(targetId);
             isClickScrolling = true;
@@ -171,22 +178,28 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
             }, 600);
           }
         },
-        { signal }
+        { signal },
       );
     });
 
-    window.addEventListener('scroll', requestScrollSpyUpdate, { passive: true, signal });
-    window.addEventListener('resize', requestScrollSpyUpdate, { passive: true, signal });
+    window.addEventListener("scroll", requestScrollSpyUpdate, {
+      passive: true,
+      signal,
+    });
+    window.addEventListener("resize", requestScrollSpyUpdate, {
+      passive: true,
+      signal,
+    });
     requestScrollSpyUpdate();
   }
 
   // Initial run and page navigation hooks
   initTOCScrollspy();
-  document.addEventListener('astro:page-load', initTOCScrollspy);
-  document.addEventListener('astro:after-swap', initTOCScrollspy);
+  document.addEventListener("astro:page-load", initTOCScrollspy);
+  document.addEventListener("astro:after-swap", initTOCScrollspy);
 
   // Immediate cleanup before DOM replacement
-  document.addEventListener('astro:before-swap', () => {
+  document.addEventListener("astro:before-swap", () => {
     if (currentTOCController) {
       currentTOCController.abort();
       currentTOCController = null;

@@ -1,9 +1,9 @@
-import { defineCollection } from 'astro:content';
-import { z } from 'astro/zod';
-import { glob } from 'astro/loaders';
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
+import { glob } from "astro/loaders";
 
 const blog = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
+  loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./src/content/blog" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -13,23 +13,26 @@ const blog = defineCollection({
     draft: z.boolean().default(false),
     image: z.string().optional(),
     audio: z.boolean().default(true),
-  })
+  }),
 });
 
 const projects = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/projects' }),
+  loader: glob({
+    pattern: "**/[^_]*.{md,mdx}",
+    base: "./src/content/projects",
+  }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
-    category: z.string().default('General'),
+    category: z.string().default("General"),
     tags: z.array(z.string()).default([]),
     stars: z.number().default(0),
     repoUrl: z.string().optional(),
     demoUrl: z.string().optional(),
-    emoji: z.string().default('📦'),
+    emoji: z.string().default("📦"),
     featured: z.boolean().default(false),
-  })
+  }),
 });
 
 export const collections = { blog, projects };

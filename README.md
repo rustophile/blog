@@ -46,13 +46,13 @@ The projects page shows "Nothing built yet." until the first one is added.
 
 ## Scripts
 
-| Command        | What it does                         |
-| -------------- | ------------------------------------ |
-| `pnpm dev`     | Start the dev server                 |
-| `pnpm build`   | Build the static site into `./dist`  |
-| `pnpm preview` | Serve the production build locally   |
-| `pnpm check`   | Type-check with `astro check`        |
-| `pnpm qa`      | Type-check, then build               |
+| Command        | What it does                        |
+| -------------- | ----------------------------------- |
+| `pnpm dev`     | Start the dev server                |
+| `pnpm build`   | Build the static site into `./dist` |
+| `pnpm preview` | Serve the production build locally  |
+| `pnpm check`   | Type-check with `astro check`       |
+| `pnpm qa`      | Type-check, then build              |
 
 ## License
 

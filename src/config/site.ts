@@ -32,7 +32,7 @@ export interface SiteConfig {
   description: string;
   author: string;
   siteUrl: string;
-  defaultTheme: 'white' | 'cream' | 'slate' | 'midnight';
+  defaultTheme: "white" | "cream" | "slate" | "midnight";
   features?: SiteFeatures;
   socialLinks: {
     github?: string;
@@ -47,13 +47,14 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  title: 'Rustophile',
-  tagline: 'Learning Rust in public, one compiler error at a time.',
-  description: 'Notes, exercises, and mistakes from learning the Rust programming language.',
-  author: 'Rustophile',
+  title: "Rustophile",
+  tagline: "Learning Rust in public, one compiler error at a time.",
+  description:
+    "Notes, exercises, and mistakes from learning the Rust programming language.",
+  author: "Rustophile",
   // production domain, used for canonical URLs, Open Graph, RSS, and the sitemap
-  siteUrl: 'https://rustophile.com',
-  defaultTheme: 'cream',
+  siteUrl: "https://rustophile.com",
+  defaultTheme: "cream",
   // Granular Feature Flags — "Complete by default, minimalist on demand"
   // Toggle any feature to false to completely omit markup & scripts in static build
   features: {
@@ -65,16 +66,16 @@ export const siteConfig: SiteConfig = {
     socialShare: true,
     themeSwitcher: true,
     backToTop: true,
-    imageZoom: true
+    imageZoom: true,
   },
   socialLinks: {
-    github: 'https://github.com/rustophile'
+    github: "https://github.com/rustophile",
   },
   navLinks: [
-    { title: 'Home', href: '/' },
-    { title: 'Blog', href: '/blog' },
-    { title: 'Projects', href: '/projects' },
-    { title: 'Tags', href: '/tags' },
-    { title: 'About', href: '/about' }
-  ]
+    { title: "Home", href: "/" },
+    { title: "Blog", href: "/blog" },
+    { title: "Projects", href: "/projects" },
+    { title: "Tags", href: "/tags" },
+    { title: "About", href: "/about" },
+  ],
 };

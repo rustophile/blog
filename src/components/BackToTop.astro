@@ -3,7 +3,17 @@
 ---
 
 <button id="back-to-top" aria-label="Back to top" title="Back to top">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
     <polyline points="18 15 12 9 6 15"></polyline>
   </svg>
 </button>
@@ -26,7 +36,13 @@
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.25s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    transition:
+      opacity 0.25s ease,
+      color 0.15s ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
@@ -55,7 +71,7 @@
       backToTopController = null;
     }
 
-    const btn = document.getElementById('back-to-top');
+    const btn = document.getElementById("back-to-top");
     if (!btn) return;
 
     backToTopController = new AbortController();
@@ -67,9 +83,9 @@
       if (!ticking) {
         window.requestAnimationFrame(() => {
           if (window.scrollY > 300) {
-            btn?.classList.add('visible');
+            btn?.classList.add("visible");
           } else {
-            btn?.classList.remove('visible');
+            btn?.classList.remove("visible");
           }
           ticking = false;
         });
@@ -77,25 +93,25 @@
       }
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true, signal });
+    window.addEventListener("scroll", handleScroll, { passive: true, signal });
     handleScroll();
 
     btn.addEventListener(
-      'click',
+      "click",
       () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       },
-      { signal }
+      { signal },
     );
   }
 
   // Initial run and page navigation hooks
   setupBackToTop();
-  document.addEventListener('astro:page-load', setupBackToTop);
-  document.addEventListener('astro:after-swap', setupBackToTop);
+  document.addEventListener("astro:page-load", setupBackToTop);
+  document.addEventListener("astro:after-swap", setupBackToTop);
 
   // Immediate cleanup before DOM replacement
-  document.addEventListener('astro:before-swap', () => {
+  document.addEventListener("astro:before-swap", () => {
     if (backToTopController) {
       backToTopController.abort();
       backToTopController = null;

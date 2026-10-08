@@ -1,14 +1,17 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import ArticleCard from '../../components/ArticleCard.astro';
-import { getCollection } from 'astro:content';
-import { siteConfig } from '../../config/site';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+import { getCollection } from "astro:content";
+import { siteConfig } from "../../config/site";
 
-const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const allPosts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
 
 // Collect unique tags
-const allTags = Array.from(new Set(allPosts.flatMap((p) => p.data.tags || []))).sort();
+const allTags = Array.from(
+  new Set(allPosts.flatMap((p) => p.data.tags || [])),
+).sort();
 const showTags = siteConfig.features?.tags !== false;
 ---
 
@@ -17,14 +20,17 @@ const showTags = siteConfig.features?.tags !== false;
     <header class="blog-header">
       <h1 class="page-title">Articles &amp; Notes</h1>
       <p class="page-desc">
-        Explorations in software engineering, technical writing, and minimalist design.
+        Explorations in software engineering, technical writing, and minimalist
+        design.
       </p>
 
       {showTags && allTags.length > 0 && (
         <div class="tags-filter">
           <span class="tags-label">Topics:</span>
           {allTags.map((tag) => (
-            <a href={`/tags/${tag}`} class="tag-pill">#{tag}</a>
+            <a href={`/tags/${tag}`} class="tag-pill">
+              #{tag}
+            </a>
           ))}
         </div>
       )}
@@ -40,7 +46,17 @@ const showTags = siteConfig.features?.tags !== false;
         <!-- Simple Search Filter Box -->
         <div class="search-wrap">
           <div class="search-box">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
               <circle cx="11" cy="11" r="8"></circle>
               <path d="m21 21-4.3-4.3"></path>
             </svg>
@@ -62,7 +78,7 @@ const showTags = siteConfig.features?.tags !== false;
             data-slug={post.id.toLowerCase()}
             data-title={post.data.title.toLowerCase()}
             data-description={post.data.description.toLowerCase()}
-            data-tags={post.data.tags.join(' ').toLowerCase()}
+            data-tags={post.data.tags.join(" ").toLowerCase()}
           >
             <ArticleCard post={post} />
           </div>
@@ -70,11 +86,29 @@ const showTags = siteConfig.features?.tags !== false;
       </div>
 
       <!-- Bottom Pagination -->
-      <div class="pagination-container pagination-bottom" id="pagination-bottom" style="display: none;">
+      <div
+        class="pagination-container pagination-bottom"
+        id="pagination-bottom"
+        style="display: none;"
+      >
         <nav class="pagination-bar" aria-label="Bottom article pagination">
-          <button type="button" class="pagination-btn prev" id="page-prev-bottom" aria-label="Previous page">←</button>
+          <button
+            type="button"
+            class="pagination-btn prev"
+            id="page-prev-bottom"
+            aria-label="Previous page"
+          >
+            ←
+          </button>
           <div class="pagination-pages" id="pagination-pages-bottom"></div>
-          <button type="button" class="pagination-btn next" id="page-next-bottom" aria-label="Next page">→</button>
+          <button
+            type="button"
+            class="pagination-btn next"
+            id="page-next-bottom"
+            aria-label="Next page"
+          >
+            →
+          </button>
         </nav>
       </div>
 
@@ -87,14 +121,22 @@ const showTags = siteConfig.features?.tags !== false;
 
 <script>
   function setupArticlePagination() {
-    const searchInput = document.getElementById('search-input') as HTMLInputElement;
-    const articleWrappers = Array.from(document.querySelectorAll<HTMLElement>('.article-wrapper'));
-    const noResults = document.getElementById('no-results');
+    const searchInput = document.getElementById(
+      "search-input",
+    ) as HTMLInputElement;
+    const articleWrappers = Array.from(
+      document.querySelectorAll<HTMLElement>(".article-wrapper"),
+    );
+    const noResults = document.getElementById("no-results");
 
-    const bottomContainer = document.getElementById('pagination-bottom');
-    const bottomPages = document.getElementById('pagination-pages-bottom');
-    const bottomPrev = document.getElementById('page-prev-bottom') as HTMLButtonElement | null;
-    const bottomNext = document.getElementById('page-next-bottom') as HTMLButtonElement | null;
+    const bottomContainer = document.getElementById("pagination-bottom");
+    const bottomPages = document.getElementById("pagination-pages-bottom");
+    const bottomPrev = document.getElementById(
+      "page-prev-bottom",
+    ) as HTMLButtonElement | null;
+    const bottomNext = document.getElementById(
+      "page-next-bottom",
+    ) as HTMLButtonElement | null;
 
     const PAGE_SIZE = 4;
     let currentPage = 1;
@@ -107,38 +149,43 @@ const showTags = siteConfig.features?.tags !== false;
       if (currentPage < 1) currentPage = 1;
 
       // Hide all items first
-      articleWrappers.forEach((el) => (el.style.display = 'none'));
+      articleWrappers.forEach((el) => (el.style.display = "none"));
 
       // Show current page slice
       const start = (currentPage - 1) * PAGE_SIZE;
       const end = start + PAGE_SIZE;
       const slice = matchingItems.slice(start, end);
-      slice.forEach((el) => (el.style.display = 'block'));
+      slice.forEach((el) => (el.style.display = "block"));
 
       if (noResults) {
-        noResults.style.display = matchingItems.length === 0 ? 'block' : 'none';
+        noResults.style.display = matchingItems.length === 0 ? "block" : "none";
       }
 
       if (totalPages <= 1) {
-        if (bottomContainer) bottomContainer.style.display = 'none';
+        if (bottomContainer) bottomContainer.style.display = "none";
         return;
       }
 
-      if (bottomContainer) bottomContainer.style.display = 'flex';
+      if (bottomContainer) bottomContainer.style.display = "flex";
 
       function createPageButtons(targetEl: HTMLElement | null) {
         if (!targetEl) return;
-        targetEl.innerHTML = '';
+        targetEl.innerHTML = "";
         for (let i = 1; i <= totalPages; i++) {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = `pagination-num${i === currentPage ? ' active' : ''}`;
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = `pagination-num${i === currentPage ? " active" : ""}`;
           btn.textContent = String(i);
-          btn.setAttribute('aria-label', `Page ${i}`);
-          btn.addEventListener('click', () => {
+          btn.setAttribute("aria-label", `Page ${i}`);
+          btn.addEventListener("click", () => {
             currentPage = i;
             renderPagination();
-            window.scrollTo({ top: document.getElementById('posts-list')?.offsetTop ? document.getElementById('posts-list')!.offsetTop - 120 : 0, behavior: 'smooth' });
+            window.scrollTo({
+              top: document.getElementById("posts-list")?.offsetTop
+                ? document.getElementById("posts-list")!.offsetTop - 120
+                : 0,
+              behavior: "smooth",
+            });
           });
           targetEl.appendChild(btn);
         }
@@ -168,18 +215,24 @@ const showTags = siteConfig.features?.tags !== false;
       }
     }
 
-    bottomPrev?.addEventListener('click', handlePrev);
-    bottomNext?.addEventListener('click', handleNext);
+    bottomPrev?.addEventListener("click", handlePrev);
+    bottomNext?.addEventListener("click", handleNext);
 
     if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
+      searchInput.addEventListener("input", (e) => {
         const query = (e.target as HTMLInputElement).value.trim().toLowerCase();
         matchingItems = articleWrappers.filter((wrapper) => {
-          const slug = wrapper.dataset.slug || '';
-          const title = wrapper.dataset.title || '';
-          const desc = wrapper.dataset.description || '';
-          const tags = wrapper.dataset.tags || '';
-          return !query || title.includes(query) || desc.includes(query) || tags.includes(query) || slug.includes(query);
+          const slug = wrapper.dataset.slug || "";
+          const title = wrapper.dataset.title || "";
+          const desc = wrapper.dataset.description || "";
+          const tags = wrapper.dataset.tags || "";
+          return (
+            !query ||
+            title.includes(query) ||
+            desc.includes(query) ||
+            tags.includes(query) ||
+            slug.includes(query)
+          );
         });
         currentPage = 1;
         renderPagination();
@@ -190,7 +243,7 @@ const showTags = siteConfig.features?.tags !== false;
   }
 
   setupArticlePagination();
-  document.addEventListener('astro:after-swap', setupArticlePagination);
+  document.addEventListener("astro:after-swap", setupArticlePagination);
 </script>
 
 <style>
@@ -238,7 +291,10 @@ const showTags = siteConfig.features?.tags !== false;
     border-radius: 9999px;
     color: var(--text-muted);
     text-decoration: none;
-    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease,
+      background-color 0.15s ease;
   }
 
   .tag-pill:hover {
@@ -359,7 +415,10 @@ const showTags = siteConfig.features?.tags !== false;
     font-size: 0.85rem;
     font-family: var(--font-mono);
     cursor: pointer;
-    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease;
   }
 
   .pagination-btn:hover:not(:disabled),

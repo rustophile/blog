@@ -12,14 +12,32 @@
     aria-expanded="false"
     title="Color theme / Tema visual"
   >
-    <span id="theme-active-icon" class="theme-active-icon">📜</span>
-    <svg class="theme-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <span id="theme-active-icon" class="theme-active-icon">
+      📜
+    </span>
+    <svg
+      class="theme-chevron"
+      width="9"
+      height="9"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
       <polyline points="6 9 12 15 18 9"></polyline>
     </svg>
   </button>
 
   <!-- Floating Theme Dropdown -->
-  <div id="theme-dropdown" class="theme-dropdown" role="menu" aria-label="Available themes">
+  <div
+    id="theme-dropdown"
+    class="theme-dropdown"
+    role="menu"
+    aria-label="Available themes"
+  >
     <div class="theme-dropdown-header">THEME</div>
 
     <button class="theme-option" data-theme-val="white" role="menuitem">
@@ -27,7 +45,20 @@
         <span class="theme-emoji">☀️</span>
         <span class="theme-label">Clean White</span>
       </span>
-      <svg class="theme-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg
+        class="theme-check"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
     </button>
 
     <button class="theme-option" data-theme-val="cream" role="menuitem">
@@ -35,7 +66,20 @@
         <span class="theme-emoji">📜</span>
         <span class="theme-label">Warm Paper</span>
       </span>
-      <svg class="theme-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg
+        class="theme-check"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
     </button>
 
     <button class="theme-option" data-theme-val="slate" role="menuitem">
@@ -43,7 +87,20 @@
         <span class="theme-emoji">⚓</span>
         <span class="theme-label">Slate Navy</span>
       </span>
-      <svg class="theme-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg
+        class="theme-check"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
     </button>
 
     <button class="theme-option" data-theme-val="midnight" role="menuitem">
@@ -51,7 +108,20 @@
         <span class="theme-emoji">🌌</span>
         <span class="theme-label">Midnight OLED</span>
       </span>
-      <svg class="theme-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg
+        class="theme-check"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
     </button>
 
     <div class="theme-divider"></div>
@@ -61,7 +131,20 @@
         <span class="theme-emoji">💻</span>
         <span class="theme-label">System Auto</span>
       </span>
-      <svg class="theme-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg
+        class="theme-check"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
     </button>
   </div>
 </div>
@@ -85,7 +168,11 @@
     background-color: var(--bg-surface);
     color: var(--text-muted);
     cursor: pointer;
-    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      transform 0.15s ease;
     padding: 0;
   }
 
@@ -184,7 +271,9 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.12s ease, color 0.12s ease;
+    transition:
+      background-color 0.12s ease,
+      color 0.12s ease;
     gap: 0.5rem;
   }
 
@@ -231,64 +320,73 @@
 
 <script>
   function setupThemeToggle() {
-    const btn = document.getElementById('theme-toggle-btn');
-    const dropdown = document.getElementById('theme-dropdown');
-    const selector = document.getElementById('theme-selector');
-    const activeIcon = document.getElementById('theme-active-icon');
+    const btn = document.getElementById("theme-toggle-btn");
+    const dropdown = document.getElementById("theme-dropdown");
+    const selector = document.getElementById("theme-selector");
+    const activeIcon = document.getElementById("theme-active-icon");
 
     const themeIcons: Record<string, string> = {
-      white: '☀️',
-      cream: '📜',
-      slate: '⚓',
-      midnight: '🌌',
-      auto: '💻',
+      white: "☀️",
+      cream: "📜",
+      slate: "⚓",
+      midnight: "🌌",
+      auto: "💻",
     };
 
     function getEffectiveTheme(mode: string): string {
-      if (mode === 'auto') {
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'slate' : 'cream';
+      if (mode === "auto") {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "slate"
+          : "cream";
       }
       return mode;
     }
 
     function updateThemeUI(storedTheme: string) {
       const effectiveTheme = getEffectiveTheme(storedTheme);
-      
+
       // Update icon on the button
       if (activeIcon) {
-        activeIcon.textContent = storedTheme === 'auto' ? '💻' : (themeIcons[effectiveTheme] || '📜');
+        activeIcon.textContent =
+          storedTheme === "auto" ? "💻" : themeIcons[effectiveTheme] || "📜";
       }
 
       // Update active checks in dropdown
-      document.querySelectorAll<HTMLButtonElement>('.theme-option').forEach((opt) => {
-        const val = opt.getAttribute('data-theme-val');
-        if (val === storedTheme) {
-          opt.classList.add('active');
-          opt.setAttribute('aria-selected', 'true');
-        } else {
-          opt.classList.remove('active');
-          opt.removeAttribute('aria-selected');
-        }
-      });
+      document
+        .querySelectorAll<HTMLButtonElement>(".theme-option")
+        .forEach((opt) => {
+          const val = opt.getAttribute("data-theme-val");
+          if (val === storedTheme) {
+            opt.classList.add("active");
+            opt.setAttribute("aria-selected", "true");
+          } else {
+            opt.classList.remove("active");
+            opt.removeAttribute("aria-selected");
+          }
+        });
     }
 
     function applyTheme(mode: string) {
-      localStorage.setItem('minrock_theme', mode);
+      localStorage.setItem("minrock_theme", mode);
       const effective = getEffectiveTheme(mode);
-      document.documentElement.setAttribute('data-theme', effective);
+      document.documentElement.setAttribute("data-theme", effective);
 
       updateThemeUI(mode);
 
       // Dispatch event for reactive components (e.g. embedded comment themes)
-      window.dispatchEvent(new CustomEvent('minrock-theme-change', { detail: { theme: effective, mode } }));
+      window.dispatchEvent(
+        new CustomEvent("minrock-theme-change", {
+          detail: { theme: effective, mode },
+        }),
+      );
     }
 
     function positionDropdown() {
       if (!dropdown) return;
       if (window.innerWidth <= 768) {
-        dropdown.style.left = '50%';
-        dropdown.style.right = 'auto';
-        dropdown.style.transform = 'translateX(-50%)';
+        dropdown.style.left = "50%";
+        dropdown.style.right = "auto";
+        dropdown.style.transform = "translateX(-50%)";
 
         const rect = dropdown.getBoundingClientRect();
         const pad = 12;
@@ -300,74 +398,82 @@
           dropdown.style.transform = `translateX(calc(-50% - ${offset}px))`;
         }
       } else {
-        dropdown.style.left = '';
-        dropdown.style.right = '';
-        dropdown.style.transform = '';
+        dropdown.style.left = "";
+        dropdown.style.right = "";
+        dropdown.style.transform = "";
       }
     }
 
     // Initialize UI on mount
-    const saved = localStorage.getItem('minrock_theme') || 'cream';
+    const saved = localStorage.getItem("minrock_theme") || "cream";
     updateThemeUI(saved);
 
     // Toggle dropdown
-    btn?.addEventListener('click', (e) => {
+    btn?.addEventListener("click", (e) => {
       e.stopPropagation();
       // Close other dropdowns if open
-      document.querySelectorAll('.lang-dropdown.open, .social-dropdown-menu.open').forEach(d => d.classList.remove('open'));
-      document.querySelectorAll('#lang-btn, #social-menu-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      document
+        .querySelectorAll(".lang-dropdown.open, .social-dropdown-menu.open")
+        .forEach((d) => d.classList.remove("open"));
+      document
+        .querySelectorAll("#lang-btn, #social-menu-btn")
+        .forEach((b) => b.setAttribute("aria-expanded", "false"));
 
-      const open = dropdown?.classList.toggle('open');
-      btn.setAttribute('aria-expanded', String(!!open));
+      const open = dropdown?.classList.toggle("open");
+      btn.setAttribute("aria-expanded", String(!!open));
 
       if (open) {
         positionDropdown();
       }
     });
 
-    window.addEventListener('resize', () => {
-      if (dropdown?.classList.contains('open')) {
+    window.addEventListener("resize", () => {
+      if (dropdown?.classList.contains("open")) {
         positionDropdown();
       }
     });
 
     // Option clicks
-    document.querySelectorAll<HTMLButtonElement>('.theme-option').forEach((opt) => {
-      opt.addEventListener('click', () => {
-        const val = opt.getAttribute('data-theme-val');
-        if (!val) return;
-        dropdown?.classList.remove('open');
-        btn?.setAttribute('aria-expanded', 'false');
-        applyTheme(val);
+    document
+      .querySelectorAll<HTMLButtonElement>(".theme-option")
+      .forEach((opt) => {
+        opt.addEventListener("click", () => {
+          const val = opt.getAttribute("data-theme-val");
+          if (!val) return;
+          dropdown?.classList.remove("open");
+          btn?.setAttribute("aria-expanded", "false");
+          applyTheme(val);
+        });
       });
-    });
 
     // Close on click outside
-    document.addEventListener('click', (e) => {
+    document.addEventListener("click", (e) => {
       if (!selector?.contains(e.target as Node)) {
-        dropdown?.classList.remove('open');
-        btn?.setAttribute('aria-expanded', 'false');
+        dropdown?.classList.remove("open");
+        btn?.setAttribute("aria-expanded", "false");
       }
     });
 
     // Close on Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && dropdown?.classList.contains('open')) {
-        dropdown.classList.remove('open');
-        btn?.setAttribute('aria-expanded', 'false');
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && dropdown?.classList.contains("open")) {
+        dropdown.classList.remove("open");
+        btn?.setAttribute("aria-expanded", "false");
         btn?.focus();
       }
     });
 
     // Listen to OS theme changes if on auto
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      const current = localStorage.getItem('minrock_theme') || 'cream';
-      if (current === 'auto') {
-        applyTheme('auto');
-      }
-    });
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", () => {
+        const current = localStorage.getItem("minrock_theme") || "cream";
+        if (current === "auto") {
+          applyTheme("auto");
+        }
+      });
   }
 
   setupThemeToggle();
-  document.addEventListener('astro:after-swap', setupThemeToggle);
+  document.addEventListener("astro:after-swap", setupThemeToggle);
 </script>

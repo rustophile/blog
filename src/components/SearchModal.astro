@@ -1,16 +1,34 @@
 ---
 // src/components/SearchModal.astro
 // Global Search Modal with rich result cards, fuzzy matching, and keyboard navigation (Ctrl + K)
-import { siteConfig } from '../config/site';
+import { siteConfig } from "../config/site";
 ---
 
 <!-- Search Modal Backdrop & Container -->
-<div id="search-modal-backdrop" class="search-backdrop" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Global Search">
+<div
+  id="search-modal-backdrop"
+  class="search-backdrop"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Global Search"
+>
   <div class="search-dialog" id="search-modal-dialog">
     <!-- Header -->
     <div class="search-dialog-header">
       <div class="search-input-wrapper">
-        <svg class="search-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg
+          class="search-input-icon"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
           <circle cx="11" cy="11" r="8"></circle>
           <path d="m21 21-4.3-4.3"></path>
         </svg>
@@ -24,14 +42,35 @@ import { siteConfig } from '../config/site';
           autocapitalize="off"
           spellcheck="false"
         />
-        <button id="search-modal-clear" class="search-clear-btn" aria-label="Clear search" type="button" style="display: none;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button
+          id="search-modal-clear"
+          class="search-clear-btn"
+          aria-label="Clear search"
+          type="button"
+          style="display: none;"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
       </div>
-      <button id="search-modal-close" class="search-close-badge" type="button" aria-label="Close search (Esc)" title="Close (Esc)">
+      <button
+        id="search-modal-close"
+        class="search-close-badge"
+        type="button"
+        aria-label="Close search (Esc)"
+        title="Close (Esc)"
+      >
         <kbd class="kbd-esc">ESC</kbd>
       </button>
     </div>
@@ -59,7 +98,8 @@ import { siteConfig } from '../config/site';
           </a>
         </div>
         <div class="initial-hint">
-          Type any keyword (e.g., <code>ownership</code>, <code>traits</code>, <code>cargo</code>, <code>async</code>) to filter in real-time.
+          Type any keyword (e.g., <code>ownership</code>, <code>traits</code>,{" "}
+          <code>cargo</code>, <code>async</code>) to filter in real-time.
         </div>
       </div>
     </div>
@@ -67,23 +107,28 @@ import { siteConfig } from '../config/site';
     <!-- Footer -->
     <div class="search-dialog-footer">
       <div class="search-shortcuts-guide">
-        <span class="guide-item"><kbd>↑</kbd><kbd>↓</kbd> Navigate</span>
-        <span class="guide-item"><kbd>↵</kbd> Select</span>
-        <span class="guide-item"><kbd>ESC</kbd> Close</span>
+        <span class="guide-item">
+          <kbd>↑</kbd>
+          <kbd>↓</kbd> Navigate
+        </span>
+        <span class="guide-item">
+          <kbd>↵</kbd> Select
+        </span>
+        <span class="guide-item">
+          <kbd>ESC</kbd> Close
+        </span>
       </div>
-      <div class="search-brand-note">
-        🦀 {siteConfig.title} Search
-      </div>
+      <div class="search-brand-note">🦀 {siteConfig.title} Search</div>
     </div>
   </div>
 </div>
 
 <script>
-  import { getTechIconSvg, getDefaultDocIcon } from '../utils/techIcons';
+  import { getTechIconSvg, getDefaultDocIcon } from "../utils/techIcons";
 
   interface SearchItem {
     id: string;
-    type: 'post' | 'project';
+    type: "post" | "project";
     title: string;
     description: string;
     url: string;
@@ -110,25 +155,27 @@ import { siteConfig } from '../config/site';
   let selectedIndex = -1;
   let navigableElements: HTMLElement[] = [];
 
-  const backdrop = document.getElementById('search-modal-backdrop');
-  const input = document.getElementById('search-modal-input') as HTMLInputElement | null;
-  const clearBtn = document.getElementById('search-modal-clear');
-  const closeBtn = document.getElementById('search-modal-close');
-  const resultsContainer = document.getElementById('search-modal-results');
+  const backdrop = document.getElementById("search-modal-backdrop");
+  const input = document.getElementById(
+    "search-modal-input",
+  ) as HTMLInputElement | null;
+  const clearBtn = document.getElementById("search-modal-clear");
+  const closeBtn = document.getElementById("search-modal-close");
+  const resultsContainer = document.getElementById("search-modal-results");
 
-  const initialHtml = resultsContainer ? resultsContainer.innerHTML : '';
+  const initialHtml = resultsContainer ? resultsContainer.innerHTML : "";
 
   async function loadSearchData(): Promise<SearchData | null> {
     if (searchData) return searchData;
     if (isFetching) return null;
     isFetching = true;
     try {
-      const res = await fetch('/search-index.json');
+      const res = await fetch("/search-index.json");
       if (res.ok) {
         searchData = await res.json();
       }
     } catch (err) {
-      console.error('Error loading search index:', err);
+      console.error("Error loading search index:", err);
     } finally {
       isFetching = false;
     }
@@ -136,9 +183,9 @@ import { siteConfig } from '../config/site';
   }
 
   // Preload on idle
-  window.addEventListener('load', () => {
-    if ('requestIdleCallback' in window) {
-      (window as any).requestIdleCallback(() => loadSearchData());
+  window.addEventListener("load", () => {
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(() => loadSearchData());
     } else {
       setTimeout(loadSearchData, 1500);
     }
@@ -146,9 +193,9 @@ import { siteConfig } from '../config/site';
 
   function openSearchModal() {
     if (!backdrop) return;
-    backdrop.classList.add('open');
-    backdrop.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
+    backdrop.classList.add("open");
+    backdrop.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
     loadSearchData();
     setTimeout(() => {
       input?.focus();
@@ -158,11 +205,11 @@ import { siteConfig } from '../config/site';
 
   function closeSearchModal() {
     if (!backdrop) return;
-    backdrop.classList.remove('open');
-    backdrop.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    if (input) input.value = '';
-    if (clearBtn) clearBtn.style.display = 'none';
+    backdrop.classList.remove("open");
+    backdrop.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    if (input) input.value = "";
+    if (clearBtn) clearBtn.style.display = "none";
     if (resultsContainer) resultsContainer.innerHTML = initialHtml;
     selectedIndex = -1;
     navigableElements = [];
@@ -170,25 +217,25 @@ import { siteConfig } from '../config/site';
 
   function escapeHtml(str: string): string {
     return str
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
   function highlightText(text: string, query: string): string {
-    if (!text) return '';
+    if (!text) return "";
     if (!query) return escapeHtml(text);
     const tokens = query.trim().split(/\s+/).filter(Boolean);
     if (tokens.length === 0) return escapeHtml(text);
 
     const escapedTokens = tokens
-      .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+      .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
       .filter(Boolean);
     if (escapedTokens.length === 0) return escapeHtml(text);
 
-    const regex = new RegExp(`(${escapedTokens.join('|')})`, 'gi');
+    const regex = new RegExp(`(${escapedTokens.join("|")})`, "gi");
     const parts = text.split(regex);
     return parts
       .map((part) => {
@@ -197,32 +244,44 @@ import { siteConfig } from '../config/site';
         }
         return escapeHtml(part);
       })
-      .join('');
+      .join("");
   }
 
   function normalizeStr(str: string): string {
     return str
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase();
   }
 
   function resolveItemIcon(item: SearchItem): string {
-    if (item.type === 'project') {
+    if (item.type === "project") {
       if (item.emoji) {
         return `<span style="font-size: 15px; line-height: 1;">${escapeHtml(item.emoji)}</span>`;
       }
-      return getTechIconSvg('vault', 16);
+      return getTechIconSvg("vault", 16);
     }
 
     // Check tags or title for matching tech
-    const allText = (item.title + ' ' + (item.tags || []).join(' ')).toLowerCase();
-    if (allText.includes('astro') || allText.includes('ssg')) return getTechIconSvg('astro', 16);
-    if (allText.includes('vault')) return getTechIconSvg('vault', 16);
-    if (allText.includes('github') || allText.includes('git')) return getTechIconSvg('github', 16);
-    if (allText.includes('gallery') || allText.includes('photo') || allText.includes('zoom')) return getTechIconSvg('gallery', 16);
-    if (allText.includes('typography') || allText.includes('writing')) return getTechIconSvg('typography', 16);
-    if (allText.includes('code')) return getTechIconSvg('code', 16);
+    const allText = (
+      item.title +
+      " " +
+      (item.tags || []).join(" ")
+    ).toLowerCase();
+    if (allText.includes("astro") || allText.includes("ssg"))
+      return getTechIconSvg("astro", 16);
+    if (allText.includes("vault")) return getTechIconSvg("vault", 16);
+    if (allText.includes("github") || allText.includes("git"))
+      return getTechIconSvg("github", 16);
+    if (
+      allText.includes("gallery") ||
+      allText.includes("photo") ||
+      allText.includes("zoom")
+    )
+      return getTechIconSvg("gallery", 16);
+    if (allText.includes("typography") || allText.includes("writing"))
+      return getTechIconSvg("typography", 16);
+    if (allText.includes("code")) return getTechIconSvg("code", 16);
 
     return getDefaultDocIcon(16);
   }
@@ -276,7 +335,7 @@ import { siteConfig } from '../config/site';
         const titleNorm = normalizeStr(proj.title);
         const descNorm = normalizeStr(proj.description);
         const tagsNorm = proj.tags.map((t) => normalizeStr(t));
-        const catNorm = proj.category ? normalizeStr(proj.category) : '';
+        const catNorm = proj.category ? normalizeStr(proj.category) : "";
 
         let score = 0;
         for (const token of queryTokens) {
@@ -298,7 +357,8 @@ import { siteConfig } from '../config/site';
       return queryTokens.every((token) => tagNorm.includes(token));
     });
 
-    const totalMatches = matchedPosts.length + matchedProjects.length + matchedTags.length;
+    const totalMatches =
+      matchedPosts.length + matchedProjects.length + matchedTags.length;
 
     if (totalMatches === 0) {
       resultsContainer.innerHTML = `
@@ -313,7 +373,7 @@ import { siteConfig } from '../config/site';
       return;
     }
 
-    let html = '';
+    let html = "";
 
     // Render Posts
     if (matchedPosts.length > 0) {
@@ -335,7 +395,13 @@ import { siteConfig } from '../config/site';
               </div>
               <div class="search-result-desc">${highlightText(post.description, cleanQuery)}</div>
               <div class="search-result-tags">
-                ${post.tags.slice(0, 4).map((t) => `<span class="search-result-badge">#${highlightText(t, cleanQuery)}</span>`).join('')}
+                ${post.tags
+                  .slice(0, 4)
+                  .map(
+                    (t) =>
+                      `<span class="search-result-badge">#${highlightText(t, cleanQuery)}</span>`,
+                  )
+                  .join("")}
               </div>
             </div>
           </a>
@@ -360,12 +426,18 @@ import { siteConfig } from '../config/site';
             <div class="search-result-content">
               <div class="search-result-top">
                 <div class="search-result-title">${highlightText(proj.title, cleanQuery)}</div>
-                <div class="search-result-meta">${proj.category || 'Project'}</div>
+                <div class="search-result-meta">${proj.category || "Project"}</div>
               </div>
               <div class="search-result-desc">${highlightText(proj.description, cleanQuery)}</div>
               <div class="search-result-tags">
-                <span class="search-result-badge series-badge">⚡ ${escapeHtml(proj.category || 'Project')}</span>
-                ${proj.tags.slice(0, 3).map((t) => `<span class="search-result-badge">#${highlightText(t, cleanQuery)}</span>`).join('')}
+                <span class="search-result-badge series-badge">⚡ ${escapeHtml(proj.category || "Project")}</span>
+                ${proj.tags
+                  .slice(0, 3)
+                  .map(
+                    (t) =>
+                      `<span class="search-result-badge">#${highlightText(t, cleanQuery)}</span>`,
+                  )
+                  .join("")}
               </div>
             </div>
           </a>
@@ -397,13 +469,15 @@ import { siteConfig } from '../config/site';
 
     resultsContainer.innerHTML = html;
 
-    navigableElements = Array.from(resultsContainer.querySelectorAll('[data-search-item]')) as HTMLElement[];
+    navigableElements = Array.from(
+      resultsContainer.querySelectorAll("[data-search-item]"),
+    ) as HTMLElement[];
     selectedIndex = navigableElements.length > 0 ? 0 : -1;
     updateSelection();
 
     // Attach mouseenter to update selected index on hover
     navigableElements.forEach((el, idx) => {
-      el.addEventListener('mouseenter', () => {
+      el.addEventListener("mouseenter", () => {
         selectedIndex = idx;
         updateSelection();
       });
@@ -413,56 +487,58 @@ import { siteConfig } from '../config/site';
   function updateSelection() {
     navigableElements.forEach((el, idx) => {
       if (idx === selectedIndex) {
-        el.classList.add('selected');
-        el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        el.classList.add("selected");
+        el.scrollIntoView({ block: "nearest", behavior: "smooth" });
       } else {
-        el.classList.remove('selected');
+        el.classList.remove("selected");
       }
     });
   }
 
   // Input event
-  input?.addEventListener('input', (e) => {
+  input?.addEventListener("input", (e) => {
     const val = (e.target as HTMLInputElement).value;
     if (clearBtn) {
-      clearBtn.style.display = val ? 'inline-flex' : 'none';
+      clearBtn.style.display = val ? "inline-flex" : "none";
     }
     renderResults(val);
   });
 
-  clearBtn?.addEventListener('click', () => {
+  clearBtn?.addEventListener("click", () => {
     if (input) {
-      input.value = '';
+      input.value = "";
       input.focus();
     }
-    if (clearBtn) clearBtn.style.display = 'none';
-    renderResults('');
+    if (clearBtn) clearBtn.style.display = "none";
+    renderResults("");
   });
 
-  closeBtn?.addEventListener('click', closeSearchModal);
+  closeBtn?.addEventListener("click", closeSearchModal);
 
-  backdrop?.addEventListener('click', (e) => {
+  backdrop?.addEventListener("click", (e) => {
     if (e.target === backdrop) closeSearchModal();
   });
 
   // Global Keyboard Shortcuts
-  window.addEventListener('keydown', (e) => {
-    const isOpen = backdrop?.classList.contains('open');
+  window.addEventListener("keydown", (e) => {
+    const isOpen = backdrop?.classList.contains("open");
 
     // Trigger search: Ctrl + K, Cmd + K, or "/"
     if (!isOpen) {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         openSearchModal();
         return;
       }
-      const path = (typeof e.composedPath === 'function' ? e.composedPath() : []) as HTMLElement[];
+      const path = (
+        typeof e.composedPath === "function" ? e.composedPath() : []
+      ) as HTMLElement[];
       const isTypingInField = path.some((el) => {
         if (!el || !el.tagName) return false;
         const tag = el.tagName.toLowerCase();
-        return tag === 'input' || tag === 'textarea' || el.isContentEditable;
+        return tag === "input" || tag === "textarea" || el.isContentEditable;
       });
-      if (e.key === '/' && !isTypingInField) {
+      if (e.key === "/" && !isTypingInField) {
         e.preventDefault();
         openSearchModal();
         return;
@@ -470,13 +546,13 @@ import { siteConfig } from '../config/site';
     }
 
     if (isOpen) {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         e.preventDefault();
         closeSearchModal();
         return;
       }
 
-      if (e.key === 'ArrowDown') {
+      if (e.key === "ArrowDown") {
         e.preventDefault();
         if (navigableElements.length > 0) {
           selectedIndex = (selectedIndex + 1) % navigableElements.length;
@@ -485,19 +561,23 @@ import { siteConfig } from '../config/site';
         return;
       }
 
-      if (e.key === 'ArrowUp') {
+      if (e.key === "ArrowUp") {
         e.preventDefault();
         if (navigableElements.length > 0) {
-          selectedIndex = (selectedIndex - 1 + navigableElements.length) % navigableElements.length;
+          selectedIndex =
+            (selectedIndex - 1 + navigableElements.length) %
+            navigableElements.length;
           updateSelection();
         }
         return;
       }
 
-      if (e.key === 'Enter') {
+      if (e.key === "Enter") {
         if (selectedIndex >= 0 && selectedIndex < navigableElements.length) {
           e.preventDefault();
-          const targetEl = navigableElements[selectedIndex] as HTMLAnchorElement;
+          const targetEl = navigableElements[
+            selectedIndex
+          ] as HTMLAnchorElement;
           targetEl.click();
         }
       }
@@ -506,9 +586,11 @@ import { siteConfig } from '../config/site';
 
   // Connect triggers from header or mobile
   function bindTriggers() {
-    const triggers = document.querySelectorAll('#header-search-btn, #mobile-search-btn');
+    const triggers = document.querySelectorAll(
+      "#header-search-btn, #mobile-search-btn",
+    );
     triggers.forEach((btn) => {
-      btn.addEventListener('click', (e) => {
+      btn.addEventListener("click", (e) => {
         e.preventDefault();
         openSearchModal();
       });
@@ -516,7 +598,7 @@ import { siteConfig } from '../config/site';
   }
 
   bindTriggers();
-  document.addEventListener('astro:after-swap', bindTriggers);
+  document.addEventListener("astro:after-swap", bindTriggers);
 </script>
 
 <style>
@@ -549,7 +631,9 @@ import { siteConfig } from '../config/site';
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 12px;
-    box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    box-shadow:
+      0 20px 45px -10px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -611,7 +695,9 @@ import { siteConfig } from '../config/site';
     color: var(--text-muted);
     cursor: pointer;
     padding: 0;
-    transition: background 0.15s, color 0.15s;
+    transition:
+      background 0.15s,
+      color 0.15s;
   }
 
   .search-clear-btn:hover {
@@ -694,7 +780,10 @@ import { siteConfig } from '../config/site';
     border: 1px solid var(--border);
     border-radius: 6px;
     text-decoration: none;
-    transition: border-color 0.15s, transform 0.15s, background-color 0.15s;
+    transition:
+      border-color 0.15s,
+      transform 0.15s,
+      background-color 0.15s;
   }
 
   .initial-pill:hover {
@@ -762,7 +851,11 @@ import { siteConfig } from '../config/site';
     border: 1px solid var(--border);
     margin-bottom: 0.45rem;
     cursor: pointer;
-    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease,
+      box-shadow 0.15s ease,
+      transform 0.12s ease;
   }
 
   :global(.search-result-item:hover),
@@ -773,7 +866,9 @@ import { siteConfig } from '../config/site';
   }
 
   :global(.search-result-item.selected) {
-    box-shadow: 0 0 0 1px var(--accent), 0 4px 14px rgba(0, 0, 0, 0.08);
+    box-shadow:
+      0 0 0 1px var(--accent),
+      0 4px 14px rgba(0, 0, 0, 0.08);
   }
 
   :global(.search-result-icon) {
@@ -884,7 +979,10 @@ import { siteConfig } from '../config/site';
     font-size: 0.78rem;
     color: var(--text);
     text-decoration: none;
-    transition: border-color 0.12s ease, transform 0.12s ease, color 0.12s ease;
+    transition:
+      border-color 0.12s ease,
+      transform 0.12s ease,
+      color 0.12s ease;
   }
 
   :global(.search-tag-item:hover),

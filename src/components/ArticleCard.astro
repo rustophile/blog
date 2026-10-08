@@ -1,16 +1,16 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { siteConfig } from '../config/site';
+import type { CollectionEntry } from "astro:content";
+import { siteConfig } from "../config/site";
 
 interface Props {
-  post: CollectionEntry<'blog'>;
+  post: CollectionEntry<"blog">;
 }
 
 const { post } = Astro.props;
-const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
-  year: 'numeric',
-  month: 'short',
-  day: 'numeric'
+const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
 });
 const showTags = siteConfig.features?.tags !== false;
 ---
@@ -30,14 +30,10 @@ const showTags = siteConfig.features?.tags !== false;
   </div>
 
   <h2 class="card-title">
-    <a href={`/blog/${post.id}`}>
-      {post.data.title}
-    </a>
+    <a href={`/blog/${post.id}`}>{post.data.title}</a>
   </h2>
 
-  <p class="card-desc">
-    {post.data.description}
-  </p>
+  <p class="card-desc">{post.data.description}</p>
 </article>
 
 <style>

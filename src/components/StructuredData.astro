@@ -1,8 +1,8 @@
 ---
-import { siteConfig } from '../config/site';
+import { siteConfig } from "../config/site";
 
 interface Props {
-  type?: 'website' | 'article';
+  type?: "website" | "article";
   title?: string;
   description?: string;
   datePublished?: Date;
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const {
-  type = 'website',
+  type = "website",
   title = siteConfig.title,
   description = siteConfig.description,
   datePublished,
@@ -22,37 +22,41 @@ const {
 } = Astro.props;
 
 const schema =
-  type === 'article'
+  type === "article"
     ? {
-        '@context': 'https://schema.org',
-        '@type': 'BlogPosting',
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
         headline: title,
         description: description,
         url: url,
         datePublished: datePublished?.toISOString(),
         dateModified: (dateModified || datePublished)?.toISOString(),
         author: {
-          '@type': 'Person',
+          "@type": "Person",
           name: siteConfig.author,
         },
         publisher: {
-          '@type': 'Organization',
+          "@type": "Organization",
           name: siteConfig.title,
           url: siteConfig.siteUrl,
         },
-        keywords: tags.join(', '),
+        keywords: tags.join(", "),
       }
     : {
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
+        "@context": "https://schema.org",
+        "@type": "WebSite",
         name: siteConfig.title,
         description: siteConfig.description,
         url: siteConfig.siteUrl,
         author: {
-          '@type': 'Person',
+          "@type": "Person",
           name: siteConfig.author,
         },
       };
 ---
 
-<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+<script
+  is:inline
+  type="application/ld+json"
+  set:html={JSON.stringify(schema)}
+/>

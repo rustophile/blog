@@ -1,6 +1,6 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { siteConfig } from '../config/site';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { siteConfig } from "../config/site";
 ---
 
 <BaseLayout title="About" description={siteConfig.description}>
@@ -13,9 +13,16 @@ import { siteConfig } from '../config/site';
     <div class="about-content">
       <p>
         <strong>{siteConfig.title}</strong> is a public notebook for learning
-        <a href="https://www.rust-lang.org" target="_blank" rel="noopener noreferrer">Rust</a>: notes on the
-        parts of the language that take more than one read, exercises worked through from start to finish, and small
-        projects built along the way.
+        <a
+          href="https://www.rust-lang.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Rust
+        </a>
+        : notes on the parts of the language that take more than one read,
+        exercises worked through from start to finish, and small projects built
+        along the way.
       </p>
 
       <h2>How this site is built</h2>
@@ -29,13 +36,27 @@ import { siteConfig } from '../config/site';
         <tbody>
           <tr>
             <td>Framework</td>
-            <td><a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a></td>
+            <td>
+              <a
+                href="https://astro.build"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Astro
+              </a>
+            </td>
           </tr>
           <tr>
             <td>Theme</td>
             <td>
-              <a href="https://github.com/rnt-rez/minrock" target="_blank" rel="noopener noreferrer">Minrock</a> by
-              Renato Rezende
+              <a
+                href="https://github.com/rnt-rez/minrock"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Minrock
+              </a>{" "}
+              by Renato Rezende
             </td>
           </tr>
           <tr>

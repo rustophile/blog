@@ -1,13 +1,16 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import ProjectCard from '../../components/ProjectCard.astro';
-import { getCollection } from 'astro:content';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { getCollection } from "astro:content";
 
-const allProjects = (await getCollection('projects'))
-  .sort((a, b) => b.data.stars - a.data.stars || b.data.date.valueOf() - a.data.date.valueOf());
+const allProjects = (await getCollection("projects")).sort(
+  (a, b) =>
+    b.data.stars - a.data.stars ||
+    b.data.date.valueOf() - a.data.date.valueOf(),
+);
 
 const topProjects = allProjects.filter((p) => p.data.featured).slice(0, 2);
-const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
+const categories = ["All", ...new Set(allProjects.map((p) => p.data.category))];
 ---
 
 <BaseLayout title="Projects" description="Things built while learning Rust.">
@@ -42,103 +45,140 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
     {allProjects.length === 0 ? (
       <p class="empty-state">Nothing built yet.</p>
     ) : (
-    <section class="all-projects-section" id="projects-list-section">
-      <div class="section-header">
-        <h2 class="section-title">
-          <span>All Projects</span>
-          <span class="section-arrow">→</span>
-        </h2>
+      <section class="all-projects-section" id="projects-list-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span>All Projects</span>
+            <span class="section-arrow">→</span>
+          </h2>
 
-        <!-- Search Filter Box (Live) -->
-        <div class="search-wrap">
-          <div class="search-box">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </svg>
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Filter projects..."
-              aria-label="Filter projects"
-              autocomplete="off"
-            />
+          <!-- Search Filter Box (Live) -->
+          <div class="search-wrap">
+            <div class="search-box">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Filter projects..."
+                aria-label="Filter projects"
+                autocomplete="off"
+              />
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Category Filter Pills -->
-      <div class="filter-bar" role="group" aria-label="Filter by category">
-        {categories.map((cat) => (
-          <button
-            type="button"
-            class={`filter-btn${cat === 'All' ? ' active' : ''}`}
-            data-category={cat}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
+        <!-- Category Filter Pills -->
+        <div class="filter-bar" role="group" aria-label="Filter by category">
+          {categories.map((cat) => (
+            <button
+              type="button"
+              class={`filter-btn${cat === "All" ? " active" : ""}`}
+              data-category={cat}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
 
-      <!-- Projects List -->
-      <div class="projects-list" id="projects-list">
-        {allProjects.map((proj) => (
-          <div
-            class="project-item"
-            data-category={proj.data.category}
-            data-title={proj.data.title.toLowerCase()}
-            data-description={proj.data.description.toLowerCase()}
-            data-tags={proj.data.tags.join(' ').toLowerCase()}
-          >
-            <ProjectCard
-              title={proj.data.title}
-              description={proj.data.description}
-              date={proj.data.date}
-              slug={proj.id}
-              tags={proj.data.tags}
-              stars={proj.data.stars}
-              repoUrl={proj.data.repoUrl}
-              demoUrl={proj.data.demoUrl}
-              category={proj.data.category}
-              emoji={proj.data.emoji}
-            />
-          </div>
-        ))}
-      </div>
+        <!-- Projects List -->
+        <div class="projects-list" id="projects-list">
+          {allProjects.map((proj) => (
+            <div
+              class="project-item"
+              data-category={proj.data.category}
+              data-title={proj.data.title.toLowerCase()}
+              data-description={proj.data.description.toLowerCase()}
+              data-tags={proj.data.tags.join(" ").toLowerCase()}
+            >
+              <ProjectCard
+                title={proj.data.title}
+                description={proj.data.description}
+                date={proj.data.date}
+                slug={proj.id}
+                tags={proj.data.tags}
+                stars={proj.data.stars}
+                repoUrl={proj.data.repoUrl}
+                demoUrl={proj.data.demoUrl}
+                category={proj.data.category}
+                emoji={proj.data.emoji}
+              />
+            </div>
+          ))}
+        </div>
 
-      <!-- Bottom Pagination -->
-      <div class="pagination-container pagination-bottom" id="pagination-bottom" style="display: none;">
-        <nav class="pagination-bar" aria-label="Bottom projects pagination">
-          <button type="button" class="pagination-btn prev" id="page-prev-bottom" aria-label="Previous page">←</button>
-          <div class="pagination-pages" id="pagination-pages-bottom"></div>
-          <button type="button" class="pagination-btn next" id="page-next-bottom" aria-label="Next page">→</button>
-        </nav>
-      </div>
+        <!-- Bottom Pagination -->
+        <div
+          class="pagination-container pagination-bottom"
+          id="pagination-bottom"
+          style="display: none;"
+        >
+          <nav class="pagination-bar" aria-label="Bottom projects pagination">
+            <button
+              type="button"
+              class="pagination-btn prev"
+              id="page-prev-bottom"
+              aria-label="Previous page"
+            >
+              ←
+            </button>
+            <div class="pagination-pages" id="pagination-pages-bottom"></div>
+            <button
+              type="button"
+              class="pagination-btn next"
+              id="page-next-bottom"
+              aria-label="Next page"
+            >
+              →
+            </button>
+          </nav>
+        </div>
 
-      <div id="no-results" class="no-results" style="display: none;">
-        <p>No projects found matching your filter.</p>
-      </div>
-    </section>
+        <div id="no-results" class="no-results" style="display: none;">
+          <p>No projects found matching your filter.</p>
+        </div>
+      </section>
     )}
   </div>
 </BaseLayout>
 
 <script>
   function setupProjectFilters() {
-    const searchInput = document.getElementById('search-input') as HTMLInputElement;
-    const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
-    const projectItems = Array.from(document.querySelectorAll<HTMLElement>('.project-item'));
-    const noResults = document.getElementById('no-results');
+    const searchInput = document.getElementById(
+      "search-input",
+    ) as HTMLInputElement;
+    const filterBtns =
+      document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+    const projectItems = Array.from(
+      document.querySelectorAll<HTMLElement>(".project-item"),
+    );
+    const noResults = document.getElementById("no-results");
 
-    const paginationContainer = document.getElementById('pagination-bottom');
-    const paginationPages = document.getElementById('pagination-pages-bottom');
-    const pagePrev = document.getElementById('page-prev-bottom') as HTMLButtonElement | null;
-    const pageNext = document.getElementById('page-next-bottom') as HTMLButtonElement | null;
+    const paginationContainer = document.getElementById("pagination-bottom");
+    const paginationPages = document.getElementById("pagination-pages-bottom");
+    const pagePrev = document.getElementById(
+      "page-prev-bottom",
+    ) as HTMLButtonElement | null;
+    const pageNext = document.getElementById(
+      "page-next-bottom",
+    ) as HTMLButtonElement | null;
 
     const PAGE_SIZE = 3;
     let currentPage = 1;
-    let currentCategory = 'All';
-    let searchQuery = '';
+    let currentCategory = "All";
+    let searchQuery = "";
     let matchingItems: HTMLElement[] = [...projectItems];
 
     function renderPagination() {
@@ -148,37 +188,42 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
       if (currentPage < 1) currentPage = 1;
 
       // Hide all items
-      projectItems.forEach((it) => (it.style.display = 'none'));
+      projectItems.forEach((it) => (it.style.display = "none"));
 
       // Show current page slice
       const start = (currentPage - 1) * PAGE_SIZE;
       const end = start + PAGE_SIZE;
       const slice = matchingItems.slice(start, end);
-      slice.forEach((it) => (it.style.display = 'block'));
+      slice.forEach((it) => (it.style.display = "block"));
 
       if (noResults) {
-        noResults.style.display = matchingItems.length === 0 ? 'block' : 'none';
+        noResults.style.display = matchingItems.length === 0 ? "block" : "none";
       }
 
       if (totalPages <= 1) {
-        if (paginationContainer) paginationContainer.style.display = 'none';
+        if (paginationContainer) paginationContainer.style.display = "none";
         return;
       }
 
-      if (paginationContainer) paginationContainer.style.display = 'flex';
+      if (paginationContainer) paginationContainer.style.display = "flex";
 
       if (paginationPages) {
-        paginationPages.innerHTML = '';
+        paginationPages.innerHTML = "";
         for (let i = 1; i <= totalPages; i++) {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = `pagination-num${i === currentPage ? ' active' : ''}`;
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = `pagination-num${i === currentPage ? " active" : ""}`;
           btn.textContent = String(i);
-          btn.setAttribute('aria-label', `Page ${i}`);
-          btn.addEventListener('click', () => {
+          btn.setAttribute("aria-label", `Page ${i}`);
+          btn.addEventListener("click", () => {
             currentPage = i;
             renderPagination();
-            window.scrollTo({ top: document.getElementById('projects-list')?.offsetTop ? document.getElementById('projects-list')!.offsetTop - 120 : 0, behavior: 'smooth' });
+            window.scrollTo({
+              top: document.getElementById("projects-list")?.offsetTop
+                ? document.getElementById("projects-list")!.offsetTop - 120
+                : 0,
+              behavior: "smooth",
+            });
           });
           paginationPages.appendChild(btn);
         }
@@ -192,13 +237,17 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
       const query = searchQuery.trim().toLowerCase();
 
       matchingItems = projectItems.filter((item) => {
-        const cat = item.dataset.category || '';
-        const title = item.dataset.title || '';
-        const desc = item.dataset.description || '';
-        const tags = item.dataset.tags || '';
+        const cat = item.dataset.category || "";
+        const title = item.dataset.title || "";
+        const desc = item.dataset.description || "";
+        const tags = item.dataset.tags || "";
 
-        const matchesCat = currentCategory === 'All' || cat === currentCategory;
-        const matchesSearch = !query || title.includes(query) || desc.includes(query) || tags.includes(query);
+        const matchesCat = currentCategory === "All" || cat === currentCategory;
+        const matchesSearch =
+          !query ||
+          title.includes(query) ||
+          desc.includes(query) ||
+          tags.includes(query);
         return matchesCat && matchesSearch;
       });
 
@@ -206,14 +255,14 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
       renderPagination();
     }
 
-    pagePrev?.addEventListener('click', () => {
+    pagePrev?.addEventListener("click", () => {
       if (currentPage > 1) {
         currentPage--;
         renderPagination();
       }
     });
 
-    pageNext?.addEventListener('click', () => {
+    pageNext?.addEventListener("click", () => {
       const totalPages = Math.ceil(matchingItems.length / PAGE_SIZE);
       if (currentPage < totalPages) {
         currentPage++;
@@ -221,16 +270,16 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
       }
     });
 
-    searchInput?.addEventListener('input', (e) => {
+    searchInput?.addEventListener("input", (e) => {
       searchQuery = (e.target as HTMLInputElement).value;
       applyFilters();
     });
 
     filterBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentCategory = btn.dataset.category || 'All';
+      btn.addEventListener("click", () => {
+        filterBtns.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentCategory = btn.dataset.category || "All";
         applyFilters();
       });
     });
@@ -239,7 +288,7 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
   }
 
   setupProjectFilters();
-  document.addEventListener('astro:after-swap', setupProjectFilters);
+  document.addEventListener("astro:after-swap", setupProjectFilters);
 </script>
 
 <style>
@@ -361,7 +410,10 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
     background-color: var(--bg-surface);
     color: var(--text-muted);
     cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
   }
 
   .filter-btn:hover,
@@ -423,7 +475,10 @@ const categories = ['All', ...new Set(allProjects.map((p) => p.data.category))];
     font-size: 0.85rem;
     font-family: var(--font-mono);
     cursor: pointer;
-    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease;
   }
 
   .pagination-btn:hover:not(:disabled),

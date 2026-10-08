@@ -1,9 +1,9 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
 
-const posts = await getCollection('blog', ({ data }) => !data.draft);
-const projects = await getCollection('projects');
+const posts = await getCollection("blog", ({ data }) => !data.draft);
+const projects = await getCollection("projects");
 
 // Aggregate tags with counts across both blog articles and projects
 const tagCounts: Record<string, number> = {};
@@ -75,7 +75,10 @@ const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
     font-size: 0.95rem;
     color: var(--text);
     text-decoration: none;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
   }
 
   .tag-pill:hover {
