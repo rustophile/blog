@@ -9,9 +9,12 @@ import rehypeExpressiveCode, {
 import rustdocDark from "./src/styles/rustdoc-dark.json" with { type: "json" };
 import { rehypeCallouts } from "./src/plugins/rehype-callouts.ts";
 import { remarkCodeGroups, rehypeCodeTabs } from "./src/plugins/code-tabs.ts";
+import remarkMath from "remark-math";
+import rehypeTypst from "@myriaddreamin/rehype-typst";
 import rehypeSlug from "rehype-slug";
 import { rehypeHeadingAnchors } from "./src/plugins/rehype-heading-anchors.ts";
 import { rehypeLinks } from "./src/plugins/rehype-links.ts";
+import { rehypeTypstCleanup } from "./src/plugins/rehype-typst-cleanup.ts";
 import { remarkQuoteAttribution } from "./src/plugins/remark-quote-attribution.ts";
 import { siteConfig } from "./src/config/site.ts";
 
@@ -63,12 +66,15 @@ export default defineConfig({
     syntaxHighlight: false,
     processor: unified({
       // remarkQuoteAttribution skips [!TYPE] blockquotes, which rehypeCallouts turns into asides
-      remarkPlugins: [remarkQuoteAttribution, remarkCodeGroups],
+      remarkPlugins: [remarkMath, remarkQuoteAttribution, remarkCodeGroups],
       rehypePlugins: [
         rehypeSlug,
         rehypeHeadingAnchors,
         rehypeCallouts,
         rehypeLinks,
+        // $…$ and $$…$$ (remarkMath) compiled from Typst to SVG at build time
+        rehypeTypst,
+        rehypeTypstCleanup,
         [rehypeExpressiveCode, expressiveCode],
         rehypeCodeTabs,
       ],

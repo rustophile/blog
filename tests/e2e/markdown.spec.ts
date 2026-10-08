@@ -68,6 +68,7 @@ test("links to std items are tagged with rustdoc's item kind", async ({
     ["println!", "macro"],
     ["clone", "method"],
     ["std::rc", "mod"],
+    ["Vec", "type"],
   ]);
 
   // and colored by kind: a trait link differs from a type link
@@ -131,4 +132,31 @@ test("clicking a heading's § jumps to and highlights that section", async ({
   await page.locator("article h2#the-first-program a.doc-anchor").focus();
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/#the-first-program$/);
+});
+
+test("Typst math renders as labelled SVG in the text color", async ({
+  page,
+}) => {
+  const equations = page.locator("article svg.typst-doc");
+  await expect(equations).toHaveCount(3); // $2n$, $n$, and the display sum
+  await expect(equations.first()).toHaveAttribute("role", "img");
+  await expect(equations.first()).toHaveAttribute("aria-label", "2 𝑛");
+
+  // typst.ts's viewer leftovers are stripped
+  await expect(page.locator("article svg.typst-doc foreignObject")).toHaveCount(
+    0,
+  );
+  await expect(page.locator("article svg.typst-doc style")).toHaveCount(0);
+
+  const display = page.locator("article .math-display svg.typst-doc");
+  await expect(display).toHaveCount(1);
+  const glyph = display.locator('[fill="#000"]').first();
+  const [glyphColor, textColor] = await Promise.all([
+    glyph.evaluate((el) => getComputedStyle(el).fill),
+    page
+      .locator("article .post-content p")
+      .first()
+      .evaluate((el) => getComputedStyle(el).color),
+  ]);
+  expect(glyphColor).toBe(textColor);
 });

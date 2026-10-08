@@ -68,6 +68,7 @@ Also:
 - A blockquote whose last line starts with `— Name` becomes a quote with a caption; a link in that line becomes the quote's `cite`.
 - Off-site links open in a new tab, marked with ↗.
 - Links to `/blog/<slug>` or `/projects/<slug>` fail the build if that entry doesn't exist.
+- Math is written in [Typst](https://typst.app/docs/reference/math/) syntax and compiled to SVG at build time: `$2n$` inline, and `$$` on their own lines for a display equation. A lone `$` starts a math span, so write currency as `\$5` or in backticks.
 
 ### Projects live in `src/content/projects/<slug>/index.md`
 

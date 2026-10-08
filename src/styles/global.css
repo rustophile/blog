@@ -318,6 +318,31 @@
     border-right: 3px solid var(--target-border);
   }
 
+  /* Typst math is rendered to SVG at build time with black glyphs; follow the text color
+     instead. Display equations scroll sideways when wider than the column. */
+  .post-content .typst-doc {
+    display: inline-block;
+    fill: none;
+  }
+
+  .post-content .typst-doc [fill="#000"] {
+    fill: currentColor;
+  }
+
+  .post-content .typst-doc [stroke="#000"] {
+    stroke: currentColor;
+  }
+
+  .post-content .math-display {
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    text-align: center;
+  }
+
+  .post-content .math-display > .typst-doc {
+    max-width: none;
+  }
+
   /* links in prose are colored like rustdoc's, so they read as links before hover */
   .post-content a:not(.doc-anchor) {
     color: var(--accent);

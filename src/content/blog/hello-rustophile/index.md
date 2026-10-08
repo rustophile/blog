@@ -74,3 +74,9 @@ Assigning `s` to `t` moves the [`String`](https://doc.rust-lang.org/std/string/s
 | Ownership | Strict, then obvious |
 | Borrowing | Mostly fine          |
 | Lifetimes | Ask me later         |
+
+Some posts will need a little math. A [`Vec`](https://doc.rust-lang.org/std/vec/struct.Vec.html) that doubles its capacity whenever it fills up copies fewer than $2n$ elements over $n$ pushes, which is why `push` is cheap on average:
+
+$$
+sum_(k=0)^(floor(log_2 n)) 2^k = 2^(floor(log_2 n) + 1) - 1 < 2n
+$$
