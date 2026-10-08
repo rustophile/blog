@@ -88,3 +88,47 @@ test("posts load giscus comments for this page", async ({ page }) => {
   expect(src.searchParams.get("repo")).toBe("rustophile/blog");
   expect(src.searchParams.get("term")).toBe("blog/hello-rustophile");
 });
+
+test("jumping to a section highlights its heading like rustdoc's :target", async ({
+  page,
+}) => {
+  const heading = page.locator("article h2#the-first-program");
+  const anchor = heading.locator("a.doc-anchor");
+  await expect(anchor).toHaveAttribute("href", "#the-first-program");
+  await expect(anchor).toHaveAccessibleName(
+    "Link to section: The first program",
+  );
+  await expect(anchor).toHaveCSS("opacity", "0");
+
+  await page
+    .getByRole("complementary")
+    .getByRole("link", { name: "The first program" })
+    .click();
+  await expect(page).toHaveURL(/#the-first-program$/);
+  await expect(heading).not.toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await expect(heading).toHaveCSS("border-right-width", "3px");
+  await expect(anchor).toHaveCSS("opacity", "1");
+
+  // the heading lands below the sticky header rather than under it
+  const header = await page.locator("header").first().boundingBox();
+  const box = await heading.boundingBox();
+  expect(box!.y).toBeGreaterThanOrEqual(header!.y + header!.height);
+});
+
+test("clicking a heading's § jumps to and highlights that section", async ({
+  page,
+}) => {
+  const heading = page.locator("article h2#what-to-expect");
+  await heading.hover();
+  const anchor = heading.locator("a.doc-anchor");
+  await expect(anchor).toHaveCSS("opacity", "1");
+  await anchor.click();
+  await expect(page).toHaveURL(/#what-to-expect$/);
+  await expect(heading).toHaveCSS("border-right-width", "3px");
+
+  // and from the keyboard
+  await anchor.blur();
+  await page.locator("article h2#the-first-program a.doc-anchor").focus();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#the-first-program$/);
+});

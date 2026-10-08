@@ -101,6 +101,10 @@
     --link-assoc: var(--accent);
     /* footer in rustdoc's sidebar colors */
     --footer-bg: #eee7d5;
+    /* the heading a link jumped to, like rustdoc's :target */
+    --target-bg: #f8edc4;
+    --heading-border: #d6c9a8;
+    --target-border: #ad7c37;
     --footer-border: #d6c9a8;
     --footer-text: #57534e;
     color-scheme: light;
@@ -142,6 +146,9 @@
     --link-assoc: var(--accent);
     /* footer in rustdoc's sidebar colors */
     --footer-bg: #505050;
+    --target-bg: #494a3d;
+    --heading-border: #d2d2d2;
+    --target-border: #bb7410;
     --footer-border: #999999;
     --footer-text: #c8c8c8;
     color-scheme: dark;
@@ -185,6 +192,9 @@
       --link-assoc: var(--accent);
       /* footer in rustdoc's sidebar colors */
       --footer-bg: #505050;
+      --target-bg: #494a3d;
+      --heading-border: #d2d2d2;
+      --target-border: #bb7410;
       --footer-border: #999999;
       --footer-text: #c8c8c8;
       color-scheme: dark;
@@ -269,15 +279,54 @@
     font-family: var(--font-serif);
   }
 
+  /* Section headings work like rustdoc's: a § link to the left on hover (rehypeHeadingAnchors),
+     and the heading a link jumped to is highlighted with a bar on the right. They stop clear
+     of the sticky header when jumped to. */
+  .post-content :is(h2, h3, h4)[id] {
+    position: relative;
+    scroll-margin-top: 5rem;
+  }
+
+  /* rustdoc's heading rule (--headings-border-bottom-color), with room above the text so the
+     :target highlight frames it */
+  .post-content h2 {
+    padding-top: 0.2rem;
+    border-bottom-color: var(--heading-border);
+  }
+
+  .post-content a.doc-anchor {
+    position: absolute;
+    right: 100%;
+    padding-right: 0.15em;
+    color: var(--text);
+    text-decoration: none;
+    opacity: 0;
+  }
+
+  .post-content a.doc-anchor::before {
+    content: "§";
+  }
+
+  .post-content :is(h2, h3, h4):hover > a.doc-anchor,
+  .post-content :is(h2, h3, h4):target > a.doc-anchor,
+  .post-content a.doc-anchor:focus-visible {
+    opacity: 1;
+  }
+
+  .post-content :is(h2, h3, h4):target {
+    background-color: var(--target-bg);
+    border-right: 3px solid var(--target-border);
+  }
+
   /* links in prose are colored like rustdoc's, so they read as links before hover */
-  .post-content a:not(.anchor) {
+  .post-content a:not(.doc-anchor) {
     color: var(--accent);
     text-decoration: underline;
     text-decoration-color: color-mix(in oklab, var(--accent) 40%, transparent);
     text-underline-offset: 0.15em;
   }
 
-  .post-content a:not(.anchor):hover {
+  .post-content a:not(.doc-anchor):hover {
     color: var(--accent-hover);
     text-decoration-color: currentColor;
   }

@@ -15,6 +15,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:clean": "node -e \"for (const d of ['.astro','node_modules/.astro','dist']) require('node:fs').rmSync(d,{recursive:true,force:true})\" && astro build",
     "preview": "astro preview",
     "check": "astro check",
     "qa": "astro check && astro build",
@@ -32,7 +33,9 @@
     "@astrojs/sitemap": "^3.7.3",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.2.9",
+    "hast-util-to-string": "^3.0.1",
     "photoswipe": "^5.4.4",
+    "rehype-slug": "^6.0.0",
     "tailwindcss": "^4.3.3",
     "unist-util-visit": "^5.1.0"
   },

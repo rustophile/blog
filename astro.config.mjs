@@ -8,6 +8,8 @@ import rehypeExpressiveCode, {
 import rustdocDark from "./src/styles/rustdoc-dark.json" with { type: "json" };
 import { rehypeCallouts } from "./src/plugins/rehype-callouts.ts";
 import { remarkCodeGroups, rehypeCodeTabs } from "./src/plugins/code-tabs.ts";
+import rehypeSlug from "rehype-slug";
+import { rehypeHeadingAnchors } from "./src/plugins/rehype-heading-anchors.ts";
 import { rehypeLinks } from "./src/plugins/rehype-links.ts";
 import { remarkQuoteAttribution } from "./src/plugins/remark-quote-attribution.ts";
 import { siteConfig } from "./src/config/site.ts";
@@ -62,6 +64,8 @@ export default defineConfig({
       // remarkQuoteAttribution skips [!TYPE] blockquotes, which rehypeCallouts turns into asides
       remarkPlugins: [remarkQuoteAttribution, remarkCodeGroups],
       rehypePlugins: [
+        rehypeSlug,
+        rehypeHeadingAnchors,
         rehypeCallouts,
         rehypeLinks,
         [rehypeExpressiveCode, expressiveCode],
