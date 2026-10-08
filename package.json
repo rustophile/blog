@@ -1,0 +1,35 @@
+{
+  "name": "rustophile",
+  "type": "module",
+  "version": "0.0.1",
+  "packageManager": "pnpm@12.10.1",
+  "description": "Rustophile: learning Rust in public.",
+  "engines": {
+    "node": ">=24"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rustophile/blog.git"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "qa": "astro check && astro build",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/markdown-satteri": "^0.4.3",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.2.9",
+    "photoswipe": "^5.4.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^22.13.9",
+    "typescript": "^5.7.3"
+  }
+}

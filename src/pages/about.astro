@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/site';
+---
+
+<BaseLayout title="About" description={siteConfig.description}>
+  <article class="about-page">
+    <header class="about-header">
+      <h1 class="page-title">About</h1>
+      <p class="page-subtitle">{siteConfig.tagline}</p>
+    </header>
+
+    <div class="about-content">
+      <p>
+        <strong>{siteConfig.title}</strong> is a public notebook for learning
+        <a href="https://www.rust-lang.org" target="_blank" rel="noopener noreferrer">Rust</a>: notes on the
+        parts of the language that take more than one read, exercises worked through from start to finish, and small
+        projects built along the way.
+      </p>
+
+      <h2>How this site is built</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Framework</td>
+            <td><a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a></td>
+          </tr>
+          <tr>
+            <td>Theme</td>
+            <td>
+              <a href="https://github.com/rnt-rez/minrock" target="_blank" rel="noopener noreferrer">Minrock</a> by
+              Renato Rezende
+            </td>
+          </tr>
+          <tr>
+            <td>Content</td>
+            <td>Markdown in content collections</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .about-page {
+    padding-top: 1rem;
+  }
+
+  .about-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-title {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 2.25rem;
+  }
+
+  .page-subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .about-content {
+    font-size: 1.05rem;
+    line-height: 1.8;
+  }
+</style>
