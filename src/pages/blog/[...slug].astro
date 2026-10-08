@@ -74,14 +74,14 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
     <!-- Main Content Column -->
     <div class="post-main min-w-0">
       <article>
-        <header class="post-header mb-8 border-b border-line pb-6">
-          <div class="mb-3 flex flex-wrap items-center gap-[0.65rem] text-[0.88rem] text-muted">
+        <header class="post-header mb-8 border-b border-border pb-6">
+          <div class="mb-3 flex flex-wrap items-center gap-[0.65rem] text-[0.88rem] text-muted-foreground">
             <time datetime={post.data.pubDate.toISOString()}>
               {formattedDate}
             </time>
             {showReadingTime && (
               <>
-                <span class="text-muted opacity-50">·</span>
+                <span class="text-muted-foreground opacity-50">·</span>
                 <span class="inline-flex items-center gap-[0.35rem]">
                   <svg
                     width="14"
@@ -103,12 +103,12 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
             )}
             {showTags && post.data.tags && post.data.tags.length > 0 && (
               <>
-                <span class="text-muted opacity-50">·</span>
+                <span class="text-muted-foreground opacity-50">·</span>
                 <span class="inline-flex flex-wrap items-center gap-[0.35rem]">
                   {post.data.tags.map((tag: string) => (
                     <a
                       href={`/tags/${tag}`}
-                      class="inline-flex items-center rounded-sm border border-transparent bg-transparent px-[0.45rem] py-[0.1rem] text-[0.82rem] font-medium text-accent no-underline transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[1.5px] hover:scale-[1.04] hover:border-accent hover:bg-subtle hover:text-accent hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] active:translate-y-0 active:scale-[0.98]"
+                      class="inline-flex items-center rounded-sm border border-transparent bg-transparent px-[0.45rem] py-[0.1rem] text-[0.82rem] font-medium text-link no-underline transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[1.5px] hover:scale-[1.04] hover:border-link hover:bg-muted hover:text-link hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] active:translate-y-0 active:scale-[0.98]"
                     >
                       #{tag}
                     </a>
@@ -121,7 +121,7 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
           <h1 class="post-title mt-0 mb-3 text-[2.4rem] leading-[1.25] tracking-[-0.025em]">
             {post.data.title}
           </h1>
-          <p class="post-description m-0 text-[1.15rem] leading-[1.6] text-muted">
+          <p class="post-description m-0 text-[1.15rem] leading-[1.6] text-muted-foreground">
             {post.data.description}
           </p>
         </header>
@@ -140,7 +140,7 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
             <img
               src={post.data.image}
               alt={post.data.title}
-              class="cover-img block w-full rounded-lg border border-line"
+              class="cover-img block w-full rounded-lg border border-border"
             />
           </figure>
         )}
@@ -159,18 +159,18 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
 
         <!-- Prev / Next Navigation -->
         <nav
-          class="mt-10 grid grid-cols-[1fr_1fr] gap-4 border-t border-line pt-6 max-[600px]:grid-cols-[1fr]"
+          class="mt-10 grid grid-cols-[1fr_1fr] gap-4 border-t border-border pt-6 max-[600px]:grid-cols-[1fr]"
           aria-label="Post navigation"
         >
           {prevPost ? (
             <a
               href={`/blog/${prevPost.id}`}
-              class="group flex flex-col gap-[0.35rem] rounded-lg border border-line bg-surface p-4 no-underline transition-[border-color,background-color,transform] duration-[0.2s,0.2s,0.15s] ease-[ease] hover:border-accent hover:bg-subtle hover:[transform:translateY(-2px)]"
+              class="group flex flex-col gap-[0.35rem] rounded-lg border border-border bg-card p-4 no-underline transition-[border-color,background-color,transform] duration-[0.2s,0.2s,0.15s] ease-[ease] hover:border-link hover:bg-muted hover:[transform:translateY(-2px)]"
             >
-              <span class="font-mono text-[0.75rem] tracking-[0.05em] text-muted uppercase">
+              <span class="font-mono text-[0.75rem] tracking-[0.05em] text-muted-foreground uppercase">
                 ← Older
               </span>
-              <span class="text-[0.95rem] leading-[1.4] font-medium text-fg group-hover:text-accent">
+              <span class="text-[0.95rem] leading-[1.4] font-medium text-foreground group-hover:text-link">
                 {prevPost.data.title}
               </span>
             </a>
@@ -180,12 +180,12 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
           {nextPost ? (
             <a
               href={`/blog/${nextPost.id}`}
-              class="group flex flex-col gap-[0.35rem] rounded-lg border border-line bg-surface p-4 no-underline transition-[border-color,background-color,transform] duration-[0.2s,0.2s,0.15s] ease-[ease] hover:border-accent hover:bg-subtle hover:[transform:translateY(-2px)] items-end text-right"
+              class="group flex flex-col gap-[0.35rem] rounded-lg border border-border bg-card p-4 no-underline transition-[border-color,background-color,transform] duration-[0.2s,0.2s,0.15s] ease-[ease] hover:border-link hover:bg-muted hover:[transform:translateY(-2px)] items-end text-right"
             >
-              <span class="font-mono text-[0.75rem] tracking-[0.05em] text-muted uppercase">
+              <span class="font-mono text-[0.75rem] tracking-[0.05em] text-muted-foreground uppercase">
                 Newer →
               </span>
-              <span class="text-[0.95rem] leading-[1.4] font-medium text-fg group-hover:text-accent">
+              <span class="text-[0.95rem] leading-[1.4] font-medium text-foreground group-hover:text-link">
                 {nextPost.data.title}
               </span>
             </a>

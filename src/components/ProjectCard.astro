@@ -26,7 +26,7 @@ const {
 ---
 
 <article
-  class="flex flex-col gap-3 p-5 border border-line rounded-lg bg-surface [transition:border-color_0.2s_ease,background-color_0.2s_ease,transform_0.15s_ease] hover:border-accent hover:bg-subtle hover:[transform:translateY(-2px)]"
+  class="flex flex-col gap-3 p-5 border border-border rounded-lg bg-card [transition:border-color_0.2s_ease,background-color_0.2s_ease,transform_0.15s_ease] hover:border-link hover:bg-muted hover:[transform:translateY(-2px)]"
   data-card-link={`/projects/${slug}`}
 >
   <div class="flex items-center justify-between gap-4 flex-wrap">
@@ -34,12 +34,12 @@ const {
       <span class="text-[1.1rem]">{emoji}</span>
       <a
         href={`/projects/${slug}`}
-        class="text-[1.05rem] font-semibold text-fg no-underline transition-[color] duration-150 ease-[ease] hover:text-accent"
+        class="text-[1.05rem] font-semibold text-foreground no-underline transition-[color] duration-150 ease-[ease] hover:text-link"
       >
         {title}
       </a>
       {category && (
-        <span class="text-[0.72rem] font-mono py-[0.15rem] px-[0.45rem] rounded-sm bg-page border border-line text-muted uppercase">
+        <span class="text-[0.72rem] font-mono py-[0.15rem] px-[0.45rem] rounded-sm bg-background border border-border text-muted-foreground uppercase">
           {category}
         </span>
       )}
@@ -58,7 +58,7 @@ const {
           href={repoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-[0.3rem] text-[0.8rem] font-mono text-muted no-underline py-[0.2rem] px-2 border border-line rounded-sm bg-page transition-[color,border-color] duration-150 ease-[ease] hover:text-accent hover:border-accent"
+          class="inline-flex items-center gap-[0.3rem] text-[0.8rem] font-mono text-muted-foreground no-underline py-[0.2rem] px-2 border border-border rounded-sm bg-background transition-[color,border-color] duration-150 ease-[ease] hover:text-link hover:border-link"
           title="Repository"
         >
           <svg
@@ -78,7 +78,7 @@ const {
           href={demoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-[0.3rem] text-[0.8rem] font-mono text-muted no-underline py-[0.2rem] px-2 border border-line rounded-sm bg-page transition-[color,border-color] duration-150 ease-[ease] hover:text-accent hover:border-accent"
+          class="inline-flex items-center gap-[0.3rem] text-[0.8rem] font-mono text-muted-foreground no-underline py-[0.2rem] px-2 border border-border rounded-sm bg-background transition-[color,border-color] duration-150 ease-[ease] hover:text-link hover:border-link"
           title="Live Demo"
         >
           Demo ↗
@@ -87,14 +87,16 @@ const {
     </div>
   </div>
 
-  <p class="text-[0.95rem] text-muted m-0 leading-[1.6]">{description}</p>
+  <p class="text-[0.95rem] text-muted-foreground m-0 leading-[1.6]">
+    {description}
+  </p>
 
   {tags.length > 0 && (
     <div class="flex gap-[0.35rem] flex-wrap mt-[0.35rem]">
       {tags.map((tag) => (
         <a
           href={`/tags/${tag}`}
-          class="inline-flex items-center text-[0.78rem] text-accent no-underline py-[0.1rem] px-[0.42rem] rounded-sm bg-transparent border border-transparent transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-accent hover:bg-subtle hover:border-accent hover:[transform:translateY(-1.5px)_scale(1.04)] hover:[box-shadow:0_2px_8px_rgba(0,0,0,0.08)] active:[transform:translateY(0)_scale(0.98)]"
+          class="inline-flex items-center text-[0.78rem] text-link no-underline py-[0.1rem] px-[0.42rem] rounded-sm bg-transparent border border-transparent transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-link hover:bg-muted hover:border-link hover:[transform:translateY(-1.5px)_scale(1.04)] hover:[box-shadow:0_2px_8px_rgba(0,0,0,0.08)] active:[transform:translateY(0)_scale(0.98)]"
         >
           #{tag}
         </a>

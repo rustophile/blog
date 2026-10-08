@@ -17,12 +17,12 @@ const {
 const audioBtn =
   "inline-flex cursor-pointer items-center gap-[0.4rem] rounded-[6px] border font-sans text-[0.85rem] transition-[background-color,border-color] duration-150 ease-[ease] disabled:cursor-not-allowed disabled:opacity-50";
 const audioBtnDefault =
-  "border-line bg-page py-[0.38rem] text-fg enabled:hover:border-accent enabled:hover:bg-subtle enabled:hover:text-accent";
+  "border-border bg-background py-[0.38rem] text-foreground enabled:hover:border-link enabled:hover:bg-muted enabled:hover:text-link";
 ---
 
 <div
   id="audio-player-root"
-  class="group relative mx-0 mt-6 mb-8 overflow-hidden rounded-lg border border-line bg-surface transition-[border-color,box-shadow,background-color] duration-200 ease-[ease] hover:border-accent [&.is-active-player]:sticky [&.is-active-player]:top-18 [&.is-active-player]:z-35 [&.is-active-player.is-sticky]:border-accent [&.is-active-player.is-sticky]:shadow-[0_10px_28px_-6px_rgba(0,0,0,0.25),0_2px_8px_-2px_color-mix(in_oklab,var(--accent-bright)_25%,transparent)] [&.is-active-player.is-sticky]:backdrop-blur-[12px] [&.is-playing]:border-accent is-collapsed"
+  class="group relative mx-0 mt-6 mb-8 overflow-hidden rounded-lg border border-border bg-card transition-[border-color,box-shadow,background-color] duration-200 ease-[ease] hover:border-link [&.is-active-player]:sticky [&.is-active-player]:top-18 [&.is-active-player]:z-35 [&.is-active-player.is-sticky]:border-link [&.is-active-player.is-sticky]:shadow-[0_10px_28px_-6px_rgba(0,0,0,0.25),0_2px_8px_-2px_color-mix(in_oklab,var(--link-bright)_25%,transparent)] [&.is-active-player.is-sticky]:backdrop-blur-[12px] [&.is-playing]:border-link is-collapsed"
   data-selector={selector}
   data-title={title}
   aria-label="Accessible audio reader"
@@ -31,13 +31,13 @@ const audioBtnDefault =
   <button
     id="audio-toggle-btn"
     type="button"
-    class="flex w-full cursor-pointer items-center justify-between border-none bg-transparent px-5 py-3 text-left text-fg transition-[background-color] duration-150 ease-[ease] hover:bg-subtle"
+    class="flex w-full cursor-pointer items-center justify-between border-none bg-transparent px-5 py-3 text-left text-foreground transition-[background-color] duration-150 ease-[ease] hover:bg-muted"
     aria-expanded="false"
     aria-controls="audio-player-drawer"
     title="Expand audio player"
   >
     <div class="flex items-center gap-[0.65rem]">
-      <div class="flex items-center text-accent" aria-hidden="true">
+      <div class="flex items-center text-link" aria-hidden="true">
         <svg
           width="16"
           height="16"
@@ -61,10 +61,10 @@ const audioBtnDefault =
       </div>
       <div class="flex flex-wrap items-center gap-2 text-[0.92rem]">
         <span class="font-semibold">{label}</span>
-        <span class="text-muted opacity-50" aria-hidden="true">
+        <span class="text-muted-foreground opacity-50" aria-hidden="true">
           •
         </span>
-        <span id="audio-estimate" class="text-[0.85rem] text-muted">
+        <span id="audio-estimate" class="text-[0.85rem] text-muted-foreground">
           Calculating...
         </span>
       </div>
@@ -73,12 +73,12 @@ const audioBtnDefault =
     <div class="flex items-center gap-[0.65rem]">
       <span
         id="audio-status-badge"
-        class="rounded-sm border border-line bg-page px-2 py-[0.15rem] font-mono text-[0.75rem] text-muted transition-[border-color,color] duration-200 ease-[ease] group-[.is-playing]:border-accent group-[.is-playing]:font-semibold group-[.is-playing]:text-accent"
+        class="rounded-sm border border-border bg-background px-2 py-[0.15rem] font-mono text-[0.75rem] text-muted-foreground transition-[border-color,color] duration-200 ease-[ease] group-[.is-playing]:border-link group-[.is-playing]:font-semibold group-[.is-playing]:text-link"
       >
         Ready to play
       </span>
       <span
-        class="flex items-center text-muted transition-[transform,color] duration-[0.25s,0.2s] ease-[cubic-bezier(0.16,1,0.3,1),ease] group-[.is-expanded]:[transform:rotate(180deg)]"
+        class="flex items-center text-muted-foreground transition-[transform,color] duration-[0.25s,0.2s] ease-[cubic-bezier(0.16,1,0.3,1),ease] group-[.is-expanded]:[transform:rotate(180deg)]"
         aria-hidden="true"
       >
         <svg
@@ -105,7 +105,7 @@ const audioBtnDefault =
     aria-label="Audio player controls"
   >
     <div class="overflow-hidden px-5 pt-0 pb-4">
-      <div class="mb-[0.85rem] h-px bg-line" aria-hidden="true"></div>
+      <div class="mb-[0.85rem] h-px bg-border" aria-hidden="true"></div>
 
       <!-- Controls Row -->
       <div class="flex flex-wrap items-center gap-[0.65rem]">
@@ -115,7 +115,7 @@ const audioBtnDefault =
           type="button"
           class:list={[
             audioBtn,
-            "border-accent bg-accent px-3 py-[0.38rem] font-semibold text-on-accent enabled:hover:border-accent-hover enabled:hover:bg-accent-hover enabled:hover:text-on-accent",
+            "border-link bg-primary px-3 py-[0.38rem] font-semibold text-primary-foreground enabled:hover:border-link-hover enabled:hover:bg-link-hover enabled:hover:text-primary-foreground",
           ]}
           aria-label="Play audio"
         >
@@ -214,7 +214,7 @@ const audioBtnDefault =
           <button
             type="button"
             id="audio-rate-btn"
-            class="cursor-pointer rounded-sm border border-line bg-page px-[0.6rem] py-[0.35rem] font-mono text-[0.8rem] text-muted hover:border-accent hover:text-fg"
+            class="cursor-pointer rounded-sm border border-border bg-background px-[0.6rem] py-[0.35rem] font-mono text-[0.8rem] text-muted-foreground hover:border-link hover:text-foreground"
             aria-label="Playback speed"
             title="Adjust playback speed"
           >
@@ -226,7 +226,7 @@ const audioBtnDefault =
       <!-- Progress bar -->
       <div class="mt-[0.85rem]">
         <div
-          class="h-1 w-full overflow-hidden rounded-xs bg-line"
+          class="h-1 w-full overflow-hidden rounded-xs bg-border"
           role="progressbar"
           aria-valuenow="0"
           aria-valuemin="0"
@@ -234,11 +234,11 @@ const audioBtnDefault =
         >
           <div
             id="audio-progress-fill"
-            class="h-full bg-accent transition-[width] duration-200 ease-[ease]"
+            class="h-full bg-primary transition-[width] duration-200 ease-[ease]"
             style="width: 0%;"
           ></div>
         </div>
-        <div class="mt-[0.35rem] flex justify-between font-mono text-[0.75rem] text-muted">
+        <div class="mt-[0.35rem] flex justify-between font-mono text-[0.75rem] text-muted-foreground">
           <span id="audio-part-label">Paragraph 0 of 0</span>
           <span id="audio-pct-label">0%</span>
         </div>
@@ -691,13 +691,9 @@ const audioBtnDefault =
 
   /* Added by JS to rendered Markdown elements outside this component */
   :global(.audio-speaking-active) {
-    background-color: color-mix(
-      in oklab,
-      var(--accent-bright) 12%,
-      transparent
-    );
+    background-color: color-mix(in oklab, var(--link-bright) 12%, transparent);
     border-radius: 4px;
-    outline: 2px dashed var(--accent-bright);
+    outline: 2px dashed var(--link-bright);
     outline-offset: 4px;
     transition: background-color 0.2s ease;
   }

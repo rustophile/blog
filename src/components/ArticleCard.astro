@@ -16,15 +16,15 @@ const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
 const showTags = siteConfig.features?.tags !== false;
 ---
 
-<article class="border-b border-line py-6 last:border-b-0">
-  <div class="mb-[0.4rem] flex items-center gap-3 text-[0.82rem] text-muted">
+<article class="border-b border-border py-6 last:border-b-0">
+  <div class="mb-[0.4rem] flex items-center gap-3 text-[0.82rem] text-muted-foreground">
     <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
     {showTags && post.data.tags && post.data.tags.length > 0 && (
       <span class="inline-flex flex-wrap items-center gap-[0.35rem]">
         {post.data.tags.map((tag) => (
           <a
             href={`/tags/${tag}`}
-            class="inline-flex items-center rounded-sm border border-transparent bg-transparent px-[0.45rem] py-[0.12rem] text-[0.8rem] font-medium text-accent no-underline transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[1.5px] hover:scale-[1.04] hover:border-accent hover:bg-subtle hover:text-accent hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] active:translate-y-0 active:scale-[0.98]"
+            class="inline-flex items-center rounded-sm border border-transparent bg-transparent px-[0.45rem] py-[0.12rem] text-[0.8rem] font-medium text-link no-underline transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[1.5px] hover:scale-[1.04] hover:border-link hover:bg-muted hover:text-link hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] active:translate-y-0 active:scale-[0.98]"
           >
             #{tag}
           </a>
@@ -34,12 +34,12 @@ const showTags = siteConfig.features?.tags !== false;
   </div>
 
   <h2 class="mx-0 mt-0 mb-2 border-b-0 pb-0 text-[1.35rem]">
-    <a href={`/blog/${post.id}`} class="text-fg hover:text-accent">
+    <a href={`/blog/${post.id}`} class="text-foreground hover:text-link">
       {post.data.title}
     </a>
   </h2>
 
-  <p class="m-0 text-[0.95rem] leading-[1.6] text-muted">
+  <p class="m-0 text-[0.95rem] leading-[1.6] text-muted-foreground">
     {post.data.description}
   </p>
 </article>

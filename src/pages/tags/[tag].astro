@@ -39,18 +39,18 @@ const totalCount = posts.length + projects.length;
   title={`#${tag}`}
   description={`Browse content tagged with #${tag}`}
 >
-  <header class="mb-10 pb-6 border-b border-line">
-    <div class="flex items-center gap-2 text-[0.88rem] text-muted mb-3">
-      <a href="/tags" class="text-accent">
+  <header class="mb-10 pb-6 border-b border-border">
+    <div class="flex items-center gap-2 text-[0.88rem] text-muted-foreground mb-3">
+      <a href="/tags" class="text-link">
         Tags
       </a>
       <span>/</span>
       <span>#{tag}</span>
     </div>
     <h1 class="text-[2.25rem] mt-0 mb-2 tracking-[-0.025em]">
-      Content tagged with <span class="text-accent">#{tag}</span>
+      Content tagged with <span class="text-link">#{tag}</span>
     </h1>
-    <p class="m-0 text-muted text-[1rem]">
+    <p class="m-0 text-muted-foreground text-[1rem]">
       {totalCount} {totalCount === 1 ? "item" : "items"} found ({posts.length}{" "}
       articles, {projects.length} projects)
     </p>
@@ -58,7 +58,7 @@ const totalCount = posts.length + projects.length;
 
   {posts.length > 0 && (
     <section class="mb-10">
-      <h2 class="text-[1.3rem] mb-5 border-b border-line pb-[0.4rem]">
+      <h2 class="text-[1.3rem] mb-5 border-b border-border pb-[0.4rem]">
         Articles ({posts.length})
       </h2>
       <div class="flex flex-col">
@@ -71,7 +71,7 @@ const totalCount = posts.length + projects.length;
 
   {projects.length > 0 && (
     <section class="mb-10">
-      <h2 class="text-[1.3rem] mb-5 border-b border-line pb-[0.4rem]">
+      <h2 class="text-[1.3rem] mb-5 border-b border-border pb-[0.4rem]">
         Projects ({projects.length})
       </h2>
       <div class="flex flex-col gap-4">

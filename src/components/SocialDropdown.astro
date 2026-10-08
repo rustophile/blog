@@ -5,15 +5,15 @@ import { siteConfig } from "../config/site";
 
 // shared by the three menu items and their icon badges (badge color is set per item)
 const item =
-  "group flex items-center gap-[0.65rem] rounded-[5px] px-[0.65rem] py-[0.45rem] text-fg no-underline transition-[background-color,color] duration-[120ms] ease-[ease] hover:bg-subtle hover:text-accent";
+  "group flex items-center gap-[0.65rem] rounded-[5px] px-[0.65rem] py-[0.45rem] text-foreground no-underline transition-[background-color,color] duration-[120ms] ease-[ease] hover:bg-muted hover:text-link";
 const icon =
-  "inline-flex size-6 shrink-0 items-center justify-center rounded-[4px] border border-line bg-surface transition-[color,border-color] duration-[120ms] ease-[ease] group-hover:border-accent group-hover:text-accent";
+  "inline-flex size-6 shrink-0 items-center justify-center rounded-[4px] border border-border bg-card transition-[color,border-color] duration-[120ms] ease-[ease] group-hover:border-link group-hover:text-link";
 ---
 
 <div class="relative inline-flex items-center" id="social-dropdown-container">
   <button
     id="social-menu-btn"
-    class="group inline-flex size-[34px] cursor-pointer items-center justify-center gap-[3px] rounded-[6px] border border-line bg-surface p-0 text-muted transition-[color,background-color,border-color,transform] duration-150 ease-[ease] hover:border-accent hover:bg-subtle hover:text-fg"
+    class="group inline-flex size-[34px] cursor-pointer items-center justify-center gap-[3px] rounded-[6px] border border-border bg-card p-0 text-muted-foreground transition-[color,background-color,border-color,transform] duration-150 ease-[ease] hover:border-link hover:bg-muted hover:text-foreground"
     aria-label="Connect and social links"
     aria-haspopup="true"
     aria-expanded="false"
@@ -53,11 +53,11 @@ const icon =
   <!-- Floating Social Dropdown -->
   <div
     id="social-dropdown-menu"
-    class="social-dropdown-menu absolute top-[calc(100%+6px)] right-0 z-[1000] hidden min-w-[175px] animate-[socialDropdownFade_0.15s_ease] rounded-[8px] border border-line bg-page p-[0.35rem] shadow-[0_10px_25px_-5px_rgba(0,0,0,0.2)] backdrop-blur-[12px] max-md:right-auto max-md:left-1/2 max-md:max-w-[calc(100vw-24px)] max-md:[transform:translateX(-50%)] [&.open]:block"
+    class="social-dropdown-menu absolute top-[calc(100%+6px)] right-0 z-[1000] hidden min-w-[175px] animate-[socialDropdownFade_0.15s_ease] rounded-[8px] border border-border bg-background p-[0.35rem] shadow-[0_10px_25px_-5px_rgba(0,0,0,0.2)] backdrop-blur-[12px] max-md:right-auto max-md:left-1/2 max-md:max-w-[calc(100vw-24px)] max-md:[transform:translateX(-50%)] [&.open]:block"
     role="menu"
     aria-label="Social and contact options"
   >
-    <div class="px-[0.65rem] pt-[0.25rem] pb-[0.35rem] font-mono text-[0.68rem] font-bold tracking-[0.06em] text-muted opacity-80">
+    <div class="px-[0.65rem] pt-[0.25rem] pb-[0.35rem] font-mono text-[0.68rem] font-bold tracking-[0.06em] text-muted-foreground opacity-80">
       CONNECT
     </div>
 
@@ -81,10 +81,10 @@ const icon =
           </svg>
         </span>
         <div class="flex min-w-0 flex-1 flex-col gap-px">
-          <span class="text-[0.84rem] leading-[1.2] font-semibold text-fg group-hover:text-accent">
+          <span class="text-[0.84rem] leading-[1.2] font-semibold text-foreground group-hover:text-link">
             LinkedIn
           </span>
-          <span class="font-mono text-[0.72rem] leading-[1.1] text-muted">
+          <span class="font-mono text-[0.72rem] leading-[1.1] text-muted-foreground">
             ↗ Profile
           </span>
         </div>
@@ -99,7 +99,7 @@ const icon =
         class={item}
         role="menuitem"
       >
-        <span class={`${icon} text-muted`}>
+        <span class={`${icon} text-muted-foreground`}>
           <svg
             width="15"
             height="15"
@@ -111,10 +111,10 @@ const icon =
           </svg>
         </span>
         <div class="flex min-w-0 flex-1 flex-col gap-px">
-          <span class="text-[0.84rem] leading-[1.2] font-semibold text-fg group-hover:text-accent">
+          <span class="text-[0.84rem] leading-[1.2] font-semibold text-foreground group-hover:text-link">
             GitHub
           </span>
-          <span class="font-mono text-[0.72rem] leading-[1.1] text-muted">
+          <span class="font-mono text-[0.72rem] leading-[1.1] text-muted-foreground">
             ↗ Repository
           </span>
         </div>
@@ -139,7 +139,7 @@ const icon =
         class={item}
         role="menuitem"
       >
-        <span class={`${icon} text-muted`}>
+        <span class={`${icon} text-muted-foreground`}>
           <svg
             width="15"
             height="15"
@@ -156,10 +156,10 @@ const icon =
           </svg>
         </span>
         <div class="flex min-w-0 flex-1 flex-col gap-px">
-          <span class="text-[0.84rem] leading-[1.2] font-semibold text-fg group-hover:text-accent">
+          <span class="text-[0.84rem] leading-[1.2] font-semibold text-foreground group-hover:text-link">
             Email
           </span>
-          <span class="font-mono text-[0.72rem] leading-[1.1] text-muted">
+          <span class="font-mono text-[0.72rem] leading-[1.1] text-muted-foreground">
             ↗ Send message
           </span>
         </div>

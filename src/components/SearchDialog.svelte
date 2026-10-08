@@ -158,23 +158,23 @@
 
   // shared classes
   const pill =
-    "inline-flex items-center gap-[0.4rem] rounded-[6px] border border-line bg-surface px-3 py-[0.4rem] text-[0.82rem] text-fg no-underline transition-[border-color,transform,background-color] duration-150 ease-[ease] hover:border-accent hover:bg-subtle hover:text-accent hover:[transform:translateY(-1px)]";
+    "inline-flex items-center gap-[0.4rem] rounded-[6px] border border-border bg-card px-3 py-[0.4rem] text-[0.82rem] text-foreground no-underline transition-[border-color,transform,background-color] duration-150 ease-[ease] hover:border-link hover:bg-muted hover:text-link hover:[transform:translateY(-1px)]";
   const sectionHeading =
-    "mb-[0.35rem] flex items-center justify-between px-[0.65rem] py-[0.35rem] font-mono text-[0.7rem] font-semibold tracking-[0.06em] text-muted uppercase";
+    "mb-[0.35rem] flex items-center justify-between px-[0.65rem] py-[0.35rem] font-mono text-[0.7rem] font-semibold tracking-[0.06em] text-muted-foreground uppercase";
   const resultCard =
-    "search-result-item group/item mb-[0.45rem] flex cursor-pointer items-start gap-3 rounded-[8px] border border-line bg-surface px-[0.85rem] py-[0.65rem] text-fg no-underline [transition:border-color_0.15s_ease,background-color_0.15s_ease,box-shadow_0.15s_ease,transform_0.12s_ease] hover:border-accent hover:bg-subtle hover:[transform:translateY(-1px)] [&.selected]:border-accent [&.selected]:bg-subtle [&.selected]:shadow-[0_0_0_1px_var(--accent),0_4px_14px_rgba(0,0,0,0.08)] [&.selected]:[transform:translateY(-1px)]";
+    "search-result-item group/item mb-[0.45rem] flex cursor-pointer items-start gap-3 rounded-[8px] border border-border bg-card px-[0.85rem] py-[0.65rem] text-foreground no-underline [transition:border-color_0.15s_ease,background-color_0.15s_ease,box-shadow_0.15s_ease,transform_0.12s_ease] hover:border-link hover:bg-muted hover:[transform:translateY(-1px)] [&.selected]:border-link [&.selected]:bg-muted [&.selected]:shadow-[0_0_0_1px_var(--link),0_4px_14px_rgba(0,0,0,0.08)] [&.selected]:[transform:translateY(-1px)]";
   const resultIcon =
-    "mt-[2px] inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[6px] border border-line bg-page text-[0.9rem] text-accent [&_svg.tech-svg]:block [&_svg.tech-svg]:shrink-0";
+    "mt-[2px] inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[6px] border border-border bg-background text-[0.9rem] text-link [&_svg.tech-svg]:block [&_svg.tech-svg]:shrink-0";
   const resultTitle =
-    "truncate text-[0.88rem] leading-[1.3] font-semibold text-fg group-hover/item:text-accent group-[.selected]/item:text-accent";
+    "truncate text-[0.88rem] leading-[1.3] font-semibold text-foreground group-hover/item:text-link group-[.selected]/item:text-link";
   const resultMeta =
-    "shrink-0 font-mono text-[0.72rem] whitespace-nowrap text-muted";
+    "shrink-0 font-mono text-[0.72rem] whitespace-nowrap text-muted-foreground";
   const resultDescription =
-    "mb-[0.4rem] truncate text-[0.78rem] leading-[1.4] text-muted";
+    "mb-[0.4rem] truncate text-[0.78rem] leading-[1.4] text-muted-foreground";
   const tagBadge =
-    "rounded-[4px] border border-line bg-page px-[0.45rem] py-[0.12rem] font-mono text-[0.68rem] text-muted";
+    "rounded-[4px] border border-border bg-background px-[0.45rem] py-[0.12rem] font-mono text-[0.68rem] text-muted-foreground";
   const mark =
-    "rounded-[3px] bg-[color-mix(in_srgb,var(--accent)_18%,transparent)] px-[0.2rem] py-[0.05rem] font-bold text-accent";
+    "rounded-[3px] bg-[color-mix(in_srgb,var(--link)_18%,transparent)] px-[0.2rem] py-[0.05rem] font-bold text-link";
 </script>
 
 <svelte:window onkeydown={onKeydown} />
@@ -217,7 +217,7 @@
       <div class="flex flex-wrap gap-[0.35rem]">
         {#if item.type === "project"}
           <span
-            class="rounded-[4px] border border-accent bg-page px-[0.45rem] py-[0.12rem] font-mono text-[0.68rem] font-semibold text-accent"
+            class="rounded-[4px] border border-link bg-background px-[0.45rem] py-[0.12rem] font-mono text-[0.68rem] font-semibold text-link"
             >⚡ {item.category ?? "Project"}</span
           >
         {/if}
@@ -246,16 +246,16 @@
   }}
 >
   <div
-    class="flex w-full max-w-[620px] [transform:scale(0.97)_translateY(-8px)] flex-col overflow-hidden rounded-[12px] border border-line bg-page shadow-[0_20px_45px_-10px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.05)] transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-[.open]/modal:[transform:scale(1)_translateY(0)]"
+    class="flex w-full max-w-[620px] [transform:scale(0.97)_translateY(-8px)] flex-col overflow-hidden rounded-[12px] border border-border bg-background shadow-[0_20px_45px_-10px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.05)] transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-[.open]/modal:[transform:scale(1)_translateY(0)]"
     id="search-modal-dialog"
   >
     <!-- Header -->
     <div
-      class="flex items-center gap-3 border-b border-line bg-surface px-[1.15rem] py-[0.85rem]"
+      class="flex items-center gap-3 border-b border-border bg-card px-[1.15rem] py-[0.85rem]"
     >
       <div class="flex flex-1 items-center gap-[0.65rem]">
         <svg
-          class="shrink-0 text-muted"
+          class="shrink-0 text-muted-foreground"
           width="18"
           height="18"
           viewBox="0 0 24 24"
@@ -274,7 +274,7 @@
           bind:value={query}
           type="text"
           id="search-modal-input"
-          class="min-w-0 flex-1 border-none bg-transparent font-sans text-[0.95rem] text-fg outline-none placeholder:text-muted placeholder:opacity-80"
+          class="min-w-0 flex-1 border-none bg-transparent font-sans text-[0.95rem] text-foreground outline-none placeholder:text-muted-foreground placeholder:opacity-80"
           placeholder="Search articles, projects, topics, tags..."
           aria-label="Search"
           autocomplete="off"
@@ -285,7 +285,7 @@
         {#if query}
           <button
             id="search-modal-clear"
-            class="inline-flex h-[22px] w-[22px] cursor-pointer items-center justify-center rounded-[50%] border-none bg-line p-0 text-muted transition-[background,color] duration-150 ease-[ease] hover:bg-muted hover:text-page"
+            class="inline-flex h-[22px] w-[22px] cursor-pointer items-center justify-center rounded-[50%] border-none bg-border p-0 text-muted-foreground transition-[background,color] duration-150 ease-[ease] hover:bg-muted-foreground hover:text-background"
             aria-label="Clear search"
             type="button"
             onclick={clearQuery}
@@ -315,7 +315,7 @@
         onclick={closeDialog}
       >
         <kbd
-          class="inline-flex items-center justify-center rounded-[4px] border border-line bg-page px-[0.4rem] py-[0.15rem] font-mono text-[0.6875rem] font-semibold text-muted shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
+          class="inline-flex items-center justify-center rounded-[4px] border border-border bg-background px-[0.4rem] py-[0.15rem] font-mono text-[0.6875rem] font-semibold text-muted-foreground shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
         >
           ESC
         </kbd>
@@ -325,13 +325,13 @@
     <!-- Results -->
     <div
       id="search-modal-results"
-      class="max-h-[55vh] [scrollbar-width:thin] [scrollbar-color:var(--border)_transparent] overflow-y-auto p-[0.85rem] outline-none [&::-webkit-scrollbar]:w-[6px] [&::-webkit-scrollbar-thumb]:rounded-[3px] [&::-webkit-scrollbar-thumb]:bg-line"
+      class="max-h-[55vh] [scrollbar-width:thin] [scrollbar-color:var(--border)_transparent] overflow-y-auto p-[0.85rem] outline-none [&::-webkit-scrollbar]:w-[6px] [&::-webkit-scrollbar-thumb]:rounded-[3px] [&::-webkit-scrollbar-thumb]:bg-border"
       tabindex="-1"
     >
       {#if !trimmed}
         <div class="px-3 py-5 text-center">
           <div
-            class="mb-4 font-mono text-[0.72rem] font-semibold tracking-[0.06em] text-muted uppercase"
+            class="mb-4 font-mono text-[0.72rem] font-semibold tracking-[0.06em] text-muted-foreground uppercase"
           >
             Quick Access &amp; Navigation
           </div>
@@ -348,26 +348,30 @@
             <a href="/about" class={pill}><span>👤</span> <span>About</span></a>
           </div>
           <div
-            class="text-[0.82rem] leading-[1.5] text-muted [&_code]:rounded-[4px] [&_code]:border [&_code]:border-line [&_code]:bg-surface [&_code]:px-[0.35rem] [&_code]:py-[0.1rem] [&_code]:font-mono [&_code]:text-[0.75rem] [&_code]:text-accent"
+            class="text-[0.82rem] leading-[1.5] text-muted-foreground [&_code]:rounded-[4px] [&_code]:border [&_code]:border-border [&_code]:bg-card [&_code]:px-[0.35rem] [&_code]:py-[0.1rem] [&_code]:font-mono [&_code]:text-[0.75rem] [&_code]:text-link"
           >
             Type any keyword (e.g., <code>ownership</code>, <code>traits</code>,
             <code>cargo</code>, <code>async</code>) to filter in real-time.
           </div>
         </div>
       {:else if !data}
-        <div class="px-4 py-12 text-center text-muted">
+        <div class="px-4 py-12 text-center text-muted-foreground">
           <div class="mb-[0.65rem] text-[2rem]">⏳</div>
-          <div class="mb-[0.35rem] text-[0.95rem] font-semibold text-fg">
+          <div
+            class="mb-[0.35rem] text-[0.95rem] font-semibold text-foreground"
+          >
             Loading search index...
           </div>
         </div>
       {:else if total === 0}
-        <div class="px-4 py-12 text-center text-muted">
+        <div class="px-4 py-12 text-center text-muted-foreground">
           <div class="mb-[0.65rem] text-[2rem]">🔍</div>
-          <div class="mb-[0.35rem] text-[0.95rem] font-semibold text-fg">
+          <div
+            class="mb-[0.35rem] text-[0.95rem] font-semibold text-foreground"
+          >
             No results found for "{trimmed}"
           </div>
-          <div class="text-[0.82rem] text-muted">
+          <div class="text-[0.82rem] text-muted-foreground">
             Try searching for keywords like <code>ownership</code>,
             <code>traits</code>, <code>cargo</code> or <code>async</code>.
           </div>
@@ -418,7 +422,7 @@
                 <a
                   href={tag.url}
                   class={[
-                    "inline-flex items-center gap-[0.4rem] rounded-[6px] border border-line bg-surface px-[0.65rem] py-[0.35rem] font-mono text-[0.78rem] text-fg no-underline transition-[border-color,transform,color] duration-[120ms] ease-[ease] hover:[transform:translateY(-1px)] hover:border-accent hover:bg-subtle hover:text-accent [&.selected]:[transform:translateY(-1px)] [&.selected]:border-accent [&.selected]:bg-subtle [&.selected]:text-accent",
+                    "inline-flex items-center gap-[0.4rem] rounded-[6px] border border-border bg-card px-[0.65rem] py-[0.35rem] font-mono text-[0.78rem] text-foreground no-underline transition-[border-color,transform,color] duration-[120ms] ease-[ease] hover:[transform:translateY(-1px)] hover:border-link hover:bg-muted hover:text-link [&.selected]:[transform:translateY(-1px)] [&.selected]:border-link [&.selected]:bg-muted [&.selected]:text-link",
                     { selected: selected === index },
                   ]}
                   data-search-item
@@ -437,10 +441,10 @@
 
     <!-- Footer -->
     <div
-      class="flex items-center justify-between border-t border-line bg-surface px-[1.15rem] py-[0.6rem] text-[0.72rem] text-muted"
+      class="flex items-center justify-between border-t border-border bg-card px-[1.15rem] py-[0.6rem] text-[0.72rem] text-muted-foreground"
     >
       <div
-        class="flex items-center gap-[0.85rem] [&_kbd]:rounded-[3px] [&_kbd]:border [&_kbd]:border-line [&_kbd]:bg-page [&_kbd]:px-[0.32rem] [&_kbd]:py-[0.1rem] [&_kbd]:font-mono [&_kbd]:text-[0.625rem] [&_kbd]:text-fg"
+        class="flex items-center gap-[0.85rem] [&_kbd]:rounded-[3px] [&_kbd]:border [&_kbd]:border-border [&_kbd]:bg-background [&_kbd]:px-[0.32rem] [&_kbd]:py-[0.1rem] [&_kbd]:font-mono [&_kbd]:text-[0.625rem] [&_kbd]:text-foreground"
       >
         <span class="inline-flex items-center gap-1"
           ><kbd>↑</kbd> <kbd>↓</kbd> Navigate</span

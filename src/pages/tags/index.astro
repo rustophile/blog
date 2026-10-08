@@ -22,9 +22,9 @@ const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
 ---
 
 <BaseLayout title="Tags" description="Explore articles by topic and tag.">
-  <header class="mb-10 pb-6 border-b border-line">
+  <header class="mb-10 pb-6 border-b border-border">
     <h1 class="text-[2.25rem] mt-0 mb-2 tracking-[-0.025em]">Explore by Tag</h1>
-    <p class="m-0 text-[1.1rem] text-muted">
+    <p class="m-0 text-[1.1rem] text-muted-foreground">
       Browse notes and articles grouped by topics.
     </p>
   </header>
@@ -33,10 +33,10 @@ const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
     {sortedTags.map(([tag, count]) => (
       <a
         href={`/tags/${tag}`}
-        class="inline-flex items-center gap-2 py-2 px-4 bg-surface border border-line rounded-[9999px] text-[0.95rem] text-fg no-underline transition-[background-color,border-color,color] duration-200 ease-[ease] hover:bg-subtle hover:border-accent hover:text-accent"
+        class="inline-flex items-center gap-2 py-2 px-4 bg-card border border-border rounded-[9999px] text-[0.95rem] text-foreground no-underline transition-[background-color,border-color,color] duration-200 ease-[ease] hover:bg-muted hover:border-link hover:text-link"
       >
         <span class="font-semibold">#{tag}</span>
-        <span class="text-[0.8rem] text-muted bg-subtle py-[0.15rem] px-[0.45rem] rounded-[9999px]">
+        <span class="text-[0.8rem] text-muted-foreground bg-muted py-[0.15rem] px-[0.45rem] rounded-[9999px]">
           {count}
         </span>
       </a>

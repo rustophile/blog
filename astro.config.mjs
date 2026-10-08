@@ -44,7 +44,7 @@ const expressiveCode = {
     },
     frames: {
       frameBoxShadowCssValue: "none",
-      editorActiveTabIndicatorTopColor: "var(--accent-bright)",
+      editorActiveTabIndicatorTopColor: "var(--link-bright)",
       editorActiveTabBackground: "var(--code-bg)",
       editorTabBarBackground: "#232323",
       terminalTitlebarBackground: "#232323",
@@ -112,5 +112,16 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    // dev only: pre-bundle shadcn-svelte's dependencies at startup instead of discovering
+    // them page by page, which stops and reloads the first page that needs each one (as in the
+    // Solobroneur blog). Add a Lucide icon here when a component starts importing a new one.
+    optimizeDeps: {
+      include: ["bits-ui", "cn", "tailwind-variants"],
+    },
+    ssr: {
+      optimizeDeps: {
+        include: ["bits-ui"],
+      },
+    },
   },
 });

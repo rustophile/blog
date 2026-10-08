@@ -5,9 +5,11 @@ import { siteConfig } from "../config/site";
 
 <BaseLayout title="About" description={siteConfig.description}>
   <article class="pt-4">
-    <header class="mb-8 border-b border-line pb-6">
+    <header class="mb-8 border-b border-border pb-6">
       <h1 class="mt-0 mb-2 text-[2.25rem]">About</h1>
-      <p class="m-0 text-[1.1rem] text-muted">{siteConfig.tagline}</p>
+      <p class="m-0 text-[1.1rem] text-muted-foreground">
+        {siteConfig.tagline}
+      </p>
     </header>
 
     <div class="text-[1.05rem] leading-[1.8]">
@@ -66,7 +68,7 @@ import { siteConfig } from "../config/site";
         </tbody>
       </table>
 
-      <p class="text-[0.9rem] text-muted">
+      <p class="text-[0.9rem] text-muted-foreground">
         The R in the site's name is the R from the
         <a
           href="https://github.com/rust-lang/rust-artwork"

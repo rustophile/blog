@@ -56,14 +56,14 @@ const socialLinks = [
 
 // Shared by the LinkedIn, GitHub and Share buttons in the bar
 const shareBtn =
-  "inline-flex items-center gap-[0.35rem] py-[0.4rem] px-[0.65rem] border border-line rounded-[6px] bg-surface text-fg text-[0.82rem] cursor-pointer no-underline [transition:background-color_0.15s_ease,border-color_0.15s_ease,color_0.15s_ease,transform_0.1s_ease] hover:bg-subtle hover:border-accent hover:text-accent";
+  "inline-flex items-center gap-[0.35rem] py-[0.4rem] px-[0.65rem] border border-border rounded-[6px] bg-card text-foreground text-[0.82rem] cursor-pointer no-underline [transition:background-color_0.15s_ease,border-color_0.15s_ease,color_0.15s_ease,transform_0.1s_ease] hover:bg-muted hover:border-link hover:text-link";
 ---
 
 <div
-  class="flex items-center gap-3 py-4 mt-8 border-t border-line"
+  class="flex items-center gap-3 py-4 mt-8 border-t border-border"
   aria-label="Share and connect"
 >
-  <span class="text-[0.88rem] font-semibold text-muted">Share:</span>
+  <span class="text-[0.88rem] font-semibold text-muted-foreground">Share:</span>
   <div class="flex items-center gap-2">
     <!-- LinkedIn -->
     {linkedinUrl && (
@@ -151,14 +151,14 @@ const shareBtn =
   aria-labelledby="share-modal-title"
 >
   <div
-    class="w-full max-w-[480px] bg-page border border-line rounded-[12px] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.05)] flex flex-col overflow-hidden [transform:scale(0.96)_translateY(-8px)] group-[.open]:[transform:scale(1)_translateY(0)] transition-[transform] duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+    class="w-full max-w-[480px] bg-background border border-border rounded-[12px] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.05)] flex flex-col overflow-hidden [transform:scale(0.96)_translateY(-8px)] group-[.open]:[transform:scale(1)_translateY(0)] transition-[transform] duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
     id="share-modal-dialog"
   >
     <!-- Header -->
-    <div class="flex items-center justify-between py-[0.85rem] px-[1.15rem] border-b border-line bg-surface">
+    <div class="flex items-center justify-between py-[0.85rem] px-[1.15rem] border-b border-border bg-card">
       <div class="flex items-center gap-2">
         <svg
-          class="text-accent"
+          class="text-link"
           width="16"
           height="16"
           viewBox="0 0 24 24"
@@ -174,7 +174,7 @@ const shareBtn =
         </svg>
         <h3
           id="share-modal-title"
-          class="m-0 text-[0.95rem] font-semibold text-fg"
+          class="m-0 text-[0.95rem] font-semibold text-foreground"
         >
           Share article
         </h3>
@@ -186,7 +186,7 @@ const shareBtn =
         aria-label="Close share dialog (Esc)"
         title="Close (Esc)"
       >
-        <kbd class="inline-flex items-center justify-center font-mono text-[0.6875rem] font-semibold text-muted bg-page border border-line rounded-[4px] py-[0.15rem] px-[0.4rem] shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-[color,border-color] duration-150 ease-[ease] group-hover/close:text-fg group-hover/close:border-accent">
+        <kbd class="inline-flex items-center justify-center font-mono text-[0.6875rem] font-semibold text-muted-foreground bg-background border border-border rounded-[4px] py-[0.15rem] px-[0.4rem] shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-[color,border-color] duration-150 ease-[ease] group-hover/close:text-foreground group-hover/close:border-link">
           ESC
         </kbd>
       </button>
@@ -195,27 +195,27 @@ const shareBtn =
     <!-- Body -->
     <div class="p-[1.15rem] flex flex-col gap-[1.15rem]">
       <!-- Mini Preview Card (Notion-style) -->
-      <div class="bg-surface border border-line rounded-[8px] py-[0.9rem] px-4 flex flex-col gap-[0.6rem] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
-        <div class="flex items-center justify-between pb-[0.45rem] border-b border-line">
+      <div class="bg-card border border-border rounded-[8px] py-[0.9rem] px-4 flex flex-col gap-[0.6rem] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+        <div class="flex items-center justify-between pb-[0.45rem] border-b border-border">
           <div class="flex items-center gap-[0.35rem]">
             <span class="text-[0.9rem]">🦀</span>
-            <span class="text-[0.8rem] font-semibold text-fg tracking-[-0.01em]">
+            <span class="text-[0.8rem] font-semibold text-foreground tracking-[-0.01em]">
               {siteConfig.title}
             </span>
           </div>
-          <span class="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.05em] text-muted bg-subtle py-[0.1rem] px-[0.4rem] rounded-[4px] border border-line">
+          <span class="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.05em] text-muted-foreground bg-muted py-[0.1rem] px-[0.4rem] rounded-[4px] border border-border">
             Preview
           </span>
         </div>
         <div class="flex flex-col gap-[0.3rem]">
           <div class="flex items-start gap-[0.45rem]">
             <span class="text-[1rem] leading-[1.35] shrink-0">📄</span>
-            <span class="text-[0.98rem] font-semibold text-fg leading-[1.35]">
+            <span class="text-[0.98rem] font-semibold text-foreground leading-[1.35]">
               {title}
             </span>
           </div>
           {description && (
-            <p class="m-0 text-[0.8rem] text-muted leading-[1.5] line-clamp-2">
+            <p class="m-0 text-[0.8rem] text-muted-foreground leading-[1.5] line-clamp-2">
               {description}
             </p>
           )}
@@ -226,7 +226,7 @@ const shareBtn =
       <div class="flex items-stretch gap-2">
         <div class="flex-[1] relative flex items-center min-w-0">
           <svg
-            class="absolute left-3 text-muted pointer-events-none"
+            class="absolute left-3 text-muted-foreground pointer-events-none"
             width="14"
             height="14"
             viewBox="0 0 24 24"
@@ -243,7 +243,7 @@ const shareBtn =
           <input
             type="text"
             id="share-url-input"
-            class="w-full bg-subtle border border-line rounded-[6px] py-2 pr-3 pl-[2.15rem] font-mono text-[0.78rem] text-muted outline-none text-ellipsis whitespace-nowrap overflow-hidden transition-[border-color,color] duration-150 ease-[ease] focus:border-accent focus:text-fg"
+            class="w-full bg-muted border border-border rounded-[6px] py-2 pr-3 pl-[2.15rem] font-mono text-[0.78rem] text-muted-foreground outline-none text-ellipsis whitespace-nowrap overflow-hidden transition-[border-color,color] duration-150 ease-[ease] focus:border-link focus:text-foreground"
             value={url}
             readonly
             aria-label="Article canonical link"
@@ -253,7 +253,7 @@ const shareBtn =
         <button
           type="button"
           id="share-copy-btn"
-          class="inline-flex items-center gap-[0.4rem] py-2 px-[0.85rem] border border-accent rounded-[6px] bg-accent text-on-accent text-[0.82rem] font-semibold cursor-pointer whitespace-nowrap shrink-0 [transition:background-color_0.15s_ease,border-color_0.15s_ease,transform_0.1s_ease] hover:bg-accent-hover hover:border-accent-hover active:[transform:scale(0.98)] [&.copied]:bg-success [&.copied]:border-success [&.copied]:text-on-accent"
+          class="inline-flex items-center gap-[0.4rem] py-2 px-[0.85rem] border border-link rounded-[6px] bg-primary text-primary-foreground text-[0.82rem] font-semibold cursor-pointer whitespace-nowrap shrink-0 [transition:background-color_0.15s_ease,border-color_0.15s_ease,transform_0.1s_ease] hover:bg-link-hover hover:border-link-hover active:[transform:scale(0.98)] [&.copied]:bg-success [&.copied]:border-success [&.copied]:text-primary-foreground"
           aria-label="Copy canonical link to clipboard"
         >
           <svg
@@ -290,7 +290,7 @@ const shareBtn =
 
       <!-- Social Share Grid (Calibrated Minrock-style buttons: square, 6px border-radius) -->
       <div class="flex flex-col gap-[0.65rem]">
-        <div class="text-[0.72rem] font-semibold font-mono uppercase tracking-[0.05em] text-muted">
+        <div class="text-[0.72rem] font-semibold font-mono uppercase tracking-[0.05em] text-muted-foreground">
           Share directly to:
         </div>
         <div class="grid grid-cols-[repeat(6,1fr)] gap-2 max-[480px]:grid-cols-[repeat(3,1fr)]">
@@ -299,7 +299,7 @@ const shareBtn =
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              class="social-share-btn flex items-center justify-center h-[42px] border border-line rounded-[6px] bg-surface text-fg no-underline transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-subtle hover:border-accent hover:text-accent hover:[transform:translateY(-2px)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] active:[transform:translateY(0)]"
+              class="social-share-btn flex items-center justify-center h-[42px] border border-border rounded-[6px] bg-card text-foreground no-underline transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-muted hover:border-link hover:text-link hover:[transform:translateY(-2px)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] active:[transform:translateY(0)]"
               title={item.title}
               aria-label={item.title}
               data-social={item.icon}

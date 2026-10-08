@@ -1,9 +1,17 @@
 /* 🦀 Rustophile — Minrock's typography-first design, in the Rust standard library's colors */
 
-/* No preflight: Minrock's own base styles below set element defaults */
+/* Tailwind's preflight resets browser defaults (shadcn-svelte's components assume it); the
+   site's own element styles below, in the same base layer, set them back where it relies on them */
 @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
+/* shadcn-svelte: its animations and data-state variants (data-open:, data-checked:, ...) */
+@import "tw-animate-css";
+@import "shadcn-svelte/tailwind.css";
+
+/* shadcn-svelte's dark: styles follow the site's theme attribute, not a .dark class */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /* rustdoc's typefaces: Fira Sans for UI and headings, Source Serif 4 for prose, Source Code Pro
    for code (loaded by Astro's fonts API, see astro.config.mjs) */
@@ -17,19 +25,31 @@
     Consolas, monospace;
 }
 
-/* Palette tokens as utilities (bg-page, text-muted, border-line, text-rust-trait, …); values
-   switch per [data-theme] */
+/* Palette tokens as utilities, named as shadcn-svelte expects (bg-background, text-foreground,
+   bg-card, bg-muted, text-muted-foreground, border-border, bg-primary, ...) plus the site's own
+   (text-link for the gold, code panels, rustdoc item colors). Values switch per [data-theme]. */
 @theme inline {
-  --color-page: var(--bg);
-  --color-surface: var(--bg-surface);
-  --color-subtle: var(--bg-subtle);
-  --color-fg: var(--text);
-  --color-muted: var(--text-muted);
-  --color-line: var(--border);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
-  --color-accent-bright: var(--accent-bright);
-  --color-on-accent: var(--on-accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
+  --color-link-bright: var(--link-bright);
   --color-code-bg: var(--code-bg);
   --color-code-fg: var(--code-text);
   --color-selection: var(--selection);
@@ -51,11 +71,9 @@
   --color-footer: var(--footer-bg);
   --color-footer-line: var(--footer-border);
   --color-footer-fg: var(--footer-text);
-}
-
-/* page changes cross-fade instead of blanking (browsers without support just navigate) */
-@view-transition {
-  navigation: auto;
+  /* shadcn-svelte's components size some corners from --radius; Tailwind's rounded-sm/md/lg
+     scale is left as is, which matches the site's existing 4/6/8px corners */
+  --radius: 0.5rem;
 }
 
 @layer base {
@@ -65,16 +83,29 @@
      adjusted to 4.5:1 or better on that theme's page, surface and subtle backgrounds, for text. */
   :root,
   [data-theme="paper"] {
-    --bg: #f7f4ea;
-    --bg-surface: #fffdf8;
-    --bg-subtle: #eee7d5;
-    --text: #292524;
-    --text-muted: #57534e;
+    --background: #f7f4ea;
+    --card: #fffdf8;
+    --muted: #eee7d5;
+    --foreground: #292524;
+    --muted-foreground: #57534e;
     --border: #e5dac1;
-    --accent: #846012;
-    --accent-hover: #5f450d;
-    --accent-bright: #d2991d;
-    --on-accent: #ffffff;
+    --link: #846012;
+    --link-hover: #5f450d;
+    --link-bright: #d2991d;
+    --primary-foreground: #ffffff;
+    /* shadcn-svelte's roles, from the colors above: --primary is the gold (primary buttons),
+       --accent the quiet hover/selected fill, --ring the focus ring */
+    --card-foreground: var(--foreground);
+    --popover: var(--card);
+    --popover-foreground: var(--foreground);
+    --primary: var(--link);
+    --secondary: var(--muted);
+    --secondary-foreground: var(--foreground);
+    --accent: var(--muted);
+    --accent-foreground: var(--foreground);
+    --destructive: var(--danger);
+    --input: var(--border);
+    --ring: var(--link-bright);
     --code-bg: #2a2a2a;
     --code-text: #dddddd;
     --selection: color-mix(in oklab, #d2991d 30%, transparent);
@@ -96,9 +127,9 @@
     --link-trait: var(--rust-trait);
     --link-fn: var(--rust-fn);
     --link-macro: var(--rust-macro);
-    --link-mod: var(--accent);
-    --link-keyword: var(--accent);
-    --link-assoc: var(--accent);
+    --link-mod: var(--link);
+    --link-keyword: var(--link);
+    --link-assoc: var(--link);
     /* footer in rustdoc's sidebar colors */
     --footer-bg: #eee7d5;
     /* the heading a link jumped to, like rustdoc's :target */
@@ -111,16 +142,29 @@
   }
 
   [data-theme="dark"] {
-    --bg: #353535;
-    --bg-surface: #2f2f2f;
-    --bg-subtle: #2a2a2a;
-    --text: #dddddd;
-    --text-muted: #aaaaaa;
+    --background: #353535;
+    --card: #2f2f2f;
+    --muted: #2a2a2a;
+    --foreground: #dddddd;
+    --muted-foreground: #aaaaaa;
     --border: #4a4a4a;
-    --accent: #d2991d;
-    --accent-hover: #fdbf35;
-    --accent-bright: #d2991d;
-    --on-accent: #2a2a2a;
+    --link: #d2991d;
+    --link-hover: #fdbf35;
+    --link-bright: #d2991d;
+    --primary-foreground: #2a2a2a;
+    /* shadcn-svelte's roles, from the colors above: --primary is the gold (primary buttons),
+       --accent the quiet hover/selected fill, --ring the focus ring */
+    --card-foreground: var(--foreground);
+    --popover: var(--card);
+    --popover-foreground: var(--foreground);
+    --primary: var(--link);
+    --secondary: var(--muted);
+    --secondary-foreground: var(--foreground);
+    --accent: var(--muted);
+    --accent-foreground: var(--foreground);
+    --destructive: var(--danger);
+    --input: var(--border);
+    --ring: var(--link-bright);
     --code-bg: #2a2a2a;
     --code-text: #dddddd;
     --selection: color-mix(in oklab, #d2991d 35%, transparent);
@@ -141,9 +185,9 @@
     --link-trait: var(--rust-trait);
     --link-fn: var(--rust-fn);
     --link-macro: var(--rust-macro);
-    --link-mod: var(--accent);
-    --link-keyword: var(--accent);
-    --link-assoc: var(--accent);
+    --link-mod: var(--link);
+    --link-keyword: var(--link);
+    --link-assoc: var(--link);
     /* footer in rustdoc's sidebar colors */
     --footer-bg: #505050;
     --target-bg: #494a3d;
@@ -157,16 +201,29 @@
   /* without JavaScript nothing sets data-theme, so follow the OS */
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme]) {
-      --bg: #353535;
-      --bg-surface: #2f2f2f;
-      --bg-subtle: #2a2a2a;
-      --text: #dddddd;
-      --text-muted: #aaaaaa;
+      --background: #353535;
+      --card: #2f2f2f;
+      --muted: #2a2a2a;
+      --foreground: #dddddd;
+      --muted-foreground: #aaaaaa;
       --border: #4a4a4a;
-      --accent: #d2991d;
-      --accent-hover: #fdbf35;
-      --accent-bright: #d2991d;
-      --on-accent: #2a2a2a;
+      --link: #d2991d;
+      --link-hover: #fdbf35;
+      --link-bright: #d2991d;
+      --primary-foreground: #2a2a2a;
+      /* shadcn-svelte's roles, from the colors above: --primary is the gold (primary buttons),
+         --accent the quiet hover/selected fill, --ring the focus ring */
+      --card-foreground: var(--foreground);
+      --popover: var(--card);
+      --popover-foreground: var(--foreground);
+      --primary: var(--link);
+      --secondary: var(--muted);
+      --secondary-foreground: var(--foreground);
+      --accent: var(--muted);
+      --accent-foreground: var(--foreground);
+      --destructive: var(--danger);
+      --input: var(--border);
+      --ring: var(--link-bright);
       --code-bg: #2a2a2a;
       --code-text: #dddddd;
       --selection: color-mix(in oklab, #d2991d 35%, transparent);
@@ -187,9 +244,9 @@
       --link-trait: var(--rust-trait);
       --link-fn: var(--rust-fn);
       --link-macro: var(--rust-macro);
-      --link-mod: var(--accent);
-      --link-keyword: var(--accent);
-      --link-assoc: var(--accent);
+      --link-mod: var(--link);
+      --link-keyword: var(--link);
+      --link-assoc: var(--link);
       /* footer in rustdoc's sidebar colors */
       --footer-bg: #505050;
       --target-bg: #494a3d;
@@ -209,8 +266,8 @@
 
   html {
     font-family: var(--font-sans);
-    background-color: var(--bg);
-    color: var(--text);
+    background-color: var(--background);
+    color: var(--foreground);
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -231,7 +288,7 @@
 
   /* Accessibility Focus Ring */
   :focus-visible {
-    outline: 2px solid var(--accent-bright);
+    outline: 2px solid var(--link-bright);
     outline-offset: 3px;
     border-radius: 4px;
   }
@@ -240,7 +297,7 @@
     position: absolute;
     top: -100px;
     left: 1rem;
-    background: var(--accent);
+    background: var(--link);
     color: #ffffff;
     padding: 0.5rem 1rem;
     border-radius: 4px;
@@ -262,15 +319,40 @@
   }
 
   a:hover {
-    color: var(--accent);
+    color: var(--link);
   }
 
-  /* form controls don't inherit the page font by default (Tailwind's preflight, which we
-     skip, would do this) */
+  /* Minrock's components were built on the browser's defaults, which preflight resets. Put
+     back the ones they rely on (shadcn-svelte components set their own, so this doesn't
+     affect them): list bullets and margins, inline images and icons sitting on the baseline,
+     and form controls' size, spacing and color. Only the font family is inherited, as before. */
+  ul,
+  ol {
+    margin-top: 1em;
+    list-style: revert;
+  }
+
+  img,
+  svg,
+  video,
+  canvas,
+  audio,
+  iframe,
+  embed,
+  object {
+    display: revert;
+    vertical-align: revert;
+  }
+
   button,
   input,
   select,
   textarea {
+    font-size: revert;
+    line-height: revert;
+    letter-spacing: revert;
+    padding: revert;
+    color: revert;
     font-family: inherit;
   }
 
@@ -298,7 +380,7 @@
     position: absolute;
     right: 100%;
     padding-right: 0.15em;
-    color: var(--text);
+    color: var(--foreground);
     text-decoration: none;
     opacity: 0;
   }
@@ -345,14 +427,14 @@
 
   /* links in prose are colored like rustdoc's, so they read as links before hover */
   .post-content a:not(.doc-anchor) {
-    color: var(--accent);
+    color: var(--link);
     text-decoration: underline;
-    text-decoration-color: color-mix(in oklab, var(--accent) 40%, transparent);
+    text-decoration-color: color-mix(in oklab, var(--link) 40%, transparent);
     text-underline-offset: 0.15em;
   }
 
   .post-content a:not(.doc-anchor):hover {
-    color: var(--accent-hover);
+    color: var(--link-hover);
     text-decoration-color: currentColor;
   }
 
@@ -395,7 +477,7 @@
   h5,
   h6 {
     font-family: var(--font-sans);
-    color: var(--text);
+    color: var(--foreground);
     line-height: 1.3;
     margin-top: 2rem;
     margin-bottom: 0.75rem;
@@ -424,7 +506,7 @@
   code:not(pre code) {
     font-family: var(--font-mono);
     font-size: 0.88em;
-    background-color: var(--bg-subtle);
+    background-color: var(--muted);
     padding: 0.15rem 0.35rem;
     border-radius: 4px;
   }
@@ -457,11 +539,11 @@
     vertical-align: super;
     line-height: 0;
     text-decoration: none;
-    color: var(--text-muted);
+    color: var(--muted-foreground);
   }
 
   a.external-link:hover::after {
-    color: var(--accent);
+    color: var(--link);
   }
 
   /* a blockquote ending in an "— Name" line (remarkQuoteAttribution) */
@@ -477,7 +559,7 @@
     margin-top: 0.5rem;
     padding-inline-start: 1.5rem;
     font-size: 0.875em;
-    color: var(--text-muted);
+    color: var(--muted-foreground);
   }
 
   figure.quote figcaption a {
@@ -489,10 +571,10 @@
   blockquote {
     margin: 1.5rem 0;
     padding: 0.75rem 1.25rem;
-    border-left: 4px solid var(--accent-bright);
-    background: var(--bg-surface);
+    border-left: 4px solid var(--link-bright);
+    background: var(--card);
     border-radius: 0 8px 8px 0;
-    color: var(--text-muted);
+    color: var(--muted-foreground);
     font-style: italic;
   }
 
@@ -515,7 +597,7 @@
   }
 
   th {
-    background-color: var(--bg-subtle);
+    background-color: var(--muted);
     font-weight: 600;
   }
 
@@ -561,8 +643,8 @@
   .callout {
     margin: 1.75rem 0;
     padding: 1rem 1.25rem;
-    border-left: 4px solid var(--callout-border, var(--accent));
-    background-color: var(--callout-bg, var(--bg-surface));
+    border-left: 4px solid var(--callout-border, var(--link));
+    background-color: var(--callout-bg, var(--card));
     border-radius: 0 8px 8px 0;
     font-size: 0.95rem;
     line-height: 1.65;
@@ -577,7 +659,7 @@
     gap: 0.5rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: var(--callout-color, var(--accent));
+    color: var(--callout-color, var(--link));
     letter-spacing: -0.01em;
   }
 
@@ -601,9 +683,9 @@
      important = trait purple, warning = rustdoc's warning orange, caution = literal red */
   .callout-note,
   .callout-info {
-    --callout-border: var(--accent-bright);
-    --callout-color: var(--accent);
-    --callout-bg: var(--bg-surface);
+    --callout-border: var(--link-bright);
+    --callout-color: var(--link);
+    --callout-bg: var(--card);
   }
 
   .callout-tip {
@@ -759,7 +841,7 @@
   ~ .ec-tabs__bar
   .ec-tabs__tab:nth-of-type(8) {
   color: var(--code-text);
-  box-shadow: inset 0 -2px 0 var(--accent);
+  box-shadow: inset 0 -2px 0 var(--link);
 }
 
 .ec-tabs
@@ -794,7 +876,7 @@
   .ec-tabs__radio:nth-of-type(8):focus-visible
   ~ .ec-tabs__bar
   .ec-tabs__tab:nth-of-type(8) {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--link);
   outline-offset: -2px;
 }
 
@@ -803,8 +885,8 @@
    theme's scrim color; its icons use the theme's text color */
 .pswp {
   --pswp-bg: var(--scrim);
-  --pswp-icon-color: var(--text);
-  --pswp-icon-color-secondary: var(--bg);
+  --pswp-icon-color: var(--foreground);
+  --pswp-icon-color-secondary: var(--background);
 }
 
 /* on .pswp itself: set on .pswp__bg inside it, the blur doesn't reach the page */

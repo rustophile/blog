@@ -37,17 +37,17 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
   />
 
   <article class="pt-4">
-    <header class="project-header mb-10 pb-7 border-b border-line">
-      <div class="flex items-center gap-[0.65rem] text-[0.88rem] text-muted mb-3 flex-wrap">
+    <header class="project-header mb-10 pb-7 border-b border-border">
+      <div class="flex items-center gap-[0.65rem] text-[0.88rem] text-muted-foreground mb-3 flex-wrap">
         <span class="text-[1.3rem]">{project.data.emoji}</span>
-        <span class="text-[0.75rem] font-mono py-[0.2rem] px-2 rounded-sm bg-surface border border-line text-accent uppercase">
+        <span class="text-[0.75rem] font-mono py-[0.2rem] px-2 rounded-sm bg-card border border-border text-link uppercase">
           {project.data.category}
         </span>
-        <span class="text-muted opacity-50">·</span>
+        <span class="text-muted-foreground opacity-50">·</span>
         <time datetime={project.data.date.toISOString()}>{formattedDate}</time>
         {project.data.stars > 0 && (
           <>
-            <span class="text-muted opacity-50">·</span>
+            <span class="text-muted-foreground opacity-50">·</span>
             <span class="text-warning font-semibold">
               ★ {project.data.stars} stars
             </span>
@@ -58,7 +58,7 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
       <h1 class="project-title mt-0 mb-3 text-[2.4rem] leading-[1.25] tracking-[-0.025em]">
         {project.data.title}
       </h1>
-      <p class="project-description text-[1.15rem] text-muted mt-0 mx-0 mb-6 leading-[1.6]">
+      <p class="project-description text-[1.15rem] text-muted-foreground mt-0 mx-0 mb-6 leading-[1.6]">
         {project.data.description}
       </p>
 
@@ -68,7 +68,7 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
             href={project.data.repoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-[0.4rem] py-[0.45rem] px-[0.9rem] rounded-md border border-line bg-surface text-fg text-[0.88rem] font-medium no-underline transition-[border-color,background-color] duration-150 ease-[ease] hover:border-accent hover:bg-subtle hover:text-accent"
+            class="inline-flex items-center gap-[0.4rem] py-[0.45rem] px-[0.9rem] rounded-md border border-border bg-card text-foreground text-[0.88rem] font-medium no-underline transition-[border-color,background-color] duration-150 ease-[ease] hover:border-link hover:bg-muted hover:text-link"
           >
             <svg
               width="15"
@@ -87,7 +87,7 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
             href={project.data.demoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-[0.4rem] py-[0.45rem] px-[0.9rem] rounded-md border border-accent bg-accent text-on-accent text-[0.88rem] font-medium no-underline transition-[border-color,background-color] duration-150 ease-[ease] hover:border-accent hover:bg-accent-hover hover:text-on-accent"
+            class="inline-flex items-center gap-[0.4rem] py-[0.45rem] px-[0.9rem] rounded-md border border-link bg-primary text-primary-foreground text-[0.88rem] font-medium no-underline transition-[border-color,background-color] duration-150 ease-[ease] hover:border-link hover:bg-link-hover hover:text-primary-foreground"
           >
             Live Preview ↗
           </a>
@@ -108,10 +108,10 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
       <Content />
     </div>
 
-    <footer class="mt-14 pt-6 border-t border-line">
+    <footer class="mt-14 pt-6 border-t border-border">
       <a
         href="/projects"
-        class="text-accent no-underline font-medium hover:underline"
+        class="text-link no-underline font-medium hover:underline"
       >
         ← Back to all projects
       </a>

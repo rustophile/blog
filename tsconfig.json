@@ -6,7 +6,9 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "$lib": ["src/lib"],
+      "$lib/*": ["src/lib/*"]
     }
   }
 }

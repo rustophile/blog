@@ -17,22 +17,22 @@ const showTags = siteConfig.features?.tags !== false;
 
 <BaseLayout title="Blog — All Notes">
   <div class="pt-4">
-    <header class="mb-10 border-b border-line pb-6">
+    <header class="mb-10 border-b border-border pb-6">
       <h1 class="mt-0 mb-2 text-[2.4rem] tracking-[-0.025em]">
         Articles &amp; Notes
       </h1>
-      <p class="mb-5 text-[1.05rem] leading-[1.6] text-muted">
+      <p class="mb-5 text-[1.05rem] leading-[1.6] text-muted-foreground">
         Explorations in software engineering, technical writing, and minimalist
         design.
       </p>
 
       {showTags && allTags.length > 0 && (
         <div class="flex flex-wrap items-center gap-2 text-[0.85rem]">
-          <span class="font-semibold text-muted">Topics:</span>
+          <span class="font-semibold text-muted-foreground">Topics:</span>
           {allTags.map((tag) => (
             <a
               href={`/tags/${tag}`}
-              class="rounded-[9999px] border border-line bg-surface px-[0.6rem] py-[0.2rem] text-muted no-underline transition-[color,border-color,background-color] duration-150 ease-[ease] hover:border-accent hover:bg-subtle hover:text-accent"
+              class="rounded-[9999px] border border-border bg-card px-[0.6rem] py-[0.2rem] text-muted-foreground no-underline transition-[color,border-color,background-color] duration-150 ease-[ease] hover:border-link hover:bg-muted hover:text-link"
             >
               #{tag}
             </a>
@@ -45,12 +45,12 @@ const showTags = siteConfig.features?.tags !== false;
       <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
         <h2 class="m-0 flex items-center gap-2 text-[1.35rem]">
           <span>All Articles</span>
-          <span class="text-[1.1rem] text-muted">→</span>
+          <span class="text-[1.1rem] text-muted-foreground">→</span>
         </h2>
 
         <!-- Simple Search Filter Box -->
         <div class="min-w-[220px] max-w-[360px] flex-1">
-          <div class="flex items-center gap-2 rounded-[6px] border border-line bg-surface px-[0.85rem] py-[0.45rem] text-muted">
+          <div class="flex items-center gap-2 rounded-[6px] border border-border bg-card px-[0.85rem] py-[0.45rem] text-muted-foreground">
             <svg
               width="15"
               height="15"
@@ -68,7 +68,7 @@ const showTags = siteConfig.features?.tags !== false;
             <input
               type="text"
               id="search-input"
-              class="w-full border-none bg-transparent font-sans text-[0.9rem] text-fg outline-none placeholder:text-muted"
+              class="w-full border-none bg-transparent font-sans text-[0.9rem] text-foreground outline-none placeholder:text-muted-foreground"
               placeholder="Filter articles..."
               aria-label="Filter articles"
               autocomplete="off"
@@ -98,12 +98,12 @@ const showTags = siteConfig.features?.tags !== false;
         style="display: none;"
       >
         <nav
-          class="inline-flex items-center gap-[0.4rem] rounded-[8px] border border-line bg-surface px-2 py-[0.3rem]"
+          class="inline-flex items-center gap-[0.4rem] rounded-[8px] border border-border bg-card px-2 py-[0.3rem]"
           aria-label="Bottom article pagination"
         >
           <button
             type="button"
-            class="inline-flex h-[32px] min-w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-transparent bg-transparent px-[0.45rem] py-0 font-mono text-[0.85rem] text-muted transition-[background-color,color,border-color] duration-150 ease-[ease] not-disabled:hover:border-accent not-disabled:hover:bg-subtle not-disabled:hover:text-accent disabled:cursor-not-allowed disabled:opacity-30"
+            class="inline-flex h-[32px] min-w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-transparent bg-transparent px-[0.45rem] py-0 font-mono text-[0.85rem] text-muted-foreground transition-[background-color,color,border-color] duration-150 ease-[ease] not-disabled:hover:border-link not-disabled:hover:bg-muted not-disabled:hover:text-link disabled:cursor-not-allowed disabled:opacity-30"
             id="page-prev-bottom"
             aria-label="Previous page"
           >
@@ -115,7 +115,7 @@ const showTags = siteConfig.features?.tags !== false;
           ></div>
           <button
             type="button"
-            class="inline-flex h-[32px] min-w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-transparent bg-transparent px-[0.45rem] py-0 font-mono text-[0.85rem] text-muted transition-[background-color,color,border-color] duration-150 ease-[ease] not-disabled:hover:border-accent not-disabled:hover:bg-subtle not-disabled:hover:text-accent disabled:cursor-not-allowed disabled:opacity-30"
+            class="inline-flex h-[32px] min-w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-transparent bg-transparent px-[0.45rem] py-0 font-mono text-[0.85rem] text-muted-foreground transition-[background-color,color,border-color] duration-150 ease-[ease] not-disabled:hover:border-link not-disabled:hover:bg-muted not-disabled:hover:text-link disabled:cursor-not-allowed disabled:opacity-30"
             id="page-next-bottom"
             aria-label="Next page"
           >
@@ -126,7 +126,7 @@ const showTags = siteConfig.features?.tags !== false;
 
       <div
         id="no-results"
-        class="py-12 text-center text-muted"
+        class="py-12 text-center text-muted-foreground"
         style="display: none;"
       >
         <p>No articles found matching your filter.</p>
@@ -190,7 +190,7 @@ const showTags = siteConfig.features?.tags !== false;
         for (let i = 1; i <= totalPages; i++) {
           const btn = document.createElement("button");
           btn.type = "button";
-          btn.className = `pagination-num inline-flex h-[32px] min-w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-transparent bg-transparent px-[0.45rem] py-0 font-mono text-[0.85rem] text-muted transition-[background-color,color,border-color] duration-150 ease-[ease] hover:[&:not(.active)]:border-accent hover:[&:not(.active)]:bg-subtle hover:[&:not(.active)]:text-accent [&.active]:cursor-default [&.active]:border-line [&.active]:bg-subtle [&.active]:font-semibold [&.active]:text-fg${i === currentPage ? " active" : ""}`;
+          btn.className = `pagination-num inline-flex h-[32px] min-w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-transparent bg-transparent px-[0.45rem] py-0 font-mono text-[0.85rem] text-muted-foreground transition-[background-color,color,border-color] duration-150 ease-[ease] hover:[&:not(.active)]:border-link hover:[&:not(.active)]:bg-muted hover:[&:not(.active)]:text-link [&.active]:cursor-default [&.active]:border-border [&.active]:bg-muted [&.active]:font-semibold [&.active]:text-foreground${i === currentPage ? " active" : ""}`;
           btn.textContent = String(i);
           btn.setAttribute("aria-label", `Page ${i}`);
           btn.addEventListener("click", () => {
