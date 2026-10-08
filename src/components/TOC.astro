@@ -10,81 +10,30 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
 
 {filtered.length > 0 && (
-  <nav class="toc" aria-label="Table of contents">
-    <div class="toc-title">{title}</div>
-    <ol class="toc-list">
+  <nav
+    class="toc sticky top-20 max-h-[calc(100vh-6.5rem)] overflow-y-auto px-0 pt-2 pb-4 [scrollbar-color:var(--border)_transparent] [scrollbar-width:thin]"
+    aria-label="Table of contents"
+  >
+    <div class="mb-3 pl-3 font-mono text-[0.75rem] font-semibold tracking-[0.08em] text-muted uppercase">
+      {title}
+    </div>
+    <ol class="m-0 list-none p-0">
       {filtered.map((h) => (
-        <li class={`toc-item depth-${h.depth}`}>
-          <a href={`#${h.slug}`} class="toc-link">
-            <span class="toc-text">{h.text}</span>
+        <li class="m-0">
+          <a
+            href={`#${h.slug}`}
+            class:list={[
+              "toc-link block border-l-2 border-transparent py-[0.35rem] pr-0 leading-[1.45] text-muted no-underline transition-[color,border-color,transform] duration-150 ease-[ease] hover:text-fg [&.active]:border-l-accent [&.active]:font-semibold [&.active]:text-accent",
+              h.depth === 3 ? "pl-6 text-[0.76rem]" : "pl-3 text-[0.82rem]",
+            ]}
+          >
+            <span>{h.text}</span>
           </a>
         </li>
       ))}
     </ol>
   </nav>
 )}
-
-<style>
-  .toc {
-    position: sticky;
-    top: 5rem;
-    max-height: calc(100vh - 6.5rem);
-    overflow-y: auto;
-    padding: 0.5rem 0 1rem;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
-  }
-
-  .toc-title {
-    font-size: 0.75rem;
-    font-family: var(--font-mono);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--text-muted);
-    margin-bottom: 0.75rem;
-    padding-left: 0.75rem;
-  }
-
-  .toc-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .toc-item {
-    margin: 0;
-  }
-
-  .toc-link {
-    display: block;
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    padding: 0.35rem 0 0.35rem 0.75rem;
-    border-left: 2px solid transparent;
-    line-height: 1.45;
-    transition:
-      color 0.15s ease,
-      border-color 0.15s ease,
-      transform 0.15s ease;
-    text-decoration: none;
-  }
-
-  .toc-link:hover {
-    color: var(--text);
-  }
-
-  .toc-link.active {
-    color: var(--accent);
-    font-weight: 600;
-    border-left-color: var(--accent);
-  }
-
-  .toc-item.depth-3 .toc-link {
-    padding-left: 1.5rem;
-    font-size: 0.76rem;
-  }
-</style>
 
 <script>
   let currentTOCController: AbortController | null = null;

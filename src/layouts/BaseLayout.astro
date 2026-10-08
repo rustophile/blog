@@ -86,7 +86,10 @@ const showImageZoom = features.imageZoom !== false;
     <Header />
     <main
       id="main-content"
-      class:list={["main-content", wide ? "container-wide" : "container"]}
+      class:list={[
+        "mx-auto w-full flex-1 px-6 pb-14",
+        wide ? "max-w-[1080px]" : "max-w-[760px]",
+      ]}
     >
       <slot />
     </main>
@@ -96,10 +99,3 @@ const showImageZoom = features.imageZoom !== false;
     {showImageZoom && <ImageZoom />}
   </body>
 </html>
-
-<style>
-  .main-content {
-    flex: 1;
-    padding-bottom: 3.5rem;
-  }
-</style>

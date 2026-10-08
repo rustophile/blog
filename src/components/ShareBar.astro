@@ -53,18 +53,25 @@ const socialLinks = [
     icon: "email",
   },
 ];
+
+// Shared by the LinkedIn, GitHub and Share buttons in the bar
+const shareBtn =
+  "inline-flex items-center gap-[0.35rem] py-[0.4rem] px-[0.65rem] border border-line rounded-[6px] bg-surface text-fg text-[0.82rem] cursor-pointer no-underline [transition:background-color_0.15s_ease,border-color_0.15s_ease,color_0.15s_ease,transform_0.1s_ease] hover:bg-subtle hover:border-accent hover:text-accent";
 ---
 
-<div class="share-bar" aria-label="Share and connect">
-  <span class="share-label">Share:</span>
-  <div class="share-buttons">
+<div
+  class="flex items-center gap-3 py-4 mt-8 border-t border-line"
+  aria-label="Share and connect"
+>
+  <span class="text-[0.88rem] font-semibold text-muted">Share:</span>
+  <div class="flex items-center gap-2">
     <!-- LinkedIn -->
     {linkedinUrl && (
       <a
         href={linkedinUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="share-btn"
+        class={shareBtn}
         title="LinkedIn"
         aria-label="LinkedIn"
       >
@@ -86,7 +93,7 @@ const socialLinks = [
         href={githubUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="share-btn"
+        class={shareBtn}
         title="GitHub"
         aria-label="GitHub"
       >
@@ -105,7 +112,7 @@ const socialLinks = [
     <!-- Interactive Share Button (Replaces static Copy link) -->
     <button
       type="button"
-      class="share-btn share-trigger-btn"
+      class:list={[shareBtn, "font-medium hover:[transform:translateY(-1px)]"]}
       id="open-share-modal"
       title="Share article"
       aria-label="Share article"
@@ -129,7 +136,7 @@ const socialLinks = [
         <polyline points="16 6 12 2 8 6"></polyline>
         <line x1="12" y1="2" x2="12" y2="15"></line>
       </svg>
-      <span class="share-trigger-text">Share</span>
+      <span>Share</span>
     </button>
   </div>
 </div>
@@ -137,18 +144,21 @@ const socialLinks = [
 <!-- Notion-Style Share Modal Overlay -->
 <div
   id="share-modal-backdrop"
-  class="share-backdrop"
+  class="group hidden [&.open]:flex fixed inset-0 z-[1000] bg-[rgba(15,23,42,0.65)] [-webkit-backdrop-filter:blur(8px)] py-6 px-4 items-center justify-center opacity-0 [&.open]:opacity-100 transition-opacity duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
   aria-hidden="true"
   role="dialog"
   aria-modal="true"
   aria-labelledby="share-modal-title"
 >
-  <div class="share-dialog" id="share-modal-dialog">
+  <div
+    class="w-full max-w-[480px] bg-page border border-line rounded-[12px] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.05)] flex flex-col overflow-hidden [transform:scale(0.96)_translateY(-8px)] group-[.open]:[transform:scale(1)_translateY(0)] transition-[transform] duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+    id="share-modal-dialog"
+  >
     <!-- Header -->
-    <div class="share-dialog-header">
-      <div class="share-header-left">
+    <div class="flex items-center justify-between py-[0.85rem] px-[1.15rem] border-b border-line bg-surface">
+      <div class="flex items-center gap-2">
         <svg
-          class="share-header-icon"
+          class="text-accent"
           width="16"
           height="16"
           viewBox="0 0 24 24"
@@ -162,46 +172,61 @@ const socialLinks = [
           <polyline points="16 6 12 2 8 6"></polyline>
           <line x1="12" y1="2" x2="12" y2="15"></line>
         </svg>
-        <h3 id="share-modal-title" class="share-dialog-title">
+        <h3
+          id="share-modal-title"
+          class="m-0 text-[0.95rem] font-semibold text-fg"
+        >
           Share article
         </h3>
       </div>
       <button
         id="share-modal-close"
-        class="share-close-btn"
+        class="group/close bg-transparent border-none cursor-pointer p-0 flex items-center"
         type="button"
         aria-label="Close share dialog (Esc)"
         title="Close (Esc)"
       >
-        <kbd class="kbd-esc">ESC</kbd>
+        <kbd class="inline-flex items-center justify-center font-mono text-[0.6875rem] font-semibold text-muted bg-page border border-line rounded-[4px] py-[0.15rem] px-[0.4rem] shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-[color,border-color] duration-150 ease-[ease] group-hover/close:text-fg group-hover/close:border-accent">
+          ESC
+        </kbd>
       </button>
     </div>
 
     <!-- Body -->
-    <div class="share-dialog-body">
+    <div class="p-[1.15rem] flex flex-col gap-[1.15rem]">
       <!-- Mini Preview Card (Notion-style) -->
-      <div class="share-preview-card">
-        <div class="preview-card-topbar">
-          <div class="preview-site-brand">
-            <span class="preview-brand-emoji">🦀</span>
-            <span class="preview-brand-name">{siteConfig.title}</span>
+      <div class="bg-surface border border-line rounded-[8px] py-[0.9rem] px-4 flex flex-col gap-[0.6rem] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+        <div class="flex items-center justify-between pb-[0.45rem] border-b border-line">
+          <div class="flex items-center gap-[0.35rem]">
+            <span class="text-[0.9rem]">🦀</span>
+            <span class="text-[0.8rem] font-semibold text-fg tracking-[-0.01em]">
+              {siteConfig.title}
+            </span>
           </div>
-          <span class="preview-pill">Preview</span>
+          <span class="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.05em] text-muted bg-subtle py-[0.1rem] px-[0.4rem] rounded-[4px] border border-line">
+            Preview
+          </span>
         </div>
-        <div class="preview-card-main">
-          <div class="preview-article-title-row">
-            <span class="preview-doc-icon">📄</span>
-            <span class="preview-article-title">{title}</span>
+        <div class="flex flex-col gap-[0.3rem]">
+          <div class="flex items-start gap-[0.45rem]">
+            <span class="text-[1rem] leading-[1.35] shrink-0">📄</span>
+            <span class="text-[0.98rem] font-semibold text-fg leading-[1.35]">
+              {title}
+            </span>
           </div>
-          {description && <p class="preview-article-desc">{description}</p>}
+          {description && (
+            <p class="m-0 text-[0.8rem] text-muted leading-[1.5] line-clamp-2">
+              {description}
+            </p>
+          )}
         </div>
       </div>
 
       <!-- Canonical URL Field with Copy Button -->
-      <div class="share-url-field">
-        <div class="share-url-input-wrap">
+      <div class="flex items-stretch gap-2">
+        <div class="flex-[1] relative flex items-center min-w-0">
           <svg
-            class="url-input-icon"
+            class="absolute left-3 text-muted pointer-events-none"
             width="14"
             height="14"
             viewBox="0 0 24 24"
@@ -218,7 +243,7 @@ const socialLinks = [
           <input
             type="text"
             id="share-url-input"
-            class="share-url-input"
+            class="w-full bg-subtle border border-line rounded-[6px] py-2 pr-3 pl-[2.15rem] font-mono text-[0.78rem] text-muted outline-none text-ellipsis whitespace-nowrap overflow-hidden transition-[border-color,color] duration-150 ease-[ease] focus:border-accent focus:text-fg"
             value={url}
             readonly
             aria-label="Article canonical link"
@@ -228,11 +253,11 @@ const socialLinks = [
         <button
           type="button"
           id="share-copy-btn"
-          class="share-copy-btn"
+          class="inline-flex items-center gap-[0.4rem] py-2 px-[0.85rem] border border-[#1f6feb] rounded-[6px] bg-[#1f6feb] text-white text-[0.82rem] font-semibold cursor-pointer whitespace-nowrap shrink-0 [transition:background-color_0.15s_ease,border-color_0.15s_ease,transform_0.1s_ease] hover:bg-[#388bfd] hover:border-[#388bfd] active:[transform:scale(0.98)] [&.copied]:bg-[#10b981] [&.copied]:border-[#10b981] [&.copied]:text-white"
           aria-label="Copy canonical link to clipboard"
         >
           <svg
-            class="copy-state-icon link-icon"
+            class="link-icon"
             width="14"
             height="14"
             viewBox="0 0 24 24"
@@ -246,7 +271,7 @@ const socialLinks = [
             <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
           </svg>
           <svg
-            class="copy-state-icon check-icon"
+            class="check-icon"
             width="14"
             height="14"
             viewBox="0 0 24 24"
@@ -264,15 +289,17 @@ const socialLinks = [
       </div>
 
       <!-- Social Share Grid (Calibrated Minrock-style buttons: square, 6px border-radius) -->
-      <div class="share-social-wrapper">
-        <div class="share-social-header">Share directly to:</div>
-        <div class="share-social-grid">
+      <div class="flex flex-col gap-[0.65rem]">
+        <div class="text-[0.72rem] font-semibold font-mono uppercase tracking-[0.05em] text-muted">
+          Share directly to:
+        </div>
+        <div class="grid grid-cols-[repeat(6,1fr)] gap-2 max-[480px]:grid-cols-[repeat(3,1fr)]">
           {socialLinks.map((item) => (
             <a
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              class={`social-share-btn btn-${item.icon}`}
+              class="social-share-btn flex items-center justify-center h-[42px] border border-line rounded-[6px] bg-surface text-fg no-underline transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-subtle hover:border-accent hover:text-accent hover:[transform:translateY(-2px)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] active:[transform:translateY(0)]"
               title={item.title}
               aria-label={item.title}
               data-social={item.icon}
@@ -487,387 +514,3 @@ const socialLinks = [
     document.body.style.overflow = "";
   });
 </script>
-
-<style>
-  .share-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 0;
-    margin-top: 2rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .share-label {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--text-muted);
-  }
-
-  .share-buttons {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .share-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.4rem 0.65rem;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background-color: var(--bg-surface);
-    color: var(--text);
-    font-size: 0.82rem;
-    cursor: pointer;
-    text-decoration: none;
-    transition:
-      background-color 0.15s ease,
-      border-color 0.15s ease,
-      color 0.15s ease,
-      transform 0.1s ease;
-  }
-
-  .share-btn:hover {
-    background-color: var(--bg-subtle);
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .share-trigger-btn {
-    font-weight: 500;
-  }
-
-  .share-trigger-btn:hover {
-    transform: translateY(-1px);
-  }
-
-  /* Backdrop Overlay */
-  .share-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    background: rgba(15, 23, 42, 0.65);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    padding: 1.5rem 1rem;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .share-backdrop.open {
-    display: flex;
-    opacity: 1;
-  }
-
-  /* Dialog Container (Notion Style) */
-  .share-dialog {
-    width: 100%;
-    max-width: 480px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-shadow:
-      0 24px 48px -12px rgba(0, 0, 0, 0.45),
-      0 0 0 1px rgba(255, 255, 255, 0.05);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transform: scale(0.96) translateY(-8px);
-    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .share-backdrop.open .share-dialog {
-    transform: scale(1) translateY(0);
-  }
-
-  /* Header */
-  .share-dialog-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.85rem 1.15rem;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg-surface);
-  }
-
-  .share-header-left {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .share-header-icon {
-    color: var(--accent);
-  }
-
-  .share-dialog-title {
-    margin: 0;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .share-close-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    display: flex;
-    align-items: center;
-  }
-
-  .kbd-esc {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 0.15rem 0.4rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    transition:
-      color 0.15s,
-      border-color 0.15s;
-  }
-
-  .share-close-btn:hover .kbd-esc {
-    color: var(--text);
-    border-color: var(--accent);
-  }
-
-  /* Body */
-  .share-dialog-body {
-    padding: 1.15rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.15rem;
-  }
-
-  /* Notion-Style Preview Card */
-  .share-preview-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.9rem 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  }
-
-  .preview-card-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 0.45rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .preview-site-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
-
-  .preview-brand-emoji {
-    font-size: 0.9rem;
-  }
-
-  .preview-brand-name {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: -0.01em;
-  }
-
-  .preview-pill {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-    background: var(--bg-subtle);
-    padding: 0.1rem 0.4rem;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-  }
-
-  .preview-card-main {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-
-  .preview-article-title-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.45rem;
-  }
-
-  .preview-doc-icon {
-    font-size: 1rem;
-    line-height: 1.35;
-    flex-shrink: 0;
-  }
-
-  .preview-article-title {
-    font-size: 0.98rem;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.35;
-  }
-
-  .preview-article-desc {
-    margin: 0;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* URL Field Container */
-  .share-url-field {
-    display: flex;
-    align-items: stretch;
-    gap: 0.5rem;
-  }
-
-  .share-url-input-wrap {
-    flex: 1;
-    position: relative;
-    display: flex;
-    align-items: center;
-    min-width: 0;
-  }
-
-  .url-input-icon {
-    position: absolute;
-    left: 0.75rem;
-    color: var(--text-muted);
-    pointer-events: none;
-  }
-
-  .share-url-input {
-    width: 100%;
-    background: var(--bg-subtle);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.5rem 0.75rem 0.5rem 2.15rem;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    outline: none;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    transition:
-      border-color 0.15s ease,
-      color 0.15s ease;
-  }
-
-  .share-url-input:focus {
-    border-color: var(--accent);
-    color: var(--text);
-  }
-
-  .share-copy-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.5rem 0.85rem;
-    border: 1px solid #1f6feb;
-    border-radius: 6px;
-    background-color: #1f6feb;
-    color: #ffffff;
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    flex-shrink: 0;
-    transition:
-      background-color 0.15s ease,
-      border-color 0.15s ease,
-      transform 0.1s ease;
-  }
-
-  .share-copy-btn:hover {
-    background-color: #388bfd;
-    border-color: #388bfd;
-  }
-
-  .share-copy-btn:active {
-    transform: scale(0.98);
-  }
-
-  .share-copy-btn.copied {
-    background-color: #10b981;
-    border-color: #10b981;
-    color: #ffffff;
-  }
-
-  /* Social Share Buttons */
-  .share-social-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 0.65rem;
-  }
-
-  .share-social-header {
-    font-size: 0.72rem;
-    font-weight: 600;
-    font-family: var(--font-mono);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-  }
-
-  .share-social-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 0.5rem;
-  }
-
-  .social-share-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 42px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background-color: var(--bg-surface);
-    color: var(--text);
-    text-decoration: none;
-    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .social-share-btn:hover {
-    background-color: var(--bg-subtle);
-    border-color: var(--accent);
-    color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  }
-
-  .social-share-btn:active {
-    transform: translateY(0);
-  }
-
-  @media (max-width: 480px) {
-    .share-social-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-</style>

@@ -16,19 +16,24 @@ const showTags = siteConfig.features?.tags !== false;
 ---
 
 <BaseLayout title="Blog — All Notes">
-  <div class="blog-page">
-    <header class="blog-header">
-      <h1 class="page-title">Articles &amp; Notes</h1>
-      <p class="page-desc">
+  <div class="pt-4">
+    <header class="mb-10 border-b border-line pb-6">
+      <h1 class="mt-0 mb-2 text-[2.4rem] tracking-[-0.025em]">
+        Articles &amp; Notes
+      </h1>
+      <p class="mb-5 text-[1.05rem] leading-[1.6] text-muted">
         Explorations in software engineering, technical writing, and minimalist
         design.
       </p>
 
       {showTags && allTags.length > 0 && (
-        <div class="tags-filter">
-          <span class="tags-label">Topics:</span>
+        <div class="flex flex-wrap items-center gap-2 text-[0.85rem]">
+          <span class="font-semibold text-muted">Topics:</span>
           {allTags.map((tag) => (
-            <a href={`/tags/${tag}`} class="tag-pill">
+            <a
+              href={`/tags/${tag}`}
+              class="rounded-[9999px] border border-line bg-surface px-[0.6rem] py-[0.2rem] text-muted no-underline transition-[color,border-color,background-color] duration-150 ease-[ease] hover:border-accent hover:bg-subtle hover:text-accent"
+            >
               #{tag}
             </a>
           ))}
@@ -36,16 +41,16 @@ const showTags = siteConfig.features?.tags !== false;
       )}
     </header>
 
-    <section class="articles-section">
-      <div class="section-header">
-        <h2 class="section-title">
+    <section class="mt-4">
+      <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <h2 class="m-0 flex items-center gap-2 text-[1.35rem]">
           <span>All Articles</span>
-          <span class="section-arrow">→</span>
+          <span class="text-[1.1rem] text-muted">→</span>
         </h2>
 
         <!-- Simple Search Filter Box -->
-        <div class="search-wrap">
-          <div class="search-box">
+        <div class="min-w-[220px] max-w-[360px] flex-1">
+          <div class="flex items-center gap-2 rounded-[6px] border border-line bg-surface px-[0.85rem] py-[0.45rem] text-muted">
             <svg
               width="15"
               height="15"
@@ -63,6 +68,7 @@ const showTags = siteConfig.features?.tags !== false;
             <input
               type="text"
               id="search-input"
+              class="w-full border-none bg-transparent font-sans text-[0.9rem] text-fg outline-none placeholder:text-muted"
               placeholder="Filter articles..."
               aria-label="Filter articles"
               autocomplete="off"
@@ -71,7 +77,7 @@ const showTags = siteConfig.features?.tags !== false;
         </div>
       </div>
 
-      <div class="posts-list" id="posts-list">
+      <div class="flex flex-col gap-6" id="posts-list">
         {allPosts.map((post) => (
           <div
             class="article-wrapper"
@@ -87,23 +93,29 @@ const showTags = siteConfig.features?.tags !== false;
 
       <!-- Bottom Pagination -->
       <div
-        class="pagination-container pagination-bottom"
+        class="mt-8 mb-4 flex justify-center"
         id="pagination-bottom"
         style="display: none;"
       >
-        <nav class="pagination-bar" aria-label="Bottom article pagination">
+        <nav
+          class="inline-flex items-center gap-[0.4rem] rounded-[8px] border border-line bg-surface px-2 py-[0.3rem]"
+          aria-label="Bottom article pagination"
+        >
           <button
             type="button"
-            class="pagination-btn prev"
+            class="inline-flex h-[32px] min-w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-transparent bg-transparent px-[0.45rem] py-0 font-mono text-[0.85rem] text-muted transition-[background-color,color,border-color] duration-150 ease-[ease] not-disabled:hover:border-accent not-disabled:hover:bg-subtle not-disabled:hover:text-accent disabled:cursor-not-allowed disabled:opacity-30"
             id="page-prev-bottom"
             aria-label="Previous page"
           >
             ←
           </button>
-          <div class="pagination-pages" id="pagination-pages-bottom"></div>
+          <div
+            class="inline-flex items-center gap-[0.4rem]"
+            id="pagination-pages-bottom"
+          ></div>
           <button
             type="button"
-            class="pagination-btn next"
+            class="inline-flex h-[32px] min-w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-transparent bg-transparent px-[0.45rem] py-0 font-mono text-[0.85rem] text-muted transition-[background-color,color,border-color] duration-150 ease-[ease] not-disabled:hover:border-accent not-disabled:hover:bg-subtle not-disabled:hover:text-accent disabled:cursor-not-allowed disabled:opacity-30"
             id="page-next-bottom"
             aria-label="Next page"
           >
@@ -112,7 +124,11 @@ const showTags = siteConfig.features?.tags !== false;
         </nav>
       </div>
 
-      <div id="no-results" class="no-results" style="display: none;">
+      <div
+        id="no-results"
+        class="py-12 text-center text-muted"
+        style="display: none;"
+      >
         <p>No articles found matching your filter.</p>
       </div>
     </section>
@@ -174,7 +190,7 @@ const showTags = siteConfig.features?.tags !== false;
         for (let i = 1; i <= totalPages; i++) {
           const btn = document.createElement("button");
           btn.type = "button";
-          btn.className = `pagination-num${i === currentPage ? " active" : ""}`;
+          btn.className = `pagination-num inline-flex h-[32px] min-w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-transparent bg-transparent px-[0.45rem] py-0 font-mono text-[0.85rem] text-muted transition-[background-color,color,border-color] duration-150 ease-[ease] hover:[&:not(.active)]:border-accent hover:[&:not(.active)]:bg-subtle hover:[&:not(.active)]:text-accent [&.active]:cursor-default [&.active]:border-line [&.active]:bg-subtle [&.active]:font-semibold [&.active]:text-fg${i === currentPage ? " active" : ""}`;
           btn.textContent = String(i);
           btn.setAttribute("aria-label", `Page ${i}`);
           btn.addEventListener("click", () => {
@@ -245,199 +261,3 @@ const showTags = siteConfig.features?.tags !== false;
   setupArticlePagination();
   document.addEventListener("astro:after-swap", setupArticlePagination);
 </script>
-
-<style>
-  .blog-page {
-    padding-top: 1rem;
-  }
-
-  .blog-header {
-    margin-bottom: 2.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .page-title {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    font-size: 2.4rem;
-    letter-spacing: -0.025em;
-  }
-
-  .page-desc {
-    color: var(--text-muted);
-    margin-bottom: 1.25rem;
-    font-size: 1.05rem;
-    line-height: 1.6;
-  }
-
-  .tags-filter {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    font-size: 0.85rem;
-  }
-
-  .tags-label {
-    color: var(--text-muted);
-    font-weight: 600;
-  }
-
-  .tag-pill {
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    padding: 0.2rem 0.6rem;
-    border-radius: 9999px;
-    color: var(--text-muted);
-    text-decoration: none;
-    transition:
-      color 0.15s ease,
-      border-color 0.15s ease,
-      background-color 0.15s ease;
-  }
-
-  .tag-pill:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-    background: var(--bg-subtle);
-  }
-
-  .articles-section {
-    margin-top: 1rem;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .section-title {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1.35rem;
-    margin: 0;
-  }
-
-  .section-arrow {
-    color: var(--text-muted);
-    font-size: 1.1rem;
-  }
-
-  .search-wrap {
-    flex: 1;
-    max-width: 360px;
-    min-width: 220px;
-  }
-
-  .search-box {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.45rem 0.85rem;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background-color: var(--bg-surface);
-    color: var(--text-muted);
-  }
-
-  .search-box input {
-    width: 100%;
-    border: none;
-    background: transparent;
-    color: var(--text);
-    font-size: 0.9rem;
-    font-family: var(--font-sans);
-    outline: none;
-  }
-
-  .search-box input::placeholder {
-    color: var(--text-muted);
-  }
-
-  .posts-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .no-results {
-    padding: 3rem 0;
-    text-align: center;
-    color: var(--text-muted);
-  }
-
-  /* Pagination */
-  .pagination-container {
-    display: flex;
-    justify-content: center;
-    margin: 1.5rem 0;
-  }
-
-  .pagination-bottom {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-  }
-
-  .pagination-bar {
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--bg-surface);
-    padding: 0.3rem 0.5rem;
-    gap: 0.4rem;
-  }
-
-  .pagination-pages {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .pagination-btn,
-  .pagination-pages :global(.pagination-num) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 32px;
-    height: 32px;
-    padding: 0 0.45rem;
-    border: 1px solid transparent;
-    border-radius: 6px;
-    background: transparent;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    font-family: var(--font-mono);
-    cursor: pointer;
-    transition:
-      background-color 0.15s ease,
-      color 0.15s ease,
-      border-color 0.15s ease;
-  }
-
-  .pagination-btn:hover:not(:disabled),
-  .pagination-pages :global(.pagination-num:hover:not(.active)) {
-    color: var(--accent);
-    background-color: var(--bg-subtle);
-    border-color: var(--accent);
-  }
-
-  .pagination-pages :global(.pagination-num.active) {
-    color: var(--text);
-    background-color: var(--bg-subtle);
-    font-weight: 600;
-    border-color: var(--border);
-    cursor: default;
-  }
-
-  .pagination-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-</style>

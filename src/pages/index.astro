@@ -24,32 +24,48 @@ const topTags = [...tagsMap.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
 <BaseLayout>
-  <section class="hero">
-    <h1 class="hero-title">Learning Rust, one borrow at a time.</h1>
-    <p class="hero-subtitle">{siteConfig.tagline}</p>
-    <div class="hero-actions">
-      <a href="/blog" class="btn btn-primary">
+  <section class="pt-10 px-0 pb-12 border-b border-line mb-10">
+    <h1 class="text-[2.4rem] leading-[1.25] mt-0 mb-4 tracking-[-0.03em]">
+      Learning Rust, one borrow at a time.
+    </h1>
+    <p class="text-[1.15rem] text-muted leading-[1.6] mb-8 max-w-[640px]">
+      {siteConfig.tagline}
+    </p>
+    <div class="flex gap-[0.85rem] flex-wrap">
+      <a
+        href="/blog"
+        class="inline-block py-[0.6rem] px-[1.2rem] text-[0.95rem] font-semibold rounded-md no-underline transition-all duration-200 ease-[ease] bg-accent text-white hover:bg-accent-hover hover:text-white hover:[transform:translateY(-1px)]"
+      >
         Read Articles →
       </a>
-      <a href="/projects" class="btn btn-secondary">
+      <a
+        href="/projects"
+        class="inline-block py-[0.6rem] px-[1.2rem] text-[0.95rem] font-semibold rounded-md no-underline transition-all duration-200 ease-[ease] bg-surface border border-line text-fg hover:border-accent hover:text-accent hover:[transform:translateY(-1px)]"
+      >
         Explore Projects
       </a>
-      <a href="/about" class="btn btn-tertiary">
+      <a
+        href="/about"
+        class="inline-block py-[0.6rem] px-[1.2rem] text-[0.95rem] font-semibold rounded-md no-underline transition-all duration-200 ease-[ease] bg-transparent text-muted hover:text-fg"
+      >
         About
       </a>
     </div>
   </section>
 
   <!-- Latest Notes -->
-  <section class="recent-posts">
-    <div class="section-header">
-      <h2 class="section-title">Latest Articles</h2>
-      <a href="/blog" class="all-link">
+  <section class="mt-12 pt-6">
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="m-0 text-[1.45rem] tracking-[-0.015em]">Latest Articles</h2>
+      <a
+        href="/blog"
+        class="text-[0.9rem] font-medium text-muted no-underline transition-[color] duration-150 ease-[ease] hover:text-accent"
+      >
         View all ({allPosts.length}) →
       </a>
     </div>
 
-    <div class="posts-list">
+    <div class="flex flex-col gap-5">
       {recentPosts.map((post) => (
         <ArticleCard post={post} />
       ))}
@@ -58,15 +74,20 @@ const topTags = [...tagsMap.entries()].sort((a, b) => b[1] - a[1]);
 
   <!-- Featured Projects -->
   {featuredProjects.length > 0 && (
-    <section class="featured-projects">
-      <div class="section-header">
-        <h2 class="section-title">Featured Projects</h2>
-        <a href="/projects" class="all-link">
+    <section class="mt-12 pt-6">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="m-0 text-[1.45rem] tracking-[-0.015em]">
+          Featured Projects
+        </h2>
+        <a
+          href="/projects"
+          class="text-[0.9rem] font-medium text-muted no-underline transition-[color] duration-150 ease-[ease] hover:text-accent"
+        >
           All projects ({allProjects.length}) →
         </a>
       </div>
 
-      <div class="projects-grid">
+      <div class="grid grid-cols-[1fr_1fr] gap-5 max-[700px]:grid-cols-[1fr]">
         {featuredProjects.map((proj) => (
           <ProjectCard
             title={proj.data.title}
@@ -87,187 +108,32 @@ const topTags = [...tagsMap.entries()].sort((a, b) => b[1] - a[1]);
 
   <!-- Explore by Topics / Tags Cloud -->
   {siteConfig.features?.tags !== false && topTags.length > 0 && (
-    <section class="home-tags-section">
-      <div class="section-header">
-        <h2 class="section-title">Explore by Topics</h2>
-        <a href="/tags" class="all-link">
+    <section class="mt-12 pt-6">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="m-0 text-[1.45rem] tracking-[-0.015em]">
+          Explore by Topics
+        </h2>
+        <a
+          href="/tags"
+          class="text-[0.9rem] font-medium text-muted no-underline transition-[color] duration-150 ease-[ease] hover:text-accent"
+        >
           All tags ({topTags.length}) →
         </a>
       </div>
 
-      <div class="tags-cloud">
+      <div class="flex flex-wrap gap-[0.65rem]">
         {topTags.map(([tag, count]) => (
-          <a href={`/tags/${tag}`} class="tag-pill">
-            <span class="tag-name">#{tag}</span>
-            <span class="tag-count">{count}</span>
+          <a
+            href={`/tags/${tag}`}
+            class="inline-flex items-center gap-[0.45rem] py-[0.4rem] px-[0.85rem] border border-line rounded-full bg-surface text-fg text-[0.9rem] no-underline transition-[background-color,border-color,color] duration-200 ease-[ease] hover:bg-subtle hover:border-accent hover:text-accent"
+          >
+            <span class="font-medium">#{tag}</span>
+            <span class="text-[0.75rem] font-mono py-[0.1rem] px-[0.4rem] rounded-full bg-subtle text-muted">
+              {count}
+            </span>
           </a>
         ))}
       </div>
     </section>
   )}
 </BaseLayout>
-
-<style>
-  .hero {
-    padding: 2.5rem 0 3rem;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 2.5rem;
-  }
-
-  .hero-title {
-    font-size: 2.4rem;
-    line-height: 1.25;
-    margin-top: 0;
-    margin-bottom: 1rem;
-    letter-spacing: -0.03em;
-  }
-
-  .hero-subtitle {
-    font-size: 1.15rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    margin-bottom: 2rem;
-    max-width: 640px;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 0.85rem;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    display: inline-block;
-    padding: 0.6rem 1.2rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-radius: 6px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-
-  .btn-primary {
-    background: var(--accent);
-    color: #ffffff;
-  }
-
-  .btn-primary:hover {
-    background: var(--accent-hover);
-    color: #ffffff;
-    transform: translateY(-1px);
-  }
-
-  .btn-secondary {
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    transform: translateY(-1px);
-  }
-
-  .btn-tertiary {
-    background: transparent;
-    color: var(--text-muted);
-  }
-
-  .btn-tertiary:hover {
-    color: var(--text);
-  }
-
-  .recent-posts,
-  .featured-projects,
-  .home-tags-section {
-    margin-top: 3rem;
-    padding-top: 1.5rem;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.25rem;
-  }
-
-  .section-title {
-    margin: 0;
-    font-size: 1.45rem;
-    letter-spacing: -0.015em;
-  }
-
-  .all-link {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: color 0.15s ease;
-  }
-
-  .all-link:hover {
-    color: var(--accent);
-  }
-
-  .posts-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
-  }
-
-  @media (max-width: 700px) {
-    .projects-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* Tags Cloud */
-  .tags-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.65rem;
-  }
-
-  .tag-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.4rem 0.85rem;
-    border: 1px solid var(--border);
-    border-radius: 9999px;
-    background-color: var(--bg-surface);
-    color: var(--text);
-    font-size: 0.9rem;
-    text-decoration: none;
-    transition:
-      background-color 0.2s ease,
-      border-color 0.2s ease,
-      color 0.2s ease;
-  }
-
-  .tag-pill:hover {
-    background-color: var(--bg-subtle);
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .tag-name {
-    font-weight: 500;
-  }
-
-  .tag-count {
-    font-size: 0.75rem;
-    font-family: var(--font-mono);
-    padding: 0.1rem 0.4rem;
-    border-radius: 9999px;
-    background-color: var(--bg-subtle);
-    color: var(--text-muted);
-  }
-</style>

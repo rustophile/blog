@@ -1,17 +1,20 @@
 ---
 import { siteConfig } from "../config/site";
 const currentYear = new Date().getFullYear();
+// shared by the four social/feed buttons
+const socialBtn =
+  "inline-flex size-[34px] items-center justify-center rounded-[8px] border border-line bg-surface text-muted transition-[color,border-color,background-color,translate] duration-150 ease-[ease] hover:-translate-y-[2px] hover:border-accent hover:bg-subtle hover:text-accent";
 ---
 
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <div class="footer-socials" aria-label="Social and feed links">
+<footer class="mt-auto border-t border-line pt-10 pb-12 text-[0.88rem] text-muted">
+  <div class="mx-auto w-full max-w-[760px] px-6 flex flex-col items-center gap-4 text-center">
+    <div class="flex items-center gap-3" aria-label="Social and feed links">
       {siteConfig.socialLinks.linkedin && (
         <a
           href={siteConfig.socialLinks.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          class="footer-social-btn"
+          class={socialBtn}
           aria-label="LinkedIn"
           title="Connect on LinkedIn"
         >
@@ -37,7 +40,7 @@ const currentYear = new Date().getFullYear();
           href={siteConfig.socialLinks.github}
           target="_blank"
           rel="noopener noreferrer"
-          class="footer-social-btn"
+          class={socialBtn}
           aria-label="GitHub"
           title="Source on GitHub"
         >
@@ -73,7 +76,7 @@ const currentYear = new Date().getFullYear();
               ? "noopener noreferrer"
               : undefined
           }
-          class="footer-social-btn"
+          class={socialBtn}
           aria-label="Email"
           title="Send an email"
         >
@@ -97,7 +100,7 @@ const currentYear = new Date().getFullYear();
         href="/rss.xml"
         target="_blank"
         rel="noopener noreferrer"
-        class="footer-social-btn"
+        class={socialBtn}
         aria-label="RSS Feed"
         title="Subscribe to RSS Feed"
       >
@@ -118,12 +121,12 @@ const currentYear = new Date().getFullYear();
       </a>
     </div>
 
-    <div class="footer-copy">
+    <div class="flex flex-wrap items-center justify-center gap-2 [&_a]:font-semibold [&_a]:text-fg">
       <span>
         © {currentYear} {siteConfig.title}.
       </span>
-      <span class="footer-separator">•</span>
-      <span class="footer-ssg">
+      <span class="opacity-40">•</span>
+      <span>
         Pure SSG powered by{" "}
         <a href="https://astro.build" target="_blank" rel="noopener noreferrer">
           Astro
@@ -131,7 +134,7 @@ const currentYear = new Date().getFullYear();
       </span>
     </div>
 
-    <div class="footer-signature">
+    <div class="text-[0.85rem] text-muted [&_a]:text-fg [&_a]:underline [&_a]:underline-offset-[3px] [&_a:hover]:text-accent">
       <em>
         Theme based on{" "}
         <a
@@ -146,83 +149,3 @@ const currentYear = new Date().getFullYear();
     </div>
   </div>
 </footer>
-
-<style>
-  .site-footer {
-    border-top: 1px solid var(--border);
-    padding: 2.5rem 0 3rem;
-    margin-top: auto;
-    font-size: 0.88rem;
-    color: var(--text-muted);
-  }
-
-  .footer-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1rem;
-  }
-
-  .footer-socials {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .footer-social-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background-color: var(--bg-surface);
-    color: var(--text-muted);
-    transition:
-      color 0.15s ease,
-      border-color 0.15s ease,
-      background-color 0.15s ease,
-      transform 0.15s ease;
-  }
-
-  .footer-social-btn:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-    background-color: var(--bg-subtle);
-    transform: translateY(-2px);
-  }
-
-  .footer-copy {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .footer-copy a {
-    color: var(--text);
-    font-weight: 600;
-  }
-
-  .footer-separator {
-    opacity: 0.4;
-  }
-
-  .footer-signature {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-  }
-
-  .footer-signature a {
-    color: var(--text);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .footer-signature a:hover {
-    color: var(--accent);
-  }
-</style>

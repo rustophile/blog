@@ -15,13 +15,16 @@ const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
 const showTags = siteConfig.features?.tags !== false;
 ---
 
-<article class="article-card">
-  <div class="card-meta">
+<article class="border-b border-line py-6 last:border-b-0">
+  <div class="mb-[0.4rem] flex items-center gap-3 text-[0.82rem] text-muted">
     <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
     {showTags && post.data.tags && post.data.tags.length > 0 && (
-      <span class="tags">
+      <span class="inline-flex flex-wrap items-center gap-[0.35rem]">
         {post.data.tags.map((tag) => (
-          <a href={`/tags/${tag}`} class="tag">
+          <a
+            href={`/tags/${tag}`}
+            class="inline-flex items-center rounded-sm border border-transparent bg-transparent px-[0.45rem] py-[0.12rem] text-[0.8rem] font-medium text-accent no-underline transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[1.5px] hover:scale-[1.04] hover:border-accent hover:bg-subtle hover:text-accent hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] active:translate-y-0 active:scale-[0.98]"
+          >
             #{tag}
           </a>
         ))}
@@ -29,84 +32,13 @@ const showTags = siteConfig.features?.tags !== false;
     )}
   </div>
 
-  <h2 class="card-title">
-    <a href={`/blog/${post.id}`}>{post.data.title}</a>
+  <h2 class="mx-0 mt-0 mb-2 border-b-0 pb-0 text-[1.35rem]">
+    <a href={`/blog/${post.id}`} class="text-fg hover:text-accent">
+      {post.data.title}
+    </a>
   </h2>
 
-  <p class="card-desc">{post.data.description}</p>
+  <p class="m-0 text-[0.95rem] leading-[1.6] text-muted">
+    {post.data.description}
+  </p>
 </article>
-
-<style>
-  .article-card {
-    padding: 1.5rem 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .article-card:last-child {
-    border-bottom: none;
-  }
-
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    margin-bottom: 0.4rem;
-  }
-
-  .tags {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    display: inline-flex;
-    align-items: center;
-    color: var(--accent);
-    font-weight: 500;
-    font-size: 0.8rem;
-    text-decoration: none;
-    padding: 0.12rem 0.45rem;
-    border-radius: 4px;
-    background-color: transparent;
-    border: 1px solid transparent;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .tag:hover {
-    color: var(--accent);
-    background-color: var(--bg-subtle);
-    border-color: var(--accent);
-    transform: translateY(-1.5px) scale(1.04);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  }
-
-  .tag:active {
-    transform: translateY(0) scale(0.98);
-  }
-
-  .card-title {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.35rem;
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-
-  .card-title a {
-    color: var(--text);
-  }
-
-  .card-title a:hover {
-    color: var(--accent);
-  }
-
-  .card-desc {
-    margin: 0;
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-</style>

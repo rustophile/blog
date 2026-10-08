@@ -25,18 +25,31 @@ const {
 } = Astro.props;
 ---
 
-<article class="project-card" data-card-link={`/projects/${slug}`}>
-  <div class="project-header">
-    <div class="project-title-wrap">
-      <span class="project-emoji">{emoji}</span>
-      <a href={`/projects/${slug}`} class="project-title">
+<article
+  class="flex flex-col gap-3 p-5 border border-line rounded-lg bg-surface [transition:border-color_0.2s_ease,background-color_0.2s_ease,transform_0.15s_ease] hover:border-accent hover:bg-subtle hover:[transform:translateY(-2px)]"
+  data-card-link={`/projects/${slug}`}
+>
+  <div class="flex items-center justify-between gap-4 flex-wrap">
+    <div class="flex items-center gap-2">
+      <span class="text-[1.1rem]">{emoji}</span>
+      <a
+        href={`/projects/${slug}`}
+        class="text-[1.05rem] font-semibold text-fg no-underline transition-[color] duration-150 ease-[ease] hover:text-accent"
+      >
         {title}
       </a>
-      {category && <span class="category-badge">{category}</span>}
+      {category && (
+        <span class="text-[0.72rem] font-mono py-[0.15rem] px-[0.45rem] rounded-sm bg-page border border-line text-muted uppercase">
+          {category}
+        </span>
+      )}
     </div>
-    <div class="project-links">
+    <div class="flex items-center gap-2">
       {stars > 0 && (
-        <span class="project-stars" title={`${stars} stars`}>
+        <span
+          class="text-[0.8rem] font-mono text-[#b45309] font-semibold [[data-theme=slate]_&]:text-[#fbbf24] [[data-theme=midnight]_&]:text-[#fbbf24]"
+          title={`${stars} stars`}
+        >
           ★ {stars}
         </span>
       )}
@@ -45,7 +58,7 @@ const {
           href={repoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="project-action-link"
+          class="inline-flex items-center gap-[0.3rem] text-[0.8rem] font-mono text-muted no-underline py-[0.2rem] px-2 border border-line rounded-sm bg-page transition-[color,border-color] duration-150 ease-[ease] hover:text-accent hover:border-accent"
           title="Repository"
         >
           <svg
@@ -65,7 +78,7 @@ const {
           href={demoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="project-action-link"
+          class="inline-flex items-center gap-[0.3rem] text-[0.8rem] font-mono text-muted no-underline py-[0.2rem] px-2 border border-line rounded-sm bg-page transition-[color,border-color] duration-150 ease-[ease] hover:text-accent hover:border-accent"
           title="Live Demo"
         >
           Demo ↗
@@ -74,157 +87,18 @@ const {
     </div>
   </div>
 
-  <p class="project-desc">{description}</p>
+  <p class="text-[0.95rem] text-muted m-0 leading-[1.6]">{description}</p>
 
   {tags.length > 0 && (
-    <div class="project-tags">
+    <div class="flex gap-[0.35rem] flex-wrap mt-[0.35rem]">
       {tags.map((tag) => (
-        <a href={`/tags/${tag}`} class="tag-badge">
+        <a
+          href={`/tags/${tag}`}
+          class="inline-flex items-center text-[0.78rem] text-accent no-underline py-[0.1rem] px-[0.42rem] rounded-sm bg-transparent border border-transparent transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-accent hover:bg-subtle hover:border-accent hover:[transform:translateY(-1.5px)_scale(1.04)] hover:[box-shadow:0_2px_8px_rgba(0,0,0,0.08)] active:[transform:translateY(0)_scale(0.98)]"
+        >
           #{tag}
         </a>
       ))}
     </div>
   )}
 </article>
-
-<style>
-  .project-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1.25rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background-color: var(--bg-surface);
-    transition:
-      border-color 0.2s ease,
-      background-color 0.2s ease,
-      transform 0.15s ease;
-  }
-
-  .project-card:hover {
-    border-color: var(--accent);
-    background-color: var(--bg-subtle);
-    transform: translateY(-2px);
-  }
-
-  .project-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .project-title-wrap {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .project-emoji {
-    font-size: 1.1rem;
-  }
-
-  .project-title {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--text);
-    text-decoration: none;
-    transition: color 0.15s ease;
-  }
-
-  .project-title:hover {
-    color: var(--accent);
-  }
-
-  .category-badge {
-    font-size: 0.72rem;
-    font-family: var(--font-mono);
-    padding: 0.15rem 0.45rem;
-    border-radius: 4px;
-    background-color: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    text-transform: uppercase;
-  }
-
-  .project-links {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .project-stars {
-    font-size: 0.8rem;
-    font-family: var(--font-mono);
-    color: #b45309;
-    font-weight: 600;
-  }
-
-  :global([data-theme="slate"]) .project-stars,
-  :global([data-theme="midnight"]) .project-stars {
-    color: #fbbf24;
-  }
-
-  .project-action-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-size: 0.8rem;
-    font-family: var(--font-mono);
-    color: var(--text-muted);
-    text-decoration: none;
-    padding: 0.2rem 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    background-color: var(--bg);
-    transition:
-      color 0.15s ease,
-      border-color 0.15s ease;
-  }
-
-  .project-action-link:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .project-desc {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    margin: 0;
-    line-height: 1.6;
-  }
-
-  .project-tags {
-    display: flex;
-    gap: 0.35rem;
-    flex-wrap: wrap;
-    margin-top: 0.35rem;
-  }
-
-  .tag-badge {
-    display: inline-flex;
-    align-items: center;
-    font-size: 0.78rem;
-    color: var(--accent);
-    text-decoration: none;
-    padding: 0.1rem 0.42rem;
-    border-radius: 4px;
-    background-color: transparent;
-    border: 1px solid transparent;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .tag-badge:hover {
-    color: var(--accent);
-    background-color: var(--bg-subtle);
-    border-color: var(--accent);
-    transform: translateY(-1.5px) scale(1.04);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  }
-
-  .tag-badge:active {
-    transform: translateY(0) scale(0.98);
-  }
-</style>

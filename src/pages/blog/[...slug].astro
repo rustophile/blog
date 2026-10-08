@@ -62,19 +62,26 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
     url={currentUrl}
   />
 
-  <div class:list={["post-page-container", { "no-sidebar": !showToc }]}>
+  <div
+    class:list={[
+      "grid items-start gap-14 pt-4 max-[900px]:gap-8",
+      showToc
+        ? "grid-cols-[1fr_240px] max-[900px]:grid-cols-[1fr]"
+        : "mx-auto my-0 max-w-[780px] grid-cols-[1fr]",
+    ]}
+  >
     <!-- Main Content Column -->
-    <div class="post-main">
-      <article class="post-article">
-        <header class="post-header">
-          <div class="post-meta">
+    <div class="post-main min-w-0">
+      <article>
+        <header class="post-header mb-8 border-b border-line pb-6">
+          <div class="mb-3 flex flex-wrap items-center gap-[0.65rem] text-[0.88rem] text-muted">
             <time datetime={post.data.pubDate.toISOString()}>
               {formattedDate}
             </time>
             {showReadingTime && (
               <>
-                <span class="meta-dot">·</span>
-                <span class="reading-time">
+                <span class="text-muted opacity-50">·</span>
+                <span class="inline-flex items-center gap-[0.35rem]">
                   <svg
                     width="14"
                     height="14"
@@ -95,10 +102,13 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
             )}
             {showTags && post.data.tags && post.data.tags.length > 0 && (
               <>
-                <span class="meta-dot">·</span>
-                <span class="meta-tags">
+                <span class="text-muted opacity-50">·</span>
+                <span class="inline-flex flex-wrap items-center gap-[0.35rem]">
                   {post.data.tags.map((tag: string) => (
-                    <a href={`/tags/${tag}`} class="tag">
+                    <a
+                      href={`/tags/${tag}`}
+                      class="inline-flex items-center rounded-sm border border-transparent bg-transparent px-[0.45rem] py-[0.1rem] text-[0.82rem] font-medium text-accent no-underline transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[1.5px] hover:scale-[1.04] hover:border-accent hover:bg-subtle hover:text-accent hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] active:translate-y-0 active:scale-[0.98]"
+                    >
                       #{tag}
                     </a>
                   ))}
@@ -107,8 +117,12 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
             )}
           </div>
 
-          <h1 class="post-title">{post.data.title}</h1>
-          <p class="post-description">{post.data.description}</p>
+          <h1 class="post-title mt-0 mb-3 text-[2.4rem] leading-[1.25] tracking-[-0.025em]">
+            {post.data.title}
+          </h1>
+          <p class="post-description m-0 text-[1.15rem] leading-[1.6] text-muted">
+            {post.data.description}
+          </p>
         </header>
 
         <!-- 🔊 Accessible Audio Player (Text-to-Speech) -->
@@ -121,16 +135,16 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
         )}
 
         {post.data.image && (
-          <figure class="post-cover">
+          <figure class="post-cover mx-0 my-6">
             <img
               src={post.data.image}
               alt={post.data.title}
-              class="cover-img"
+              class="cover-img block w-full rounded-lg border border-line"
             />
           </figure>
         )}
 
-        <div class="post-content">
+        <div class="post-content text-[1.05rem] leading-[1.8]">
           <Content />
         </div>
 
@@ -143,22 +157,39 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
         )}
 
         <!-- Prev / Next Navigation -->
-        <nav class="post-nav" aria-label="Post navigation">
+        <nav
+          class="mt-10 grid grid-cols-[1fr_1fr] gap-4 border-t border-line pt-6 max-[600px]:grid-cols-[1fr]"
+          aria-label="Post navigation"
+        >
           {prevPost ? (
-            <a href={`/blog/${prevPost.id}`} class="nav-card nav-prev">
-              <span class="nav-direction">← Older</span>
-              <span class="nav-title">{prevPost.data.title}</span>
+            <a
+              href={`/blog/${prevPost.id}`}
+              class="group flex flex-col gap-[0.35rem] rounded-lg border border-line bg-surface p-4 no-underline transition-[border-color,background-color,transform] duration-[0.2s,0.2s,0.15s] ease-[ease] hover:border-accent hover:bg-subtle hover:[transform:translateY(-2px)]"
+            >
+              <span class="font-mono text-[0.75rem] tracking-[0.05em] text-muted uppercase">
+                ← Older
+              </span>
+              <span class="text-[0.95rem] leading-[1.4] font-medium text-fg group-hover:text-accent">
+                {prevPost.data.title}
+              </span>
             </a>
           ) : (
-            <div class="nav-spacer"></div>
+            <div class="block"></div>
           )}
           {nextPost ? (
-            <a href={`/blog/${nextPost.id}`} class="nav-card nav-next">
-              <span class="nav-direction">Newer →</span>
-              <span class="nav-title">{nextPost.data.title}</span>
+            <a
+              href={`/blog/${nextPost.id}`}
+              class="group flex flex-col gap-[0.35rem] rounded-lg border border-line bg-surface p-4 no-underline transition-[border-color,background-color,transform] duration-[0.2s,0.2s,0.15s] ease-[ease] hover:border-accent hover:bg-subtle hover:[transform:translateY(-2px)] items-end text-right"
+            >
+              <span class="font-mono text-[0.75rem] tracking-[0.05em] text-muted uppercase">
+                Newer →
+              </span>
+              <span class="text-[0.95rem] leading-[1.4] font-medium text-fg group-hover:text-accent">
+                {nextPost.data.title}
+              </span>
             </a>
           ) : (
-            <div class="nav-spacer"></div>
+            <div class="block"></div>
           )}
         </nav>
       </article>
@@ -166,7 +197,10 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
 
     <!-- Sticky Sidebar Column (TOC) -->
     {showToc && (
-      <aside class="post-sidebar" aria-label="Article Table of Contents">
+      <aside
+        class="relative h-full max-[900px]:hidden"
+        aria-label="Article Table of Contents"
+      >
         <TOC headings={headings} title="On This Page" />
       </aside>
     )}
@@ -174,194 +208,3 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
 
   <CopyCode />
 </BaseLayout>
-
-<style>
-  .post-page-container {
-    display: grid;
-    grid-template-columns: 1fr 240px;
-    gap: 3.5rem;
-    align-items: start;
-    padding-top: 1rem;
-  }
-
-  .post-page-container.no-sidebar {
-    grid-template-columns: 1fr;
-    max-width: 780px;
-    margin: 0 auto;
-  }
-
-  @media (max-width: 900px) {
-    .post-page-container {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-    .post-sidebar {
-      display: none;
-    }
-  }
-
-  .post-main {
-    min-width: 0;
-  }
-
-  .post-sidebar {
-    position: relative;
-    height: 100%;
-  }
-
-  .post-header {
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .post-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    font-size: 0.88rem;
-    color: var(--text-muted);
-    margin-bottom: 0.75rem;
-    flex-wrap: wrap;
-  }
-
-  .meta-dot {
-    color: var(--text-muted);
-    opacity: 0.5;
-  }
-
-  .reading-time {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
-
-  .meta-tags {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    display: inline-flex;
-    align-items: center;
-    color: var(--accent);
-    font-weight: 500;
-    font-size: 0.82rem;
-    text-decoration: none;
-    padding: 0.1rem 0.45rem;
-    border-radius: 4px;
-    background-color: transparent;
-    border: 1px solid transparent;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .tag:hover {
-    color: var(--accent);
-    background-color: var(--bg-subtle);
-    border-color: var(--accent);
-    transform: translateY(-1.5px) scale(1.04);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  }
-
-  .tag:active {
-    transform: translateY(0) scale(0.98);
-  }
-
-  .post-title {
-    margin-top: 0;
-    margin-bottom: 0.75rem;
-    font-size: 2.4rem;
-    line-height: 1.25;
-    letter-spacing: -0.025em;
-  }
-
-  .post-description {
-    font-size: 1.15rem;
-    color: var(--text-muted);
-    margin: 0;
-    line-height: 1.6;
-  }
-
-  .post-cover {
-    margin: 1.5rem 0;
-  }
-
-  .cover-img {
-    width: 100%;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    display: block;
-  }
-
-  .post-content {
-    font-size: 1.05rem;
-    line-height: 1.8;
-  }
-
-  /* Prev / Next Navigation */
-  .post-nav {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-top: 2.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .nav-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    padding: 1rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background-color: var(--bg-surface);
-    text-decoration: none;
-    transition:
-      border-color 0.2s ease,
-      background-color 0.2s ease,
-      transform 0.15s ease;
-  }
-
-  .nav-card:hover {
-    border-color: var(--accent);
-    background-color: var(--bg-subtle);
-    transform: translateY(-2px);
-  }
-
-  .nav-next {
-    text-align: right;
-    align-items: flex-end;
-  }
-
-  .nav-direction {
-    font-size: 0.75rem;
-    font-family: var(--font-mono);
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .nav-title {
-    font-size: 0.95rem;
-    color: var(--text);
-    font-weight: 500;
-    line-height: 1.4;
-  }
-
-  .nav-card:hover .nav-title {
-    color: var(--accent);
-  }
-
-  .nav-spacer {
-    display: block;
-  }
-
-  @media (max-width: 600px) {
-    .post-nav {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>

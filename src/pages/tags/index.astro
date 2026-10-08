@@ -22,80 +22,24 @@ const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
 ---
 
 <BaseLayout title="Tags" description="Explore articles by topic and tag.">
-  <header class="tags-header">
-    <h1 class="tags-h1">Explore by Tag</h1>
-    <p class="tags-subtitle">Browse notes and articles grouped by topics.</p>
+  <header class="mb-10 pb-6 border-b border-line">
+    <h1 class="text-[2.25rem] mt-0 mb-2 tracking-[-0.025em]">Explore by Tag</h1>
+    <p class="m-0 text-[1.1rem] text-muted">
+      Browse notes and articles grouped by topics.
+    </p>
   </header>
 
-  <div class="tags-cloud">
+  <div class="flex flex-wrap gap-3 py-4">
     {sortedTags.map(([tag, count]) => (
-      <a href={`/tags/${tag}`} class="tag-pill">
-        <span class="tag-name">#{tag}</span>
-        <span class="tag-count">{count}</span>
+      <a
+        href={`/tags/${tag}`}
+        class="inline-flex items-center gap-2 py-2 px-4 bg-surface border border-line rounded-[9999px] text-[0.95rem] text-fg no-underline transition-[background-color,border-color,color] duration-200 ease-[ease] hover:bg-subtle hover:border-accent hover:text-accent"
+      >
+        <span class="font-semibold">#{tag}</span>
+        <span class="text-[0.8rem] text-muted bg-subtle py-[0.15rem] px-[0.45rem] rounded-[9999px]">
+          {count}
+        </span>
       </a>
     ))}
   </div>
 </BaseLayout>
-
-<style>
-  .tags-header {
-    margin-bottom: 2.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .tags-h1 {
-    font-size: 2.25rem;
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.025em;
-  }
-
-  .tags-subtitle {
-    margin: 0;
-    font-size: 1.1rem;
-    color: var(--text-muted);
-  }
-
-  .tags-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    padding: 1rem 0;
-  }
-
-  .tag-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: 9999px;
-    font-size: 0.95rem;
-    color: var(--text);
-    text-decoration: none;
-    transition:
-      background-color 0.2s ease,
-      border-color 0.2s ease,
-      color 0.2s ease;
-  }
-
-  .tag-pill:hover {
-    background-color: var(--bg-subtle);
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .tag-name {
-    font-weight: 600;
-  }
-
-  .tag-count {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    background-color: var(--bg-subtle);
-    padding: 0.15rem 0.45rem;
-    border-radius: 9999px;
-  }
-</style>

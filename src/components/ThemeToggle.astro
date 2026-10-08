@@ -1,22 +1,30 @@
 ---
 // src/components/ThemeToggle.astro
 // Dropdown menu for Minrock themes (Clean White, Warm Paper, Slate Navy, Midnight OLED, Auto)
+
+// shared by the five options and their check marks
+const option =
+  "theme-option group flex w-full cursor-pointer items-center justify-between gap-2 rounded-[5px] border-none bg-transparent px-[0.65rem] py-[0.45rem] text-left font-sans text-[0.84rem] text-fg transition-[background-color,color] duration-[120ms] ease-[ease] hover:bg-subtle hover:text-accent [&.active]:bg-subtle [&.active]:font-semibold [&.active]:text-accent";
+const check = "hidden shrink-0 text-accent group-[.active]:block";
 ---
 
-<div class="theme-selector" id="theme-selector">
+<div class="relative inline-flex items-center" id="theme-selector">
   <button
     id="theme-toggle-btn"
-    class="theme-btn-trigger"
+    class="group inline-flex size-[34px] cursor-pointer items-center justify-center gap-[3px] rounded-[6px] border border-line bg-surface p-0 text-muted transition-[color,background-color,border-color,transform] duration-150 ease-[ease] hover:border-accent hover:bg-subtle hover:text-fg"
     aria-label="Select color theme"
     aria-haspopup="true"
     aria-expanded="false"
     title="Color theme / Tema visual"
   >
-    <span id="theme-active-icon" class="theme-active-icon">
+    <span
+      id="theme-active-icon"
+      class="inline-flex items-center justify-center text-[1rem] leading-none"
+    >
       📜
     </span>
     <svg
-      class="theme-chevron"
+      class="-ml-px opacity-60 transition-transform duration-150 ease-[ease] group-aria-expanded:rotate-180"
       width="9"
       height="9"
       viewBox="0 0 24 24"
@@ -34,19 +42,23 @@
   <!-- Floating Theme Dropdown -->
   <div
     id="theme-dropdown"
-    class="theme-dropdown"
+    class="theme-dropdown absolute top-[calc(100%+6px)] right-0 z-[1000] hidden min-w-[175px] animate-[themeDropdownFade_0.15s_ease] rounded-[8px] border border-line bg-page p-[0.35rem] shadow-[0_10px_25px_-5px_rgba(0,0,0,0.2)] backdrop-blur-[12px] max-md:right-auto max-md:left-1/2 max-md:max-w-[calc(100vw-24px)] max-md:[transform:translateX(-50%)] [&.open]:block"
     role="menu"
     aria-label="Available themes"
   >
-    <div class="theme-dropdown-header">THEME</div>
+    <div class="px-[0.65rem] pt-[0.25rem] pb-[0.35rem] font-mono text-[0.68rem] font-bold tracking-[0.06em] text-muted opacity-80">
+      THEME
+    </div>
 
-    <button class="theme-option" data-theme-val="white" role="menuitem">
-      <span class="theme-opt-left">
-        <span class="theme-emoji">☀️</span>
-        <span class="theme-label">Clean White</span>
+    <button class={option} data-theme-val="white" role="menuitem">
+      <span class="inline-flex items-center gap-[0.55rem]">
+        <span class="inline-flex w-[18px] items-center justify-center text-[0.95rem] leading-none">
+          ☀️
+        </span>
+        <span class="font-medium">Clean White</span>
       </span>
       <svg
-        class="theme-check"
+        class={check}
         width="14"
         height="14"
         viewBox="0 0 24 24"
@@ -61,13 +73,15 @@
       </svg>
     </button>
 
-    <button class="theme-option" data-theme-val="cream" role="menuitem">
-      <span class="theme-opt-left">
-        <span class="theme-emoji">📜</span>
-        <span class="theme-label">Warm Paper</span>
+    <button class={option} data-theme-val="cream" role="menuitem">
+      <span class="inline-flex items-center gap-[0.55rem]">
+        <span class="inline-flex w-[18px] items-center justify-center text-[0.95rem] leading-none">
+          📜
+        </span>
+        <span class="font-medium">Warm Paper</span>
       </span>
       <svg
-        class="theme-check"
+        class={check}
         width="14"
         height="14"
         viewBox="0 0 24 24"
@@ -82,13 +96,15 @@
       </svg>
     </button>
 
-    <button class="theme-option" data-theme-val="slate" role="menuitem">
-      <span class="theme-opt-left">
-        <span class="theme-emoji">⚓</span>
-        <span class="theme-label">Slate Navy</span>
+    <button class={option} data-theme-val="slate" role="menuitem">
+      <span class="inline-flex items-center gap-[0.55rem]">
+        <span class="inline-flex w-[18px] items-center justify-center text-[0.95rem] leading-none">
+          ⚓
+        </span>
+        <span class="font-medium">Slate Navy</span>
       </span>
       <svg
-        class="theme-check"
+        class={check}
         width="14"
         height="14"
         viewBox="0 0 24 24"
@@ -103,13 +119,15 @@
       </svg>
     </button>
 
-    <button class="theme-option" data-theme-val="midnight" role="menuitem">
-      <span class="theme-opt-left">
-        <span class="theme-emoji">🌌</span>
-        <span class="theme-label">Midnight OLED</span>
+    <button class={option} data-theme-val="midnight" role="menuitem">
+      <span class="inline-flex items-center gap-[0.55rem]">
+        <span class="inline-flex w-[18px] items-center justify-center text-[0.95rem] leading-none">
+          🌌
+        </span>
+        <span class="font-medium">Midnight OLED</span>
       </span>
       <svg
-        class="theme-check"
+        class={check}
         width="14"
         height="14"
         viewBox="0 0 24 24"
@@ -124,15 +142,17 @@
       </svg>
     </button>
 
-    <div class="theme-divider"></div>
+    <div class="my-[0.3rem] h-px bg-line"></div>
 
-    <button class="theme-option" data-theme-val="auto" role="menuitem">
-      <span class="theme-opt-left">
-        <span class="theme-emoji">💻</span>
-        <span class="theme-label">System Auto</span>
+    <button class={option} data-theme-val="auto" role="menuitem">
+      <span class="inline-flex items-center gap-[0.55rem]">
+        <span class="inline-flex w-[18px] items-center justify-center text-[0.95rem] leading-none">
+          💻
+        </span>
+        <span class="font-medium">System Auto</span>
       </span>
       <svg
-        class="theme-check"
+        class={check}
         width="14"
         height="14"
         viewBox="0 0 24 24"
@@ -150,77 +170,7 @@
 </div>
 
 <style>
-  .theme-selector {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .theme-btn-trigger {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    width: 34px;
-    height: 34px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background-color: var(--bg-surface);
-    color: var(--text-muted);
-    cursor: pointer;
-    transition:
-      color 0.15s ease,
-      background-color 0.15s ease,
-      border-color 0.15s ease,
-      transform 0.15s ease;
-    padding: 0;
-  }
-
-  .theme-btn-trigger:hover {
-    color: var(--text);
-    background-color: var(--bg-subtle);
-    border-color: var(--accent);
-  }
-
-  .theme-active-icon {
-    font-size: 1rem;
-    line-height: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .theme-chevron {
-    opacity: 0.6;
-    margin-left: -1px;
-    transition: transform 0.15s ease;
-  }
-
-  .theme-btn-trigger[aria-expanded="true"] .theme-chevron {
-    transform: rotate(180deg);
-  }
-
-  .theme-dropdown {
-    display: none;
-    position: absolute;
-    top: calc(100% + 6px);
-    right: 0;
-    background-color: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.35rem;
-    min-width: 175px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    z-index: 1000;
-    animation: themeDropdownFade 0.15s ease;
-  }
-
-  .theme-dropdown.open {
-    display: block;
-  }
-
+  /* keyframes have no utility form; referenced by the dropdown's arbitrary animate class */
   @keyframes themeDropdownFade {
     from {
       opacity: 0;
@@ -230,91 +180,6 @@
       opacity: 1;
       margin-top: 0;
     }
-  }
-
-  @media (max-width: 768px) {
-    .theme-dropdown {
-      left: 50%;
-      right: auto;
-      transform: translateX(-50%);
-      max-width: calc(100vw - 24px);
-    }
-  }
-
-  .theme-dropdown-header {
-    font-size: 0.68rem;
-    font-weight: 700;
-    font-family: var(--font-mono);
-    color: var(--text-muted);
-    padding: 0.25rem 0.65rem 0.35rem;
-    letter-spacing: 0.06em;
-    opacity: 0.8;
-  }
-
-  .theme-divider {
-    height: 1px;
-    background-color: var(--border);
-    margin: 0.3rem 0;
-  }
-
-  .theme-option {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    text-align: left;
-    padding: 0.45rem 0.65rem;
-    font-size: 0.84rem;
-    font-family: var(--font-sans);
-    color: var(--text);
-    background: transparent;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition:
-      background-color 0.12s ease,
-      color 0.12s ease;
-    gap: 0.5rem;
-  }
-
-  .theme-opt-left {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-  }
-
-  .theme-emoji {
-    font-size: 0.95rem;
-    line-height: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-  }
-
-  .theme-label {
-    font-weight: 500;
-  }
-
-  .theme-option:hover {
-    background-color: var(--bg-subtle);
-    color: var(--accent);
-  }
-
-  .theme-option.active {
-    color: var(--accent);
-    font-weight: 600;
-    background-color: var(--bg-subtle);
-  }
-
-  .theme-check {
-    display: none;
-    color: var(--accent);
-    flex-shrink: 0;
-  }
-
-  .theme-option.active .theme-check {
-    display: block;
   }
 </style>
 

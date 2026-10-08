@@ -4,13 +4,13 @@ import { siteConfig } from "../config/site";
 ---
 
 <BaseLayout title="About" description={siteConfig.description}>
-  <article class="about-page">
-    <header class="about-header">
-      <h1 class="page-title">About</h1>
-      <p class="page-subtitle">{siteConfig.tagline}</p>
+  <article class="pt-4">
+    <header class="mb-8 border-b border-line pb-6">
+      <h1 class="mt-0 mb-2 text-[2.25rem]">About</h1>
+      <p class="m-0 text-[1.1rem] text-muted">{siteConfig.tagline}</p>
     </header>
 
-    <div class="about-content">
+    <div class="text-[1.05rem] leading-[1.8]">
       <p>
         <strong>{siteConfig.title}</strong> is a public notebook for learning
         <a
@@ -68,32 +68,3 @@ import { siteConfig } from "../config/site";
     </div>
   </article>
 </BaseLayout>
-
-<style>
-  .about-page {
-    padding-top: 1rem;
-  }
-
-  .about-header {
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .page-title {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    font-size: 2.25rem;
-  }
-
-  .page-subtitle {
-    color: var(--text-muted);
-    font-size: 1.1rem;
-    margin: 0;
-  }
-
-  .about-content {
-    font-size: 1.05rem;
-    line-height: 1.8;
-  }
-</style>

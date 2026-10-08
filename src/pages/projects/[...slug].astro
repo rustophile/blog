@@ -36,31 +36,39 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
     url={currentUrl}
   />
 
-  <article class="project-detail-article">
-    <header class="project-header">
-      <div class="project-meta">
-        <span class="project-emoji">{project.data.emoji}</span>
-        <span class="category-badge">{project.data.category}</span>
-        <span class="meta-dot">·</span>
+  <article class="pt-4">
+    <header class="project-header mb-10 pb-7 border-b border-line">
+      <div class="flex items-center gap-[0.65rem] text-[0.88rem] text-muted mb-3 flex-wrap">
+        <span class="text-[1.3rem]">{project.data.emoji}</span>
+        <span class="text-[0.75rem] font-mono py-[0.2rem] px-2 rounded-sm bg-surface border border-line text-accent uppercase">
+          {project.data.category}
+        </span>
+        <span class="text-muted opacity-50">·</span>
         <time datetime={project.data.date.toISOString()}>{formattedDate}</time>
         {project.data.stars > 0 && (
           <>
-            <span class="meta-dot">·</span>
-            <span class="stars-badge">★ {project.data.stars} stars</span>
+            <span class="text-muted opacity-50">·</span>
+            <span class="text-[#f59e0b] font-semibold">
+              ★ {project.data.stars} stars
+            </span>
           </>
         )}
       </div>
 
-      <h1 class="project-title">{project.data.title}</h1>
-      <p class="project-description">{project.data.description}</p>
+      <h1 class="project-title mt-0 mb-3 text-[2.4rem] leading-[1.25] tracking-[-0.025em]">
+        {project.data.title}
+      </h1>
+      <p class="project-description text-[1.15rem] text-muted mt-0 mx-0 mb-6 leading-[1.6]">
+        {project.data.description}
+      </p>
 
-      <div class="project-actions">
+      <div class="flex items-center gap-3">
         {project.data.repoUrl && (
           <a
             href={project.data.repoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="action-btn"
+            class="inline-flex items-center gap-[0.4rem] py-[0.45rem] px-[0.9rem] rounded-md border border-line bg-surface text-fg text-[0.88rem] font-medium no-underline transition-[border-color,background-color] duration-150 ease-[ease] hover:border-accent hover:bg-subtle hover:text-accent"
           >
             <svg
               width="15"
@@ -79,7 +87,7 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
             href={project.data.demoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="action-btn action-demo"
+            class="inline-flex items-center gap-[0.4rem] py-[0.45rem] px-[0.9rem] rounded-md border border-accent bg-accent text-white text-[0.88rem] font-medium no-underline transition-[border-color,background-color] duration-150 ease-[ease] hover:border-accent hover:bg-accent-hover hover:text-white"
           >
             Live Preview ↗
           </a>
@@ -96,12 +104,15 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
       />
     )}
 
-    <div class="post-content">
+    <div class="post-content text-[1.05rem] leading-[1.8]">
       <Content />
     </div>
 
-    <footer class="project-footer">
-      <a href="/projects" class="back-link">
+    <footer class="mt-14 pt-6 border-t border-line">
+      <a
+        href="/projects"
+        class="text-accent no-underline font-medium hover:underline"
+      >
         ← Back to all projects
       </a>
     </footer>
@@ -109,126 +120,3 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
 
   <CopyCode />
 </BaseLayout>
-
-<style>
-  .project-detail-article {
-    padding-top: 1rem;
-  }
-
-  .project-header {
-    margin-bottom: 2.5rem;
-    padding-bottom: 1.75rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .project-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    font-size: 0.88rem;
-    color: var(--text-muted);
-    margin-bottom: 0.75rem;
-    flex-wrap: wrap;
-  }
-
-  .project-emoji {
-    font-size: 1.3rem;
-  }
-
-  .category-badge {
-    font-size: 0.75rem;
-    font-family: var(--font-mono);
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border);
-    color: var(--accent);
-    text-transform: uppercase;
-  }
-
-  .meta-dot {
-    color: var(--text-muted);
-    opacity: 0.5;
-  }
-
-  .stars-badge {
-    color: #f59e0b;
-    font-weight: 600;
-  }
-
-  .project-title {
-    margin-top: 0;
-    margin-bottom: 0.75rem;
-    font-size: 2.4rem;
-    line-height: 1.25;
-    letter-spacing: -0.025em;
-  }
-
-  .project-description {
-    font-size: 1.15rem;
-    color: var(--text-muted);
-    margin: 0 0 1.5rem 0;
-    line-height: 1.6;
-  }
-
-  .project-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .action-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.45rem 0.9rem;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background-color: var(--bg-surface);
-    color: var(--text);
-    font-size: 0.88rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition:
-      border-color 0.15s ease,
-      background-color 0.15s ease;
-  }
-
-  .action-btn:hover {
-    border-color: var(--accent);
-    background-color: var(--bg-subtle);
-    color: var(--accent);
-  }
-
-  .action-demo {
-    background-color: var(--accent);
-    color: #ffffff;
-    border-color: var(--accent);
-  }
-
-  .action-demo:hover {
-    background-color: var(--accent-hover);
-    color: #ffffff;
-  }
-
-  .post-content {
-    font-size: 1.05rem;
-    line-height: 1.8;
-  }
-
-  .project-footer {
-    margin-top: 3.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .back-link {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .back-link:hover {
-    text-decoration: underline;
-  }
-</style>

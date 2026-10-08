@@ -2,23 +2,30 @@
 // src/components/SearchModal.astro
 // Global Search Modal with rich result cards, fuzzy matching, and keyboard navigation (Ctrl + K)
 import { siteConfig } from "../config/site";
+
+// Quick-access pill links (used 4×)
+const pill =
+  "inline-flex items-center gap-[0.4rem] rounded-[6px] border border-line bg-surface px-3 py-[0.4rem] text-[0.82rem] text-fg no-underline transition-[border-color,transform,background-color] duration-150 ease-[ease] hover:border-accent hover:bg-subtle hover:text-accent hover:[transform:translateY(-1px)]";
 ---
 
 <!-- Search Modal Backdrop & Container -->
 <div
   id="search-modal-backdrop"
-  class="search-backdrop"
+  class="group/modal fixed inset-0 z-[1000] hidden items-start justify-center overflow-y-auto bg-[rgba(15,23,42,0.65)] px-4 pt-14 pb-8 opacity-0 [-webkit-backdrop-filter:blur(8px)] transition-opacity duration-[180ms] ease-[ease] max-sm:px-2 max-sm:py-4 [&.open]:flex [&.open]:opacity-100"
   aria-hidden="true"
   role="dialog"
   aria-modal="true"
   aria-label="Global Search"
 >
-  <div class="search-dialog" id="search-modal-dialog">
+  <div
+    class="flex w-full max-w-[620px] flex-col overflow-hidden rounded-[12px] border border-line bg-page shadow-[0_20px_45px_-10px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.05)] transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] [transform:scale(0.97)_translateY(-8px)] group-[.open]/modal:[transform:scale(1)_translateY(0)]"
+    id="search-modal-dialog"
+  >
     <!-- Header -->
-    <div class="search-dialog-header">
-      <div class="search-input-wrapper">
+    <div class="flex items-center gap-3 border-b border-line bg-surface px-[1.15rem] py-[0.85rem]">
+      <div class="flex flex-1 items-center gap-[0.65rem]">
         <svg
-          class="search-input-icon"
+          class="shrink-0 text-muted"
           width="18"
           height="18"
           viewBox="0 0 24 24"
@@ -35,7 +42,7 @@ import { siteConfig } from "../config/site";
         <input
           type="text"
           id="search-modal-input"
-          class="search-input"
+          class="min-w-0 flex-1 border-none bg-transparent font-sans text-[0.95rem] text-fg outline-none placeholder:text-muted placeholder:opacity-80"
           placeholder="Search articles, projects, topics, tags..."
           autocomplete="off"
           autocorrect="off"
@@ -44,7 +51,7 @@ import { siteConfig } from "../config/site";
         />
         <button
           id="search-modal-clear"
-          class="search-clear-btn"
+          class="inline-flex h-[22px] w-[22px] cursor-pointer items-center justify-center rounded-[50%] border-none bg-line p-0 text-muted transition-[background,color] duration-150 ease-[ease] hover:bg-muted hover:text-page"
           aria-label="Clear search"
           type="button"
           style="display: none;"
@@ -66,38 +73,46 @@ import { siteConfig } from "../config/site";
       </div>
       <button
         id="search-modal-close"
-        class="search-close-badge"
+        class="cursor-pointer border-none bg-transparent p-0"
         type="button"
         aria-label="Close search (Esc)"
         title="Close (Esc)"
       >
-        <kbd class="kbd-esc">ESC</kbd>
+        <kbd class="inline-flex items-center justify-center rounded-[4px] border border-line bg-page px-[0.4rem] py-[0.15rem] font-mono text-[0.6875rem] font-semibold text-muted shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+          ESC
+        </kbd>
       </button>
     </div>
 
     <!-- Results Area -->
-    <div id="search-modal-results" class="search-dialog-body" tabindex="-1">
-      <div class="search-initial-state">
-        <div class="initial-section-title">Quick Access &amp; Navigation</div>
-        <div class="initial-shortcuts">
-          <a href="/blog" class="initial-pill">
-            <span class="pill-icon">📄</span>
+    <div
+      id="search-modal-results"
+      class="max-h-[55vh] overflow-y-auto p-[0.85rem] outline-none [scrollbar-color:var(--border)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-[6px] [&::-webkit-scrollbar-thumb]:rounded-[3px] [&::-webkit-scrollbar-thumb]:bg-line"
+      tabindex="-1"
+    >
+      <div class="px-3 py-5 text-center">
+        <div class="mb-4 font-mono text-[0.72rem] font-semibold tracking-[0.06em] text-muted uppercase">
+          Quick Access &amp; Navigation
+        </div>
+        <div class="mb-5 flex flex-wrap justify-center gap-2">
+          <a href="/blog" class={pill}>
+            <span>📄</span>
             <span>All Articles</span>
           </a>
-          <a href="/projects" class="initial-pill">
-            <span class="pill-icon">📦</span>
+          <a href="/projects" class={pill}>
+            <span>📦</span>
             <span>All Projects</span>
           </a>
-          <a href="/tags" class="initial-pill">
-            <span class="pill-icon">🏷️</span>
+          <a href="/tags" class={pill}>
+            <span>🏷️</span>
             <span>All Tags</span>
           </a>
-          <a href="/about" class="initial-pill">
-            <span class="pill-icon">👤</span>
+          <a href="/about" class={pill}>
+            <span>👤</span>
             <span>About</span>
           </a>
         </div>
-        <div class="initial-hint">
+        <div class="text-[0.82rem] leading-[1.5] text-muted [&_code]:rounded-[4px] [&_code]:border [&_code]:border-line [&_code]:bg-surface [&_code]:px-[0.35rem] [&_code]:py-[0.1rem] [&_code]:font-mono [&_code]:text-[0.75rem] [&_code]:text-accent">
           Type any keyword (e.g., <code>ownership</code>, <code>traits</code>,{" "}
           <code>cargo</code>, <code>async</code>) to filter in real-time.
         </div>
@@ -105,20 +120,22 @@ import { siteConfig } from "../config/site";
     </div>
 
     <!-- Footer -->
-    <div class="search-dialog-footer">
-      <div class="search-shortcuts-guide">
-        <span class="guide-item">
+    <div class="flex items-center justify-between border-t border-line bg-surface px-[1.15rem] py-[0.6rem] text-[0.72rem] text-muted">
+      <div class="flex items-center gap-[0.85rem] [&_kbd]:rounded-[3px] [&_kbd]:border [&_kbd]:border-line [&_kbd]:bg-page [&_kbd]:px-[0.32rem] [&_kbd]:py-[0.1rem] [&_kbd]:font-mono [&_kbd]:text-[0.625rem] [&_kbd]:text-fg">
+        <span class="inline-flex items-center gap-1">
           <kbd>↑</kbd>
           <kbd>↓</kbd> Navigate
         </span>
-        <span class="guide-item">
+        <span class="inline-flex items-center gap-1">
           <kbd>↵</kbd> Select
         </span>
-        <span class="guide-item">
+        <span class="inline-flex items-center gap-1">
           <kbd>ESC</kbd> Close
         </span>
       </div>
-      <div class="search-brand-note">🦀 {siteConfig.title} Search</div>
+      <div class="font-mono text-[0.6875rem] opacity-80 max-sm:hidden">
+        🦀 {siteConfig.title} Search
+      </div>
     </div>
   </div>
 </div>
@@ -240,7 +257,7 @@ import { siteConfig } from "../config/site";
     return parts
       .map((part) => {
         if (regex.test(part)) {
-          return `<mark class="search-match">${escapeHtml(part)}</mark>`;
+          return `<mark class="rounded-[3px] bg-[color-mix(in_srgb,var(--accent)_18%,transparent)] px-[0.2rem] py-[0.05rem] font-bold text-accent">${escapeHtml(part)}</mark>`;
         }
         return escapeHtml(part);
       })
@@ -298,9 +315,9 @@ import { siteConfig } from "../config/site";
 
     if (!searchData) {
       resultsContainer.innerHTML = `
-        <div class="search-empty">
-          <div class="search-empty-icon">⏳</div>
-          <div class="search-empty-title">Loading search index...</div>
+        <div class="px-4 py-12 text-center text-muted">
+          <div class="mb-[0.65rem] text-[2rem]">⏳</div>
+          <div class="mb-[0.35rem] text-[0.95rem] font-semibold text-fg">Loading search index...</div>
         </div>
       `;
       return;
@@ -362,10 +379,10 @@ import { siteConfig } from "../config/site";
 
     if (totalMatches === 0) {
       resultsContainer.innerHTML = `
-        <div class="search-empty">
-          <div class="search-empty-icon">🔍</div>
-          <div class="search-empty-title">No results found for "${escapeHtml(cleanQuery)}"</div>
-          <div class="search-empty-desc">Try searching for keywords like <code>ownership</code>, <code>traits</code>, <code>cargo</code> or <code>async</code>.</div>
+        <div class="px-4 py-12 text-center text-muted">
+          <div class="mb-[0.65rem] text-[2rem]">🔍</div>
+          <div class="mb-[0.35rem] text-[0.95rem] font-semibold text-fg">No results found for "${escapeHtml(cleanQuery)}"</div>
+          <div class="text-[0.82rem] text-muted">Try searching for keywords like <code>ownership</code>, <code>traits</code>, <code>cargo</code> or <code>async</code>.</div>
         </div>
       `;
       selectedIndex = -1;
@@ -378,28 +395,28 @@ import { siteConfig } from "../config/site";
     // Render Posts
     if (matchedPosts.length > 0) {
       html += `
-        <div class="search-category-group">
-          <div class="search-category-title">
+        <div class="mb-[1.15rem] last:mb-1">
+          <div class="mb-[0.35rem] flex items-center justify-between px-[0.65rem] py-[0.35rem] font-mono text-[0.7rem] font-semibold tracking-[0.06em] text-muted uppercase">
             <span>📄 Blog Articles</span>
-            <span class="search-category-count">${matchedPosts.length}</span>
+            <span class="font-mono text-[0.6875rem] opacity-75">${matchedPosts.length}</span>
           </div>
       `;
       for (const post of matchedPosts) {
         html += `
-          <a href="${post.url}" class="search-result-item" data-search-item>
-            <div class="search-result-icon">${resolveItemIcon(post)}</div>
-            <div class="search-result-content">
-              <div class="search-result-top">
-                <div class="search-result-title">${highlightText(post.title, cleanQuery)}</div>
-                <div class="search-result-meta">${post.date}</div>
+          <a href="${post.url}" class="search-result-item group/item mb-[0.45rem] flex cursor-pointer items-start gap-3 rounded-[8px] border border-line bg-surface px-[0.85rem] py-[0.65rem] text-fg no-underline [transition:border-color_0.15s_ease,background-color_0.15s_ease,box-shadow_0.15s_ease,transform_0.12s_ease] hover:border-accent hover:bg-subtle hover:[transform:translateY(-1px)] [&.selected]:border-accent [&.selected]:bg-subtle [&.selected]:shadow-[0_0_0_1px_var(--accent),0_4px_14px_rgba(0,0,0,0.08)] [&.selected]:[transform:translateY(-1px)]" data-search-item>
+            <div class="mt-[2px] inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[6px] border border-line bg-page text-[0.9rem] text-accent [&_svg.tech-svg]:block [&_svg.tech-svg]:shrink-0">${resolveItemIcon(post)}</div>
+            <div class="min-w-0 flex-1">
+              <div class="mb-[0.18rem] flex items-center justify-between gap-2">
+                <div class="truncate text-[0.88rem] leading-[1.3] font-semibold text-fg group-hover/item:text-accent group-[.selected]/item:text-accent">${highlightText(post.title, cleanQuery)}</div>
+                <div class="shrink-0 font-mono text-[0.72rem] whitespace-nowrap text-muted">${post.date}</div>
               </div>
-              <div class="search-result-desc">${highlightText(post.description, cleanQuery)}</div>
-              <div class="search-result-tags">
+              <div class="mb-[0.4rem] truncate text-[0.78rem] leading-[1.4] text-muted">${highlightText(post.description, cleanQuery)}</div>
+              <div class="flex flex-wrap gap-[0.35rem]">
                 ${post.tags
                   .slice(0, 4)
                   .map(
                     (t) =>
-                      `<span class="search-result-badge">#${highlightText(t, cleanQuery)}</span>`,
+                      `<span class="rounded-[4px] border border-line bg-page px-[0.45rem] py-[0.12rem] font-mono text-[0.68rem] text-muted">#${highlightText(t, cleanQuery)}</span>`,
                   )
                   .join("")}
               </div>
@@ -413,29 +430,29 @@ import { siteConfig } from "../config/site";
     // Render Projects
     if (matchedProjects.length > 0) {
       html += `
-        <div class="search-category-group">
-          <div class="search-category-title">
+        <div class="mb-[1.15rem] last:mb-1">
+          <div class="mb-[0.35rem] flex items-center justify-between px-[0.65rem] py-[0.35rem] font-mono text-[0.7rem] font-semibold tracking-[0.06em] text-muted uppercase">
             <span>📦 Projects</span>
-            <span class="search-category-count">${matchedProjects.length}</span>
+            <span class="font-mono text-[0.6875rem] opacity-75">${matchedProjects.length}</span>
           </div>
       `;
       for (const proj of matchedProjects) {
         html += `
-          <a href="${proj.url}" class="search-result-item" data-search-item>
-            <div class="search-result-icon">${resolveItemIcon(proj)}</div>
-            <div class="search-result-content">
-              <div class="search-result-top">
-                <div class="search-result-title">${highlightText(proj.title, cleanQuery)}</div>
-                <div class="search-result-meta">${proj.category || "Project"}</div>
+          <a href="${proj.url}" class="search-result-item group/item mb-[0.45rem] flex cursor-pointer items-start gap-3 rounded-[8px] border border-line bg-surface px-[0.85rem] py-[0.65rem] text-fg no-underline [transition:border-color_0.15s_ease,background-color_0.15s_ease,box-shadow_0.15s_ease,transform_0.12s_ease] hover:border-accent hover:bg-subtle hover:[transform:translateY(-1px)] [&.selected]:border-accent [&.selected]:bg-subtle [&.selected]:shadow-[0_0_0_1px_var(--accent),0_4px_14px_rgba(0,0,0,0.08)] [&.selected]:[transform:translateY(-1px)]" data-search-item>
+            <div class="mt-[2px] inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[6px] border border-line bg-page text-[0.9rem] text-accent [&_svg.tech-svg]:block [&_svg.tech-svg]:shrink-0">${resolveItemIcon(proj)}</div>
+            <div class="min-w-0 flex-1">
+              <div class="mb-[0.18rem] flex items-center justify-between gap-2">
+                <div class="truncate text-[0.88rem] leading-[1.3] font-semibold text-fg group-hover/item:text-accent group-[.selected]/item:text-accent">${highlightText(proj.title, cleanQuery)}</div>
+                <div class="shrink-0 font-mono text-[0.72rem] whitespace-nowrap text-muted">${proj.category || "Project"}</div>
               </div>
-              <div class="search-result-desc">${highlightText(proj.description, cleanQuery)}</div>
-              <div class="search-result-tags">
-                <span class="search-result-badge series-badge">⚡ ${escapeHtml(proj.category || "Project")}</span>
+              <div class="mb-[0.4rem] truncate text-[0.78rem] leading-[1.4] text-muted">${highlightText(proj.description, cleanQuery)}</div>
+              <div class="flex flex-wrap gap-[0.35rem]">
+                <span class="rounded-[4px] border border-accent bg-page px-[0.45rem] py-[0.12rem] font-mono text-[0.68rem] font-semibold text-accent">⚡ ${escapeHtml(proj.category || "Project")}</span>
                 ${proj.tags
                   .slice(0, 3)
                   .map(
                     (t) =>
-                      `<span class="search-result-badge">#${highlightText(t, cleanQuery)}</span>`,
+                      `<span class="rounded-[4px] border border-line bg-page px-[0.45rem] py-[0.12rem] font-mono text-[0.68rem] text-muted">#${highlightText(t, cleanQuery)}</span>`,
                   )
                   .join("")}
               </div>
@@ -449,18 +466,18 @@ import { siteConfig } from "../config/site";
     // Render Tags
     if (matchedTags.length > 0) {
       html += `
-        <div class="search-category-group">
-          <div class="search-category-title">
+        <div class="mb-[1.15rem] last:mb-1">
+          <div class="mb-[0.35rem] flex items-center justify-between px-[0.65rem] py-[0.35rem] font-mono text-[0.7rem] font-semibold tracking-[0.06em] text-muted uppercase">
             <span>🏷️ Tags &amp; Topics</span>
-            <span class="search-category-count">${matchedTags.length}</span>
+            <span class="font-mono text-[0.6875rem] opacity-75">${matchedTags.length}</span>
           </div>
-          <div class="search-tags-grid">
+          <div class="flex flex-wrap gap-[0.45rem] px-[0.65rem] py-1">
       `;
       for (const tag of matchedTags) {
         html += `
-          <a href="${tag.url}" class="search-tag-item" data-search-item>
+          <a href="${tag.url}" class="inline-flex items-center gap-[0.4rem] rounded-[6px] border border-line bg-surface px-[0.65rem] py-[0.35rem] font-mono text-[0.78rem] text-fg no-underline transition-[border-color,transform,color] duration-[120ms] ease-[ease] hover:border-accent hover:bg-subtle hover:text-accent hover:[transform:translateY(-1px)] [&.selected]:border-accent [&.selected]:bg-subtle [&.selected]:text-accent [&.selected]:[transform:translateY(-1px)]" data-search-item>
             <span>#${highlightText(tag.name, cleanQuery)}</span>
-            <span class="search-tag-count">(${tag.count})</span>
+            <span class="text-[0.7rem] opacity-60">(${tag.count})</span>
           </a>
         `;
       }
@@ -600,483 +617,3 @@ import { siteConfig } from "../config/site";
   bindTriggers();
   document.addEventListener("astro:after-swap", bindTriggers);
 </script>
-
-<style>
-  /* Backdrop */
-  .search-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    background: rgba(15, 23, 42, 0.65);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    padding: 3.5rem 1rem 2rem;
-    overflow-y: auto;
-    align-items: flex-start;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.18s ease;
-  }
-
-  .search-backdrop.open {
-    display: flex;
-    opacity: 1;
-  }
-
-  /* Dialog Container */
-  .search-dialog {
-    width: 100%;
-    max-width: 620px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-shadow:
-      0 20px 45px -10px rgba(0, 0, 0, 0.35),
-      0 0 0 1px rgba(255, 255, 255, 0.05);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transform: scale(0.97) translateY(-8px);
-    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .search-backdrop.open .search-dialog {
-    transform: scale(1) translateY(0);
-  }
-
-  /* Header */
-  .search-dialog-header {
-    display: flex;
-    align-items: center;
-    padding: 0.85rem 1.15rem;
-    border-bottom: 1px solid var(--border);
-    gap: 0.75rem;
-    background: var(--bg-surface);
-  }
-
-  .search-input-wrapper {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    gap: 0.65rem;
-  }
-
-  .search-input-icon {
-    color: var(--text-muted);
-    flex-shrink: 0;
-  }
-
-  .search-input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    color: var(--text);
-    outline: none;
-    min-width: 0;
-  }
-
-  .search-input::placeholder {
-    color: var(--text-muted);
-    opacity: 0.8;
-  }
-
-  .search-clear-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    border: none;
-    background: var(--border);
-    color: var(--text-muted);
-    cursor: pointer;
-    padding: 0;
-    transition:
-      background 0.15s,
-      color 0.15s;
-  }
-
-  .search-clear-btn:hover {
-    background: var(--text-muted);
-    color: var(--bg);
-  }
-
-  .search-close-badge {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-  }
-
-  .kbd-esc {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 0.15rem 0.4rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  }
-
-  /* Body & Results */
-  .search-dialog-body {
-    max-height: 55vh;
-    overflow-y: auto;
-    padding: 0.85rem;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
-    outline: none;
-  }
-
-  .search-dialog-body::-webkit-scrollbar {
-    width: 6px;
-  }
-  .search-dialog-body::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 3px;
-  }
-
-  /* Initial state */
-  .search-initial-state {
-    padding: 1.25rem 0.75rem;
-    text-align: center;
-  }
-
-  .initial-section-title {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-weight: 600;
-    font-family: var(--font-mono);
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-  }
-
-  .initial-shortcuts {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .initial-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.4rem 0.75rem;
-    font-size: 0.82rem;
-    color: var(--text);
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    text-decoration: none;
-    transition:
-      border-color 0.15s,
-      transform 0.15s,
-      background-color 0.15s;
-  }
-
-  .initial-pill:hover {
-    border-color: var(--accent);
-    background: var(--bg-subtle);
-    color: var(--accent);
-    transform: translateY(-1px);
-  }
-
-  .initial-hint {
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
-
-  .initial-hint code {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    padding: 0.1rem 0.35rem;
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--accent);
-  }
-
-  /* Result Categories */
-  :global(.search-category-group) {
-    margin-bottom: 1.15rem;
-  }
-
-  :global(.search-category-group:last-child) {
-    margin-bottom: 0.25rem;
-  }
-
-  :global(.search-category-title) {
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-family: var(--font-mono);
-    color: var(--text-muted);
-    padding: 0.35rem 0.65rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.35rem;
-  }
-
-  :global(.search-category-count) {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    opacity: 0.75;
-  }
-
-  /* Result Item Cards */
-  :global(.search-result-item) {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 0.65rem 0.85rem;
-    border-radius: 8px;
-    text-decoration: none;
-    color: var(--text);
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    margin-bottom: 0.45rem;
-    cursor: pointer;
-    transition:
-      border-color 0.15s ease,
-      background-color 0.15s ease,
-      box-shadow 0.15s ease,
-      transform 0.12s ease;
-  }
-
-  :global(.search-result-item:hover),
-  :global(.search-result-item.selected) {
-    background: var(--bg-subtle);
-    border-color: var(--accent);
-    transform: translateY(-1px);
-  }
-
-  :global(.search-result-item.selected) {
-    box-shadow:
-      0 0 0 1px var(--accent),
-      0 4px 14px rgba(0, 0, 0, 0.08);
-  }
-
-  :global(.search-result-icon) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 6px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    font-size: 0.9rem;
-    flex-shrink: 0;
-    margin-top: 2px;
-    color: var(--accent);
-  }
-
-  :global(.search-result-icon svg.tech-svg) {
-    display: block;
-    flex-shrink: 0;
-  }
-
-  :global(.search-result-content) {
-    flex: 1;
-    min-width: 0;
-  }
-
-  :global(.search-result-top) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    margin-bottom: 0.18rem;
-  }
-
-  :global(.search-result-title) {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.3;
-  }
-
-  :global(.search-result-item.selected .search-result-title),
-  :global(.search-result-item:hover .search-result-title) {
-    color: var(--accent);
-  }
-
-  :global(.search-result-meta) {
-    font-size: 0.72rem;
-    font-family: var(--font-mono);
-    color: var(--text-muted);
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
-
-  :global(.search-result-desc) {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    line-height: 1.4;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-bottom: 0.4rem;
-  }
-
-  :global(.search-result-tags) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-  }
-
-  :global(.search-result-badge) {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    padding: 0.12rem 0.45rem;
-    border-radius: 4px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-  }
-
-  :global(.search-result-badge.series-badge) {
-    color: var(--accent);
-    border-color: var(--accent);
-    font-weight: 600;
-  }
-
-  /* Tag Items & Grid */
-  :global(.search-tags-grid) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    padding: 0.25rem 0.65rem;
-  }
-
-  :global(.search-tag-item) {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.35rem 0.65rem;
-    border-radius: 6px;
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--text);
-    text-decoration: none;
-    transition:
-      border-color 0.12s ease,
-      transform 0.12s ease,
-      color 0.12s ease;
-  }
-
-  :global(.search-tag-item:hover),
-  :global(.search-tag-item.selected) {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: var(--bg-subtle);
-    transform: translateY(-1px);
-  }
-
-  :global(.search-tag-count) {
-    opacity: 0.6;
-    font-size: 0.7rem;
-  }
-
-  /* Highlight Matching Keyword */
-  :global(mark.search-match) {
-    background: color-mix(in srgb, var(--accent) 18%, transparent);
-    color: var(--accent);
-    font-weight: 700;
-    padding: 0.05rem 0.2rem;
-    border-radius: 3px;
-  }
-
-  /* Empty state */
-  :global(.search-empty) {
-    padding: 3rem 1rem;
-    text-align: center;
-    color: var(--text-muted);
-  }
-
-  :global(.search-empty-icon) {
-    font-size: 2rem;
-    margin-bottom: 0.65rem;
-  }
-
-  :global(.search-empty-title) {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 0.35rem;
-  }
-
-  :global(.search-empty-desc) {
-    font-size: 0.82rem;
-    color: var(--text-muted);
-  }
-
-  /* Footer */
-  .search-dialog-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.6rem 1.15rem;
-    border-top: 1px solid var(--border);
-    background: var(--bg-surface);
-    font-size: 0.72rem;
-    color: var(--text-muted);
-  }
-
-  .search-shortcuts-guide {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-  }
-
-  .guide-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
-
-  .guide-item kbd {
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    padding: 0.1rem 0.32rem;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    color: var(--text);
-  }
-
-  .search-brand-note {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    opacity: 0.8;
-  }
-
-  @media (max-width: 640px) {
-    .search-backdrop {
-      padding: 1rem 0.5rem;
-    }
-    .search-brand-note {
-      display: none;
-    }
-  }
-</style>
