@@ -34,3 +34,6 @@ blob-report/
 playwright/.cache/
 # local-only screenshot baselines (see tests/e2e/visual.spec.ts)
 tests/e2e/visual.spec.ts-snapshots/
+
+# wrangler local state
+.wrangler/

@@ -85,6 +85,67 @@ The projects page shows "Nothing built yet." until the first one is added.
 | `pnpm check`   | Type-check with `astro check`       |
 | `pnpm qa`      | Type-check, then build              |
 
+## Deploying
+
+The site is fully static and deploys to [Cloudflare Workers](https://docs.astro.build/en/guides/deploy/cloudflare/) as static assets; no adapter is needed. `wrangler.jsonc` serves `dist/`, uses the site's 404 page, and redirects `/blog/` to `/blog` so URLs match the canonical no-trailing-slash form (`trailingSlash: "never"` in `astro.config.mjs`). `public/_headers` caches Astro's hashed assets for a year.
+
+```bash
+pnpm preview:cf   # build and serve through Cloudflare's runtime locally
+pnpm run deploy   # build and deploy from your machine (after `pnpm exec wrangler login`)
+```
+
+Use `pnpm run deploy`, not `pnpm deploy`: the latter is a built-in pnpm command and won't run the script.
+
+The site URL comes from `siteUrl` in `src/config/site.ts`; change it there if the domain ever changes, and rerun `pnpm og-image`.
+
+### CI/CD
+
+`.github/workflows/ci.yml` runs on every push to `master` and every pull request:
+
+| Job                      | Runs on          | What it does                                                                                                           |
+| ------------------------ | ---------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Format, lint, types**  | push and PR      | `pnpm format:check`, `pnpm lint`, `pnpm check:astro`, `pnpm check:svelte`                                              |
+| **Build and e2e**        | push and PR      | `pnpm build`, then the Playwright tests in Chromium against that build plus the dev-server smoke test; uploads `dist/` |
+| **Deploy to Cloudflare** | push to `master` | `wrangler deploy` with the tested `dist/`, only if both jobs above passed                                              |
+| **Preview deploy**       | PR (not forks)   | `wrangler versions upload` with the tested `dist/`, then comments the preview URLs on the PR. Production is untouched  |
+
+A failing check stops the deploy, but the commit still lands on `master`, so fix forward. Firefox, WebKit and the screenshot tests only run locally.
+
+### One-time setup
+
+Steps 1 to 3 get CI deploying; step 4 puts the site on rustophile.com.
+
+#### 1. Create a Cloudflare API token
+
+1. **My Profile → API Tokens → Create Token**, and pick the **Edit Cloudflare Workers** template.
+2. Under **Account Resources**, choose your account. Under **Zone Resources**, choose **All zones** (or just `rustophile.com` once it's on Cloudflare).
+3. Create it and copy the token. Cloudflare shows it only once.
+
+#### 2. Find your Cloudflare account ID
+
+It's on **Workers & Pages → Overview** in the right-hand sidebar, and in the dashboard URL: `dash.cloudflare.com/<account-id>/...`.
+
+#### 3. Add the GitHub repository secrets
+
+In GitHub: **Settings → Secrets and variables → Actions → New repository secret**.
+
+| Secret                  | Value                 |
+| ----------------------- | --------------------- |
+| `CLOUDFLARE_API_TOKEN`  | the token from step 1 |
+| `CLOUDFLARE_ACCOUNT_ID` | the ID from step 2    |
+
+Then push to `master`. The deploy job creates the Worker on its first run and serves it at `https://rustophile.<your-subdomain>.workers.dev`. PR previews only work after this first deploy, because they upload versions of an existing Worker.
+
+#### 4. Put rustophile.com on the Worker
+
+A Worker can only serve a custom domain whose DNS is on Cloudflare, so the domain stays with its registrar but Cloudflare takes over its DNS.
+
+1. **Add the domain to Cloudflare:** **Add a domain**, enter `rustophile.com`, and pick the Free plan. Delete any imported records that point at the registrar's parking page, since they'd conflict with the Worker.
+2. **Switch nameservers** at your registrar to the two Cloudflare assigns (turn off DNSSEC there first, if it's on).
+3. **Wait for Cloudflare to show the domain as Active**, usually under an hour.
+4. **Deploy again** (or rerun the deploy job): `wrangler.jsonc` routes `rustophile.com` to the Worker, and Cloudflare creates the DNS record and certificate.
+5. **Redirect `www` to the bare domain:** in the zone, add an `AAAA` record named `www` with address `100::`, proxied, then **Rules → Redirect Rules → Create rule** from the **Redirect from WWW to root** template.
+
 ## Testing
 
 End-to-end tests use [Playwright](https://playwright.dev) and run against the production build in Chromium, Firefox, and WebKit.

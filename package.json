@@ -28,7 +28,9 @@
     "lint:fix": "eslint . --fix",
     "test:e2e": "playwright test",
     "test:e2e:report": "playwright show-report",
-    "og-image": "node --experimental-strip-types scripts/og-image.ts"
+    "og-image": "node --experimental-strip-types scripts/og-image.ts",
+    "preview:cf": "astro build && wrangler dev",
+    "deploy": "astro build && wrangler deploy"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.2",
@@ -75,6 +77,7 @@
     "rehype-expressive-code": "0.44.2",
     "svelte-check": "^4.7.6",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.71.1"
+    "typescript-eslint": "^8.71.1",
+    "wrangler": "^4.148.0"
   }
 }

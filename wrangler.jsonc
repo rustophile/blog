@@ -1,0 +1,21 @@
+// Cloudflare Workers static-assets deploy for the Astro build in ./dist
+// https://docs.astro.build/en/guides/deploy/cloudflare/
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "rustophile",
+  "compatibility_date": "2026-10-08",
+  // PR preview deploys in CI need these; preview_urls defaults to false and
+  // each `wrangler deploy` applies it, so it must be set here to stay on
+  "workers_dev": true,
+  "preview_urls": true,
+  // serve the site at the apex domain; Cloudflare creates the DNS record and certificate
+  "routes": [{ "pattern": "rustophile.com", "custom_domain": true }],
+  "assets": {
+    "directory": "./dist",
+    // serve /blog from /blog/index.html and redirect /blog/ to /blog, matching the
+    // site's canonical URLs, sitemap, and links (Cloudflare's default adds the slash)
+    "html_handling": "drop-trailing-slash",
+    // unknown URLs get the site's 404 page with a 404 status
+    "not_found_handling": "404-page",
+  },
+}
