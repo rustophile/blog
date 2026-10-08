@@ -1,6 +1,7 @@
 ---
 import { siteConfig } from "../config/site";
 import ThemeToggle from "./ThemeToggle.astro";
+import RustR from "./RustR.astro";
 import SocialDropdown from "./SocialDropdown.astro";
 
 interface Props {
@@ -21,10 +22,10 @@ const showThemeSwitcher = features.themeSwitcher !== false;
       class="flex items-center gap-2 text-[1.25rem] font-bold tracking-[-0.02em] text-fg no-underline"
       aria-label={`${siteConfig.title} Home`}
     >
-      <span class="text-[1.35rem]" aria-hidden="true">
-        🦀
+      <span class="inline-flex items-baseline" aria-hidden="true">
+        <RustR class="mr-[0.04em]" />
+        {siteConfig.title.slice(1)}
       </span>
-      <span>{siteConfig.title}</span>
     </a>
 
     <!-- Main Nav -->

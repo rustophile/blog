@@ -55,7 +55,10 @@ const states: {
         await page.keyboard.press("ControlOrMeta+k");
         await expect(dialog).toBeVisible({ timeout: 500 });
       }).toPass();
-      await dialog.getByRole("textbox").fill("rust");
+      // opening focuses and selects the input after a short delay; type only once it has
+      const input = dialog.getByRole("textbox");
+      await expect(input).toBeFocused();
+      await input.fill("rust");
       await expect(
         dialog.locator("a.search-result-item").first(),
       ).toBeVisible();

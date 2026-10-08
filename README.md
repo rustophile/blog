@@ -101,4 +101,8 @@ pnpm test:e2e --project visual                      # after
 
 ## License
 
+The R in the site's name is the R from the [Rust logo](https://github.com/rust-lang/rust-artwork) by the Rust Project, used under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) and shown without its gear (`src/components/RustR.astro`). Rust and the Rust logo are trademarks of the Rust Foundation; this site is not affiliated with or endorsed by the Rust Project or the Rust Foundation.
+
+The rest of this repository:
+
 [MIT](LICENSE)
