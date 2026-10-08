@@ -173,3 +173,29 @@ test("the image viewer loads PhotoSwipe only when an image is clicked", async ({
   await expect(page.locator(".pswp")).toBeVisible();
   expect(requested.some((url) => /photoswipe\.esm/.test(url))).toBe(true);
 });
+
+test("```rustc blocks color compiler output as rustc does", async ({
+  page,
+}) => {
+  const block = page.locator(".expressive-code", { hasText: "error[E0382]" });
+  const color = (text: string) =>
+    block
+      .locator("span", { hasText: new RegExp(`^${text}$`) })
+      .first()
+      .evaluate((el) => {
+        const s = getComputedStyle(el);
+        return { color: s.color, bold: Number(s.fontWeight) >= 700 };
+      });
+  expect(await color("error")).toEqual({
+    color: "rgb(238, 104, 104)",
+    bold: true,
+  });
+  expect(await color("help")).toEqual({
+    color: "rgb(62, 153, 159)",
+    bold: true,
+  });
+  expect(await color("-->")).toEqual({
+    color: "rgb(118, 154, 203)",
+    bold: true,
+  });
+});

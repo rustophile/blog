@@ -51,6 +51,7 @@ Code blocks are rendered by [Expressive Code](https://expressive-code.com):
 
 - `title="src/main.rs"` gives a block a file tab; `frame="terminal"` draws a terminal window.
 - `{3-4}` highlights lines; `ins={2}` and `del={3}` mark added and removed lines.
+- ` ```rustc ` colors pasted compiler output (`error[E…]`, `warning`, the `-->` and `|` gutter, `^^^` and `---` labels, `help:`, `+++` suggestions) as rustc does in a terminal; add `frame="terminal"` for a terminal window. The grammar is `src/styles/rustc-diagnostics.tmLanguage.json`.
 - Consecutive blocks with the same `group="name"` become one block with a tab per block, labelled by `tab="label"`:
 
   ````md

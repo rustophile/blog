@@ -7,6 +7,7 @@ import rehypeExpressiveCode, {
   ExpressiveCodeTheme,
 } from "rehype-expressive-code";
 import rustdocDark from "./src/styles/rustdoc-dark.json" with { type: "json" };
+import rustcDiagnostics from "./src/styles/rustc-diagnostics.tmLanguage.json" with { type: "json" };
 import { rehypeCallouts } from "./src/plugins/rehype-callouts.ts";
 import { remarkCodeGroups, rehypeCodeTabs } from "./src/plugins/code-tabs.ts";
 import remarkMath from "remark-math";
@@ -22,7 +23,14 @@ import { siteConfig } from "./src/config/site.ts";
 const expressiveCode = {
   // rustdoc's dark-theme highlighting (src/styles/rustdoc-dark.json), in both site themes
   themes: [new ExpressiveCodeTheme(rustdocDark)],
+  // ```rustc blocks: compiler output (errors, warnings, notes) colored as rustc colors it
+  shiki: {
+    langs: [rustcDiagnostics],
+  },
   useDarkModeMediaQuery: false,
+  // show rustdoc's colors exactly, as docs.rs does; Expressive Code otherwise lightens any
+  // token under 5.5:1 contrast (rustdoc's are 4.3 to 6.3:1 on #2a2a2a)
+  minSyntaxHighlightingColorContrast: 0,
   defaultProps: {
     wrap: true,
   },

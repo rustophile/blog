@@ -145,6 +145,61 @@
       "settings": {
         "foreground": "#769acb"
       }
+    },
+    {
+      "name": "rustc diagnostics (```rustc): colored as rustc colors its terminal output, in this palette",
+      "scope": ["keyword.other.error.rustc", "markup.label.primary.rustc"],
+      "settings": {
+        "foreground": "#ee6868",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "rustc: warnings",
+      "scope": ["keyword.other.warning.rustc"],
+      "settings": {
+        "foreground": "#d2991d",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "rustc: gutter, -->, = and secondary labels",
+      "scope": ["punctuation.gutter.rustc", "markup.label.secondary.rustc"],
+      "settings": {
+        "foreground": "#769acb",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "rustc: the message, note: and the closing hint",
+      "scope": ["markup.bold.message.rustc", "keyword.other.note.rustc"],
+      "settings": {
+        "foreground": "#dddddd",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "rustc: help:",
+      "scope": ["keyword.other.help.rustc"],
+      "settings": {
+        "foreground": "#3e999f",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "rustc: file paths",
+      "scope": ["string.unquoted.path.rustc"],
+      "settings": {
+        "foreground": "#dddddd"
+      }
+    },
+    {
+      "name": "rustc: suggestion markers (+++)",
+      "scope": ["markup.inserted.suggestion.rustc"],
+      "settings": {
+        "foreground": "#83a300",
+        "fontStyle": "bold"
+      }
     }
   ]
 }

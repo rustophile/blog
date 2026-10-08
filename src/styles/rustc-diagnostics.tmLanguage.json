@@ -1,0 +1,136 @@
+{
+  "name": "rustc",
+  "scopeName": "source.rustc-diagnostics",
+  "aliases": ["rust-error", "cargo-output"],
+  "patterns": [
+    {
+      "comment": "error[E0382]: message  /  error: could not compile ...",
+      "match": "^(error)(\\[[A-Z]\\d+\\])?(:)(.*)$",
+      "captures": {
+        "1": {
+          "name": "keyword.other.error.rustc"
+        },
+        "2": {
+          "name": "keyword.other.error.rustc"
+        },
+        "3": {
+          "name": "markup.bold.message.rustc"
+        },
+        "4": {
+          "name": "markup.bold.message.rustc"
+        }
+      }
+    },
+    {
+      "comment": "warning[unused_variables]: message",
+      "match": "^(warning)(\\[[\\w:]+\\])?(:)(.*)$",
+      "captures": {
+        "1": {
+          "name": "keyword.other.warning.rustc"
+        },
+        "2": {
+          "name": "keyword.other.warning.rustc"
+        },
+        "3": {
+          "name": "markup.bold.message.rustc"
+        },
+        "4": {
+          "name": "markup.bold.message.rustc"
+        }
+      }
+    },
+    {
+      "comment": "top-level note: / help:",
+      "match": "^(note|help)(:)(.*)$",
+      "captures": {
+        "1": {
+          "name": "keyword.other.$1.rustc"
+        },
+        "2": {
+          "name": "markup.bold.message.rustc"
+        },
+        "3": {
+          "name": "markup.bold.message.rustc"
+        }
+      }
+    },
+    {
+      "comment": "  --> src/main.rs:4:16",
+      "match": "^(\\s*)(-->|:::)(\\s+)(.*)$",
+      "captures": {
+        "2": {
+          "name": "punctuation.gutter.rustc"
+        },
+        "4": {
+          "name": "string.unquoted.path.rustc"
+        }
+      }
+    },
+    {
+      "comment": "   = note: ... / = help: ...",
+      "match": "^(\\s*)(=)(\\s*)(note|help)(:)(.*)$",
+      "captures": {
+        "2": {
+          "name": "punctuation.gutter.rustc"
+        },
+        "4": {
+          "name": "keyword.other.$4.rustc"
+        },
+        "5": {
+          "name": "markup.bold.message.rustc"
+        }
+      }
+    },
+    {
+      "comment": "the gutter: '2 |' before a source line, or a bare '|' before labels",
+      "match": "^(\\s*\\d*\\s*\\|)",
+      "captures": {
+        "1": {
+          "name": "punctuation.gutter.rustc"
+        }
+      }
+    },
+    {
+      "comment": "primary label: ^^^ and the text after it, right after the gutter (so a ^ in source isn't one)",
+      "match": "(?<=\\|)(\\s*)(\\^+)(.*)$",
+      "captures": {
+        "2": {
+          "name": "markup.label.primary.rustc"
+        },
+        "3": {
+          "name": "markup.label.primary.rustc"
+        }
+      }
+    },
+    {
+      "comment": "secondary label: --- and the text after it, after the gutter",
+      "match": "(?<=\\|)(\\s+)(-+)(.*)$",
+      "captures": {
+        "2": {
+          "name": "markup.label.secondary.rustc"
+        },
+        "3": {
+          "name": "markup.label.secondary.rustc"
+        }
+      }
+    },
+    {
+      "comment": "suggestion markers: +++ under inserted code, ~~~ under replaced code",
+      "match": "(?<=\\|)(\\s+)([+~]+)\\s*$",
+      "captures": {
+        "2": {
+          "name": "markup.inserted.suggestion.rustc"
+        }
+      }
+    },
+    {
+      "comment": "For more information about this error, try `rustc --explain E0382`.",
+      "match": "^(For more information about .*)$",
+      "captures": {
+        "1": {
+          "name": "markup.bold.message.rustc"
+        }
+      }
+    }
+  ]
+}

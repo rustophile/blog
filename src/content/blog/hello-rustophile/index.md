@@ -53,7 +53,7 @@ fn main() {
 }
 ```
 
-```ansi frame="terminal" title="cargo build"
+```rustc frame="terminal" title="cargo build"
 error[E0382]: borrow of moved value: `s`
  --> src/main.rs:4:16
   |
@@ -63,6 +63,14 @@ error[E0382]: borrow of moved value: `s`
   |             - value moved here
 4 |     println!("{s}");
   |                ^^^ value borrowed here after move
+  |
+help: consider cloning the value if the performance cost is acceptable
+  |
+3 |     let t = s.clone();
+  |              ++++++++
+
+For more information about this error, try `rustc --explain E0382`.
+error: could not compile `hello` (bin "hello") due to 1 previous error
 ```
 
 ![After let t = s, t owns the String's heap buffer and s is no longer valid](./string-move.svg)
