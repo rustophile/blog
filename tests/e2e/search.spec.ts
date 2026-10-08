@@ -18,7 +18,7 @@ test("shortcut opens search with the input focused; Escape closes it", async ({
   page,
 }) => {
   const dialog = await openSearch(page);
-  await expect(dialog.getByRole("textbox")).toBeFocused();
+  await expect(dialog.getByRole("combobox")).toBeFocused();
 
   await page.keyboard.press("Escape");
   await expect(dialog).toBeHidden();
@@ -28,15 +28,15 @@ test("typing filters results and Enter opens the top match", async ({
   page,
 }) => {
   const dialog = await openSearch(page);
-  const input = dialog.getByRole("textbox");
+  const input = dialog.getByRole("combobox");
 
   await input.fill("rustophile");
-  const result = dialog.locator("a.search-result-item");
+  const result = dialog.getByRole("option");
   await expect(result.first()).toHaveAttribute(
     "href",
     /\/blog\/hello-rustophile$/,
   );
-  await expect(result.first()).toHaveClass(/\bselected\b/);
+  await expect(result.first()).toHaveAttribute("aria-selected", "true");
 
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/blog\/hello-rustophile$/);
@@ -44,7 +44,7 @@ test("typing filters results and Enter opens the top match", async ({
 
 test("a query with no matches says so", async ({ page }) => {
   const dialog = await openSearch(page);
-  await dialog.getByRole("textbox").fill("zzzz-no-match");
+  await dialog.getByRole("combobox").fill("zzzz-no-match");
   await expect(
     dialog.getByText('No results found for "zzzz-no-match"'),
   ).toBeVisible();
@@ -52,7 +52,7 @@ test("a query with no matches says so", async ({ page }) => {
 
 test("a query is shown as text, never parsed as HTML", async ({ page }) => {
   const dialog = await openSearch(page);
-  await dialog.getByRole("textbox").fill('<img src=x onerror="alert(1)">');
+  await dialog.getByRole("combobox").fill('<img src=x onerror="alert(1)">');
   await expect(
     dialog.getByText('No results found for "<img src=x onerror="alert(1)">"'),
   ).toBeVisible();

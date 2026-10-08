@@ -57,12 +57,10 @@ const states: {
         await expect(dialog).toBeVisible({ timeout: 500 });
       }).toPass();
       // opening focuses and selects the input after a short delay; type only once it has
-      const input = dialog.getByRole("textbox");
+      const input = dialog.getByRole("combobox");
       await expect(input).toBeFocused();
       await input.fill("rust");
-      await expect(
-        dialog.locator("a.search-result-item").first(),
-      ).toBeVisible();
+      await expect(dialog.getByRole("option").first()).toBeVisible();
     },
   },
   {

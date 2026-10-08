@@ -1,28 +1,31 @@
 <!--
   Site search: a dialog over the page, opened with Ctrl/Cmd+K, "/", or the header's search
-  buttons. Results come from /search-index.json, fetched when the browser is idle or on first
-  open, and are matched by src/lib/search.ts. Arrow keys move the selection, Enter opens it.
+  buttons. Built on shadcn-svelte's Dialog and Command: bits-ui handles the arrow keys, Enter,
+  Escape, focus trapping and scroll locking. Results come from /search-index.json, fetched
+  when the browser is idle or on first open, and are matched by src/lib/search.ts.
 -->
 <script lang="ts">
-  import { tick } from "svelte";
-  import { siteConfig } from "../config/site";
+  import { Command as CommandPrimitive } from "bits-ui";
+  import FileTextIcon from "@lucide/svelte/icons/file-text";
+  import PackageIcon from "@lucide/svelte/icons/package";
+  import SearchIcon from "@lucide/svelte/icons/search";
+  import TagIcon from "@lucide/svelte/icons/tag";
+  import UserIcon from "@lucide/svelte/icons/user";
+  import XIcon from "@lucide/svelte/icons/x";
+  import * as Command from "$lib/components/ui/command";
+  import * as Dialog from "$lib/components/ui/dialog";
+  import { Kbd } from "$lib/components/ui/kbd";
   import {
     highlight,
     search,
     type SearchData,
     type SearchItem,
-  } from "../lib/search";
-  import { getDefaultDocIcon, getTechIconSvg } from "../utils/techIcons";
+  } from "$lib/search";
+  import { siteConfig } from "../config/site";
 
   let open = $state(false);
   let query = $state("");
   let data = $state<SearchData | null>(null);
-  let selected = $state(-1);
-
-  let input = $state<HTMLInputElement>();
-  let backdrop = $state<HTMLDivElement>();
-  // the result links in keyboard order: posts, then projects, then tags
-  let items = $state<HTMLAnchorElement[]>([]);
 
   const trimmed = $derived(query.trim());
   const results = $derived(
@@ -34,14 +37,18 @@
     results.posts.length + results.projects.length + results.tags.length,
   );
 
-  // a new query selects the top result
-  $effect(() => {
-    void results;
-    selected = total > 0 ? 0 : -1;
-  });
+  // the selected result's value (its URL): a new query selects the top result, and bits-ui
+  // moves it with the arrow keys
+  let selected = $derived(
+    results.posts[0]?.url ??
+      results.projects[0]?.url ??
+      results.tags[0]?.url ??
+      "",
+  );
 
+  // a closed dialog starts empty next time
   $effect(() => {
-    items[selected]?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    if (!open) query = "";
   });
 
   let loading: Promise<void> | null = null;
@@ -57,62 +64,26 @@
       });
   }
 
-  async function openDialog() {
+  function openDialog() {
     open = true;
-    document.body.style.overflow = "hidden";
     loadIndex();
-    await tick();
-    input?.focus();
-    input?.select();
-  }
-
-  function closeDialog() {
-    open = false;
-    document.body.style.overflow = "";
-    query = "";
-  }
-
-  async function clearQuery() {
-    query = "";
-    await tick();
-    input?.focus();
-  }
-
-  function move(step: number) {
-    if (total > 0) selected = (selected + step + total) % total;
   }
 
   function onKeydown(e: KeyboardEvent) {
-    if (!open) {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        openDialog();
-        return;
-      }
-      const typing = e.composedPath().some((el) => {
-        if (!(el instanceof HTMLElement)) return false;
-        const tag = el.tagName.toLowerCase();
-        return tag === "input" || tag === "textarea" || el.isContentEditable;
-      });
-      if (e.key === "/" && !typing) {
-        e.preventDefault();
-        openDialog();
-      }
+    if (open) return;
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      openDialog();
       return;
     }
-
-    if (e.key === "Escape") {
+    const typing = e.composedPath().some((el) => {
+      if (!(el instanceof HTMLElement)) return false;
+      const tag = el.tagName.toLowerCase();
+      return tag === "input" || tag === "textarea" || el.isContentEditable;
+    });
+    if (e.key === "/" && !typing) {
       e.preventDefault();
-      closeDialog();
-    } else if (e.key === "ArrowDown") {
-      e.preventDefault();
-      move(1);
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      move(-1);
-    } else if (e.key === "Enter" && items[selected]) {
-      e.preventDefault();
-      items[selected].click();
+      openDialog();
     }
   }
 
@@ -140,33 +111,17 @@
     else window.addEventListener("load", preload, { once: true });
   });
 
-  // static SVG strings from techIcons, never user content
-  function iconSvg(item: SearchItem): string {
-    const text = `${item.title} ${item.tags.join(" ")}`.toLowerCase();
-    if (text.includes("astro") || text.includes("ssg"))
-      return getTechIconSvg("astro", 16);
-    if (text.includes("vault")) return getTechIconSvg("vault", 16);
-    if (text.includes("github") || text.includes("git"))
-      return getTechIconSvg("github", 16);
-    if (["gallery", "photo", "zoom"].some((w) => text.includes(w)))
-      return getTechIconSvg("gallery", 16);
-    if (text.includes("typography") || text.includes("writing"))
-      return getTechIconSvg("typography", 16);
-    if (text.includes("code")) return getTechIconSvg("code", 16);
-    return getDefaultDocIcon(16);
-  }
-
   // shared classes
   const pill =
-    "inline-flex items-center gap-[0.4rem] rounded-[6px] border border-border bg-card px-3 py-[0.4rem] text-[0.82rem] text-foreground no-underline transition-[border-color,transform,background-color] duration-150 ease-[ease] hover:border-link hover:bg-muted hover:text-link hover:[transform:translateY(-1px)]";
+    "inline-flex items-center gap-[0.4rem] rounded-[6px] border border-border bg-card px-3 py-[0.4rem] text-[0.82rem] text-foreground no-underline transition-[border-color,transform,background-color] duration-150 ease-[ease] hover:border-link hover:bg-muted hover:text-link hover:[transform:translateY(-1px)] [&_svg]:size-[14px] [&_svg]:text-link";
   const sectionHeading =
     "mb-[0.35rem] flex items-center justify-between px-[0.65rem] py-[0.35rem] font-mono text-[0.7rem] font-semibold tracking-[0.06em] text-muted-foreground uppercase";
   const resultCard =
-    "search-result-item group/item mb-[0.45rem] flex cursor-pointer items-start gap-3 rounded-[8px] border border-border bg-card px-[0.85rem] py-[0.65rem] text-foreground no-underline [transition:border-color_0.15s_ease,background-color_0.15s_ease,box-shadow_0.15s_ease,transform_0.12s_ease] hover:border-link hover:bg-muted hover:[transform:translateY(-1px)] [&.selected]:border-link [&.selected]:bg-muted [&.selected]:shadow-[0_0_0_1px_var(--link),0_4px_14px_rgba(0,0,0,0.08)] [&.selected]:[transform:translateY(-1px)]";
+    "group/item mb-[0.45rem] flex cursor-pointer items-start gap-3 rounded-[8px]! border border-border bg-card px-[0.85rem] py-[0.65rem] text-foreground no-underline [transition:border-color_0.15s_ease,background-color_0.15s_ease,box-shadow_0.15s_ease,transform_0.12s_ease] data-selected:border-link data-selected:bg-muted data-selected:text-foreground data-selected:shadow-[0_0_0_1px_var(--link),0_4px_14px_rgba(0,0,0,0.08)] data-selected:[transform:translateY(-1px)]";
   const resultIcon =
-    "mt-[2px] inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[6px] border border-border bg-background text-[0.9rem] text-link [&_svg.tech-svg]:block [&_svg.tech-svg]:shrink-0";
+    "mt-[2px] inline-flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[6px] border border-border bg-background text-link [&_svg]:size-4";
   const resultTitle =
-    "truncate text-[0.88rem] leading-[1.3] font-semibold text-foreground group-hover/item:text-link group-[.selected]/item:text-link";
+    "truncate text-[0.88rem] leading-[1.3] font-semibold text-foreground group-data-selected/item:text-link";
   const resultMeta =
     "shrink-0 font-mono text-[0.72rem] whitespace-nowrap text-muted-foreground";
   const resultDescription =
@@ -175,6 +130,8 @@
     "rounded-[4px] border border-border bg-background px-[0.45rem] py-[0.12rem] font-mono text-[0.68rem] text-muted-foreground";
   const mark =
     "rounded-[3px] bg-[color-mix(in_srgb,var(--link)_18%,transparent)] px-[0.2rem] py-[0.05rem] font-bold text-link";
+  const kbd =
+    "h-auto min-w-0 rounded-[3px] border border-border bg-background px-[0.32rem] py-[0.1rem] font-mono text-[0.625rem] text-foreground";
 </script>
 
 <svelte:window onkeydown={onKeydown} />
@@ -188,23 +145,12 @@
   {/each}
 {/snippet}
 
-{#snippet card(item: SearchItem, index: number, meta: string)}
-  <a
-    href={item.url}
-    class={[resultCard, { selected: selected === index }]}
-    data-search-item
-    bind:this={items[index]}
-    onmouseenter={() => (selected = index)}
-  >
+{#snippet card(item: SearchItem, meta: string)}
+  <Command.LinkItem href={item.url} value={item.url} class={resultCard}>
     <div class={resultIcon}>
-      {#if item.type === "project"}
-        <span style="font-size: 15px; line-height: 1;"
-          >{item.emoji ?? "📦"}</span
-        >
-      {:else}
-        <!-- eslint-disable-next-line svelte/no-at-html-tags -- static icon markup -->
-        {@html iconSvg(item)}
-      {/if}
+      {#if item.type === "project"}<PackageIcon
+          aria-hidden="true"
+        />{:else}<FileTextIcon aria-hidden="true" />{/if}
     </div>
     <div class="min-w-0 flex-1">
       <div class="mb-[0.18rem] flex items-center justify-between gap-2">
@@ -218,7 +164,7 @@
         {#if item.type === "project"}
           <span
             class="rounded-[4px] border border-link bg-background px-[0.45rem] py-[0.12rem] font-mono text-[0.68rem] font-semibold text-link"
-            >⚡ {item.category ?? "Project"}</span
+            >{item.category ?? "Project"}</span
           >
         {/if}
         {#each item.tags.slice(0, item.type === "project" ? 3 : 4) as tag (tag)}
@@ -226,235 +172,197 @@
         {/each}
       </div>
     </div>
-  </a>
+  </Command.LinkItem>
 {/snippet}
 
-<div
-  bind:this={backdrop}
-  id="search-modal-backdrop"
-  class={[
-    "group/modal fixed inset-0 z-[1000] hidden items-start justify-center overflow-y-auto bg-scrim px-4 pt-14 pb-8 opacity-0 backdrop-blur-[8px] transition-opacity duration-[180ms] ease-[ease] max-sm:px-2 max-sm:py-4 [&.open]:flex [&.open]:opacity-100",
-    { open },
-  ]}
-  aria-hidden={!open}
-  role="dialog"
-  aria-modal="true"
-  aria-label="Global Search"
-  tabindex="-1"
-  onclick={(e) => {
-    if (e.target === backdrop) closeDialog();
-  }}
->
-  <div
-    class="flex w-full max-w-[620px] [transform:scale(0.97)_translateY(-8px)] flex-col overflow-hidden rounded-[12px] border border-border bg-background shadow-[0_20px_45px_-10px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.05)] transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-[.open]/modal:[transform:scale(1)_translateY(0)]"
-    id="search-modal-dialog"
+<Dialog.Root bind:open>
+  <Dialog.Content
+    showCloseButton={false}
+    class="top-14 max-h-[calc(100dvh-5.5rem)] w-[calc(100%-2rem)] max-w-[620px] translate-y-0 gap-0 overflow-hidden rounded-[12px] border border-border bg-background p-0 text-foreground shadow-[0_20px_45px_-10px_rgba(0,0,0,0.35)] ring-0 max-sm:top-4 max-sm:w-[calc(100%-1rem)] sm:max-w-[620px]"
   >
-    <!-- Header -->
-    <div
-      class="flex items-center gap-3 border-b border-border bg-card px-[1.15rem] py-[0.85rem]"
+    <Dialog.Title class="sr-only">Global Search</Dialog.Title>
+    <Dialog.Description class="sr-only"
+      >Search articles, projects and tags</Dialog.Description
     >
-      <div class="flex flex-1 items-center gap-[0.65rem]">
-        <svg
-          class="shrink-0 text-muted-foreground"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <circle cx="11" cy="11" r="8"></circle>
-          <path d="m21 21-4.3-4.3"></path>
-        </svg>
-        <input
-          bind:this={input}
-          bind:value={query}
-          type="text"
-          id="search-modal-input"
-          class="min-w-0 flex-1 border-none bg-transparent font-sans text-[0.95rem] text-foreground outline-none placeholder:text-muted-foreground placeholder:opacity-80"
-          placeholder="Search articles, projects, topics, tags..."
-          aria-label="Search"
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
-        />
-        {#if query}
-          <button
-            id="search-modal-clear"
-            class="inline-flex h-[22px] w-[22px] cursor-pointer items-center justify-center rounded-[50%] border-none bg-border p-0 text-muted-foreground transition-[background,color] duration-150 ease-[ease] hover:bg-muted-foreground hover:text-background"
-            aria-label="Clear search"
-            type="button"
-            onclick={clearQuery}
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        {/if}
-      </div>
-      <button
-        id="search-modal-close"
-        class="cursor-pointer border-none bg-transparent p-0"
-        type="button"
-        aria-label="Close search (Esc)"
-        title="Close (Esc)"
-        onclick={closeDialog}
-      >
-        <kbd
-          class="inline-flex items-center justify-center rounded-[4px] border border-border bg-background px-[0.4rem] py-[0.15rem] font-mono text-[0.6875rem] font-semibold text-muted-foreground shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
-        >
-          ESC
-        </kbd>
-      </button>
-    </div>
-
-    <!-- Results -->
-    <div
-      id="search-modal-results"
-      class="max-h-[55vh] [scrollbar-width:thin] [scrollbar-color:var(--border)_transparent] overflow-y-auto p-[0.85rem] outline-none [&::-webkit-scrollbar]:w-[6px] [&::-webkit-scrollbar-thumb]:rounded-[3px] [&::-webkit-scrollbar-thumb]:bg-border"
-      tabindex="-1"
+    <Command.Root
+      shouldFilter={false}
+      loop
+      bind:value={selected}
+      class="rounded-none! bg-background p-0 text-foreground"
     >
-      {#if !trimmed}
-        <div class="px-3 py-5 text-center">
-          <div
-            class="mb-4 font-mono text-[0.72rem] font-semibold tracking-[0.06em] text-muted-foreground uppercase"
-          >
-            Quick Access &amp; Navigation
-          </div>
-          <div class="mb-5 flex flex-wrap justify-center gap-2">
-            <a href="/blog" class={pill}
-              ><span>📄</span> <span>All Articles</span></a
-            >
-            <a href="/projects" class={pill}
-              ><span>📦</span> <span>All Projects</span></a
-            >
-            <a href="/tags" class={pill}
-              ><span>🏷️</span> <span>All Tags</span></a
-            >
-            <a href="/about" class={pill}><span>👤</span> <span>About</span></a>
-          </div>
-          <div
-            class="text-[0.82rem] leading-[1.5] text-muted-foreground [&_code]:rounded-[4px] [&_code]:border [&_code]:border-border [&_code]:bg-card [&_code]:px-[0.35rem] [&_code]:py-[0.1rem] [&_code]:font-mono [&_code]:text-[0.75rem] [&_code]:text-link"
-          >
-            Type any keyword (e.g., <code>ownership</code>, <code>traits</code>,
-            <code>cargo</code>, <code>async</code>) to filter in real-time.
-          </div>
-        </div>
-      {:else if !data}
-        <div class="px-4 py-12 text-center text-muted-foreground">
-          <div class="mb-[0.65rem] text-[2rem]">⏳</div>
-          <div
-            class="mb-[0.35rem] text-[0.95rem] font-semibold text-foreground"
-          >
-            Loading search index...
-          </div>
-        </div>
-      {:else if total === 0}
-        <div class="px-4 py-12 text-center text-muted-foreground">
-          <div class="mb-[0.65rem] text-[2rem]">🔍</div>
-          <div
-            class="mb-[0.35rem] text-[0.95rem] font-semibold text-foreground"
-          >
-            No results found for "{trimmed}"
-          </div>
-          <div class="text-[0.82rem] text-muted-foreground">
-            Try searching for keywords like <code>ownership</code>,
-            <code>traits</code>, <code>cargo</code> or <code>async</code>.
-          </div>
-        </div>
-      {:else}
-        {#if results.posts.length}
-          <div class="mb-[1.15rem] last:mb-1">
-            <div class={sectionHeading}>
-              <span>📄 Blog Articles</span>
-              <span class="font-mono text-[0.6875rem] opacity-75"
-                >{results.posts.length}</span
-              >
-            </div>
-            {#each results.posts as post, i (post.url)}
-              {@render card(post, i, post.date)}
-            {/each}
-          </div>
-        {/if}
-        {#if results.projects.length}
-          <div class="mb-[1.15rem] last:mb-1">
-            <div class={sectionHeading}>
-              <span>📦 Projects</span>
-              <span class="font-mono text-[0.6875rem] opacity-75"
-                >{results.projects.length}</span
-              >
-            </div>
-            {#each results.projects as project, i (project.url)}
-              {@render card(
-                project,
-                results.posts.length + i,
-                project.category ?? "Project",
-              )}
-            {/each}
-          </div>
-        {/if}
-        {#if results.tags.length}
-          <div class="mb-[1.15rem] last:mb-1">
-            <div class={sectionHeading}>
-              <span>🏷️ Tags &amp; Topics</span>
-              <span class="font-mono text-[0.6875rem] opacity-75"
-                >{results.tags.length}</span
-              >
-            </div>
-            <div class="flex flex-wrap gap-[0.45rem] px-[0.65rem] py-1">
-              {#each results.tags as tag, i (tag.url)}
-                {@const index =
-                  results.posts.length + results.projects.length + i}
-                <a
-                  href={tag.url}
-                  class={[
-                    "inline-flex items-center gap-[0.4rem] rounded-[6px] border border-border bg-card px-[0.65rem] py-[0.35rem] font-mono text-[0.78rem] text-foreground no-underline transition-[border-color,transform,color] duration-[120ms] ease-[ease] hover:[transform:translateY(-1px)] hover:border-link hover:bg-muted hover:text-link [&.selected]:[transform:translateY(-1px)] [&.selected]:border-link [&.selected]:bg-muted [&.selected]:text-link",
-                    { selected: selected === index },
-                  ]}
-                  data-search-item
-                  bind:this={items[index]}
-                  onmouseenter={() => (selected = index)}
-                >
-                  <span>{@render highlighted(tag.name, "#")}</span>
-                  <span class="text-[0.7rem] opacity-60">({tag.count})</span>
-                </a>
-              {/each}
-            </div>
-          </div>
-        {/if}
-      {/if}
-    </div>
-
-    <!-- Footer -->
-    <div
-      class="flex items-center justify-between border-t border-border bg-card px-[1.15rem] py-[0.6rem] text-[0.72rem] text-muted-foreground"
-    >
+      <!-- Header -->
       <div
-        class="flex items-center gap-[0.85rem] [&_kbd]:rounded-[3px] [&_kbd]:border [&_kbd]:border-border [&_kbd]:bg-background [&_kbd]:px-[0.32rem] [&_kbd]:py-[0.1rem] [&_kbd]:font-mono [&_kbd]:text-[0.625rem] [&_kbd]:text-foreground"
+        class="flex items-center gap-3 border-b border-border bg-card px-[1.15rem] py-[0.85rem]"
       >
-        <span class="inline-flex items-center gap-1"
-          ><kbd>↑</kbd> <kbd>↓</kbd> Navigate</span
+        <div class="flex flex-1 items-center gap-[0.65rem]">
+          <SearchIcon
+            class="size-[18px] shrink-0 text-muted-foreground"
+            aria-hidden="true"
+          />
+          <CommandPrimitive.Input
+            bind:value={query}
+            id="search-modal-input"
+            class="min-w-0 flex-1 border-none bg-transparent font-sans text-[0.95rem] leading-normal text-foreground outline-none placeholder:text-muted-foreground placeholder:opacity-80"
+            placeholder="Search articles, projects, topics, tags..."
+            aria-label="Search"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          {#if query}
+            <button
+              class="inline-flex h-[22px] w-[22px] cursor-pointer items-center justify-center rounded-full bg-border text-muted-foreground transition-[background,color] duration-150 ease-[ease] hover:bg-muted-foreground hover:text-background"
+              aria-label="Clear search"
+              type="button"
+              onclick={() => (query = "")}
+            >
+              <XIcon class="size-[14px]" aria-hidden="true" />
+            </button>
+          {/if}
+        </div>
+        <Dialog.Close
+          class="cursor-pointer"
+          aria-label="Close search (Esc)"
+          title="Close (Esc)"
         >
-        <span class="inline-flex items-center gap-1"><kbd>↵</kbd> Select</span>
-        <span class="inline-flex items-center gap-1"><kbd>ESC</kbd> Close</span>
+          <Kbd
+            class="h-auto rounded-[4px] border border-border bg-background px-[0.4rem] py-[0.15rem] font-mono text-[0.6875rem] font-semibold text-muted-foreground"
+            >ESC</Kbd
+          >
+        </Dialog.Close>
       </div>
-      <div class="font-mono text-[0.6875rem] opacity-80 max-sm:hidden">
-        🦀 {siteConfig.title} Search
+
+      <!-- Results -->
+      <Command.List
+        id="search-modal-results"
+        class="max-h-[55vh] scroll-py-[0.85rem] [scrollbar-width:thin] [scrollbar-color:var(--border)_transparent] p-[0.85rem]"
+      >
+        {#if !trimmed}
+          <div class="px-3 py-5 text-center">
+            <div
+              class="mb-4 font-mono text-[0.72rem] font-semibold tracking-[0.06em] text-muted-foreground uppercase"
+            >
+              Quick Access &amp; Navigation
+            </div>
+            <div class="mb-5 flex flex-wrap justify-center gap-2">
+              <a href="/blog" class={pill}
+                ><FileTextIcon aria-hidden="true" /> All Articles</a
+              >
+              <a href="/projects" class={pill}
+                ><PackageIcon aria-hidden="true" /> All Projects</a
+              >
+              <a href="/tags" class={pill}
+                ><TagIcon aria-hidden="true" /> All Tags</a
+              >
+              <a href="/about" class={pill}
+                ><UserIcon aria-hidden="true" /> About</a
+              >
+            </div>
+            <div
+              class="text-[0.82rem] leading-[1.5] text-muted-foreground [&_code]:rounded-[4px] [&_code]:border [&_code]:border-border [&_code]:bg-card [&_code]:px-[0.35rem] [&_code]:py-[0.1rem] [&_code]:font-mono [&_code]:text-[0.75rem] [&_code]:text-link"
+            >
+              Type any keyword (e.g., <code>ownership</code>,
+              <code>traits</code>,
+              <code>cargo</code>, <code>async</code>) to filter in real-time.
+            </div>
+          </div>
+        {:else if !data}
+          <div class="px-4 py-12 text-center text-muted-foreground">
+            <div
+              class="mb-[0.35rem] text-[0.95rem] font-semibold text-foreground"
+            >
+              Loading search index...
+            </div>
+          </div>
+        {:else if total === 0}
+          <div
+            class="px-4 py-12 text-center text-muted-foreground"
+            aria-live="polite"
+          >
+            <SearchIcon
+              class="mx-auto mb-[0.65rem] size-8 opacity-50"
+              aria-hidden="true"
+            />
+            <div
+              class="mb-[0.35rem] text-[0.95rem] font-semibold text-foreground"
+            >
+              No results found for "{trimmed}"
+            </div>
+            <div class="text-[0.82rem] text-muted-foreground">
+              Try searching for keywords like <code>ownership</code>,
+              <code>traits</code>, <code>cargo</code> or <code>async</code>.
+            </div>
+          </div>
+        {:else}
+          {#if results.posts.length}
+            <Command.Group class="mb-[1.15rem] p-0 last:mb-1">
+              <div class={sectionHeading}>
+                <span class="inline-flex items-center gap-[0.4rem]"
+                  ><FileTextIcon class="size-[13px]" aria-hidden="true" /> Blog Articles</span
+                >
+                <span class="opacity-75">{results.posts.length}</span>
+              </div>
+              {#each results.posts as post (post.url)}
+                {@render card(post, post.date)}
+              {/each}
+            </Command.Group>
+          {/if}
+          {#if results.projects.length}
+            <Command.Group class="mb-[1.15rem] p-0 last:mb-1">
+              <div class={sectionHeading}>
+                <span class="inline-flex items-center gap-[0.4rem]"
+                  ><PackageIcon class="size-[13px]" aria-hidden="true" /> Projects</span
+                >
+                <span class="opacity-75">{results.projects.length}</span>
+              </div>
+              {#each results.projects as project (project.url)}
+                {@render card(project, project.date)}
+              {/each}
+            </Command.Group>
+          {/if}
+          {#if results.tags.length}
+            <Command.Group class="mb-[1.15rem] p-0 last:mb-1">
+              <div class={sectionHeading}>
+                <span class="inline-flex items-center gap-[0.4rem]"
+                  ><TagIcon class="size-[13px]" aria-hidden="true" /> Tags &amp; Topics</span
+                >
+                <span class="opacity-75">{results.tags.length}</span>
+              </div>
+              <div class="flex flex-wrap gap-[0.45rem] px-[0.65rem] py-1">
+                {#each results.tags as tag (tag.url)}
+                  <Command.LinkItem
+                    href={tag.url}
+                    value={tag.url}
+                    class="inline-flex w-auto items-center gap-[0.4rem] rounded-[6px]! border border-border bg-card px-[0.65rem] py-[0.35rem] font-mono text-[0.78rem] text-foreground no-underline transition-[border-color,transform,color] duration-[120ms] ease-[ease] data-selected:[transform:translateY(-1px)] data-selected:border-link data-selected:bg-muted data-selected:text-link"
+                  >
+                    <span>{@render highlighted(tag.name, "#")}</span>
+                    <span class="text-[0.7rem] opacity-60">({tag.count})</span>
+                  </Command.LinkItem>
+                {/each}
+              </div>
+            </Command.Group>
+          {/if}
+        {/if}
+      </Command.List>
+
+      <!-- Footer -->
+      <div
+        class="flex items-center justify-between border-t border-border bg-card px-[1.15rem] py-[0.6rem] text-[0.72rem] text-muted-foreground"
+      >
+        <div class="flex items-center gap-[0.85rem]">
+          <span class="inline-flex items-center gap-1"
+            ><Kbd class={kbd}>↑</Kbd> <Kbd class={kbd}>↓</Kbd> Navigate</span
+          >
+          <span class="inline-flex items-center gap-1"
+            ><Kbd class={kbd}>↵</Kbd> Select</span
+          >
+          <span class="inline-flex items-center gap-1"
+            ><Kbd class={kbd}>ESC</Kbd> Close</span
+          >
+        </div>
+        <div class="font-mono text-[0.6875rem] opacity-80 max-sm:hidden">
+          {siteConfig.title} Search
+        </div>
       </div>
-    </div>
-  </div>
-</div>
+    </Command.Root>
+  </Dialog.Content>
+</Dialog.Root>
