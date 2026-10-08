@@ -77,3 +77,14 @@ test("links to std items are tagged with rustdoc's item kind", async ({
       .evaluate((a) => getComputedStyle(a).color);
   expect(await color("Copy")).not.toBe(await color("String"));
 });
+
+test("posts load giscus comments for this page", async ({ page }) => {
+  const comments = page.getByRole("region", { name: "Comments" });
+  await comments.scrollIntoViewIfNeeded();
+  const frame = comments.locator("iframe.giscus-frame");
+  await expect(frame).toBeAttached({ timeout: 15_000 });
+  const src = new URL((await frame.getAttribute("src"))!);
+  expect(src.origin).toBe("https://giscus.app");
+  expect(src.searchParams.get("repo")).toBe("rustophile/blog");
+  expect(src.searchParams.get("term")).toBe("blog/hello-rustophile");
+});

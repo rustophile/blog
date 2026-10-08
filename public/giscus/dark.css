@@ -1,0 +1,40 @@
+/* Giscus theme: std Dark. Giscus loads this inside its iframe from the deployed site
+   (see src/components/Comments.astro); colors mirror src/styles/global.css */
+@import url("https://giscus.app/themes/dark_dimmed.css");
+
+main {
+  --color-canvas-default: #353535;
+  --color-canvas-overlay: #2f2f2f;
+  --color-canvas-inset: #2a2a2a;
+  --color-canvas-subtle: #2f2f2f;
+  --color-fg-default: #dddddd;
+  --color-fg-muted: #aaaaaa;
+  --color-fg-subtle: #aaaaaa;
+  --color-border-default: #4a4a4a;
+  --color-border-muted: #4a4a4a;
+  --color-neutral-muted: color-mix(in oklab, #4a4a4a 60%, transparent);
+  --color-accent-fg: #d2991d;
+  --color-accent-emphasis: #d2991d;
+  --color-accent-muted: color-mix(in oklab, #d2991d 40%, transparent);
+  --color-accent-subtle: color-mix(in oklab, #d2991d 15%, transparent);
+  --color-btn-primary-bg: #d2991d;
+  --color-btn-primary-border: #d2991d;
+  --color-btn-primary-hover-bg: #fdbf35;
+  --color-btn-primary-hover-border: #fdbf35;
+  --color-btn-primary-selected-bg: #fdbf35;
+  --color-btn-primary-text: #2a2a2a;
+  --color-btn-primary-disabled-bg: color-mix(
+    in oklab,
+    #d2991d 50%,
+    transparent
+  );
+  --color-btn-primary-disabled-border: transparent;
+  --color-btn-primary-disabled-text: #2a2a2a;
+  --color-btn-border: #4a4a4a;
+  --color-btn-hover-border: #4a4a4a;
+  --color-btn-active-border: #4a4a4a;
+  --color-segmented-control-button-selected-border: #4a4a4a;
+  --color-success-fg: #2eb569;
+  --color-danger-fg: #f07d7d;
+  --color-attention-fg: #ff8e00;
+}

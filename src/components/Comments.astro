@@ -1,0 +1,96 @@
+---
+// Giscus comments (GitHub Discussions), one discussion per post, matched by pathname.
+// Renders nothing until siteConfig.comments has its repo and category IDs.
+import { siteConfig } from "../config/site";
+
+const { repo, repoId, category, categoryId } = siteConfig.comments;
+const enabled = Boolean(repoId && categoryId);
+---
+
+{enabled && (
+  <section
+    id="comments"
+    class="mt-10 border-t border-line pt-6"
+    aria-labelledby="comments-title"
+  >
+    <h2
+      id="comments-title"
+      class="mt-0 mb-4 border-none pb-0 text-[1.25rem] font-bold tracking-[-0.02em]"
+    >
+      Comments
+    </h2>
+    <div
+      id="giscus-comments"
+      data-repo={repo}
+      data-repo-id={repoId}
+      data-category={category}
+      data-category-id={categoryId}
+      data-site={siteConfig.siteUrl}
+    >
+      <noscript>
+        <p class="text-muted">
+          Comments need JavaScript; you can also{" "}
+          <a href={`https://github.com/${repo}/discussions`}>
+            join the discussion on GitHub
+          </a>
+          .
+        </p>
+      </noscript>
+    </div>
+  </section>
+)}
+
+<script>
+  const host = document.getElementById("giscus-comments");
+
+  // Giscus loads its theme stylesheet inside its own https iframe, so it can't reach
+  // localhost: the deployed site serves public/giscus/*.css itself, and anywhere else (dev,
+  // previews) gets the same files from the repo through jsDelivr
+  function giscusTheme(theme: string) {
+    const name = theme === "dark" ? "dark" : "paper";
+    const site = host?.dataset.site;
+    if (site && location.origin === new URL(site).origin) {
+      return `${site}/giscus/${name}.css`;
+    }
+    return `https://cdn.jsdelivr.net/gh/${host?.dataset.repo}@master/public/giscus/${name}.css`;
+  }
+
+  const currentTheme = () =>
+    document.documentElement.getAttribute("data-theme") ?? "paper";
+
+  if (host) {
+    const { repo, repoId, category, categoryId } = host.dataset;
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    for (const [name, value] of Object.entries({
+      repo: repo ?? "",
+      "repo-id": repoId ?? "",
+      category: category ?? "",
+      "category-id": categoryId ?? "",
+      mapping: "pathname",
+      strict: "1",
+      "reactions-enabled": "1",
+      "emit-metadata": "0",
+      "input-position": "top",
+      theme: giscusTheme(currentTheme()),
+      lang: "en",
+      loading: "lazy",
+    })) {
+      script.setAttribute(`data-${name}`, value);
+    }
+    host.appendChild(script);
+
+    // follow the site's theme picker
+    window.addEventListener("rustophile-theme-change", (event) => {
+      const { theme } = (event as CustomEvent<{ theme: string }>).detail;
+      document
+        .querySelector<HTMLIFrameElement>("iframe.giscus-frame")
+        ?.contentWindow?.postMessage(
+          { giscus: { setConfig: { theme: giscusTheme(theme) } } },
+          "https://giscus.app",
+        );
+    });
+  }
+</script>

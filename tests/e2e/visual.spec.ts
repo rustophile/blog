@@ -7,6 +7,12 @@ import { pages } from "./pages";
 //   pnpm test:e2e --project visual --update-snapshots
 
 const themes = ["paper", "dark"];
+
+// giscus comments are live third-party content that changes between runs; the functional
+// tests cover the embed, so screenshots show the page without it
+test.beforeEach(async ({ page }) => {
+  await page.route("https://giscus.app/**", (route) => route.abort());
+});
 const viewports = {
   desktop: { width: 1280, height: 800 },
   phone: { width: 390, height: 844 },

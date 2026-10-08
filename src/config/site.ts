@@ -43,6 +43,16 @@ export interface SiteConfig {
     title: string;
     href: string;
   }[];
+  /**
+   * Giscus comments (GitHub Discussions). Post pages show them once repoId and categoryId are
+   * set; get both from https://giscus.app after enabling Discussions and installing the app.
+   */
+  comments: {
+    repo: `${string}/${string}`;
+    repoId: string;
+    category: string;
+    categoryId: string;
+  };
 }
 
 export const siteConfig: SiteConfig = {
@@ -76,4 +86,11 @@ export const siteConfig: SiteConfig = {
     { title: "Tags", href: "/tags" },
     { title: "About", href: "/about" },
   ],
+  comments: {
+    repo: "rustophile/blog",
+    repoId: "R_kgDOVBdjuw",
+    // an Announcements-type category, so only you and giscus can start discussions
+    category: "Announcements",
+    categoryId: "DIC_kwDOVBdju84DHXCP",
+  },
 };
