@@ -84,8 +84,13 @@ const states: {
     name: "share-dialog",
     path: "/blog/hello-rustophile",
     open: async (page) => {
-      await page.locator("#open-share-modal").click();
-      await expect(page.locator("#share-modal-dialog")).toBeVisible();
+      // the Share button is a Svelte island: retry until it has hydrated and opens
+      const dialog = page.locator("#share-modal-dialog");
+      await expect(async () => {
+        await page.locator("#open-share-modal").click();
+        await expect(dialog).toBeVisible({ timeout: 500 });
+      }).toPass();
+      await page.waitForTimeout(200);
     },
   },
   {
