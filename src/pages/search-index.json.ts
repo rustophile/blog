@@ -38,6 +38,7 @@ export async function GET() {
       description: p.data.description,
       url: `/blog/${p.id}`,
       date: p.data.pubDate.toLocaleDateString("en-US", {
+        timeZone: "UTC",
         month: "short",
         day: "numeric",
         year: "numeric",
@@ -51,6 +52,7 @@ export async function GET() {
       description: p.data.description,
       url: `/projects/${p.id}`,
       date: p.data.date.toLocaleDateString("en-US", {
+        timeZone: "UTC",
         month: "short",
         year: "numeric",
       }),

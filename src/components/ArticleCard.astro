@@ -8,6 +8,7 @@ interface Props {
 
 const { post } = Astro.props;
 const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
+  timeZone: "UTC",
   year: "numeric",
   month: "short",
   day: "numeric",

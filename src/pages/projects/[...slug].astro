@@ -18,6 +18,7 @@ const { project } = Astro.props;
 const { Content } = await render(project);
 
 const formattedDate = project.data.date.toLocaleDateString("en-US", {
+  timeZone: "UTC",
   year: "numeric",
   month: "long",
   day: "numeric",

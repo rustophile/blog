@@ -20,6 +20,7 @@ const { post } = Astro.props;
 const { Content, headings } = await render(post);
 
 const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
+  timeZone: "UTC",
   year: "numeric",
   month: "long",
   day: "numeric",
