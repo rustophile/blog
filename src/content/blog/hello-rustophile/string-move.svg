@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" width="720" height="340" font-family="Fira Sans, system-ui, sans-serif">
+  <title>Moving a String: after let t = s, the stack value t owns the heap buffer and s is no longer valid</title>
+  <rect width="720" height="340" rx="12" fill="#fffdf8" stroke="#e5dac1"/>
+
+  <!-- headings -->
+  <text x="40" y="44" font-size="18" font-weight="700" fill="#292524">Stack</text>
+  <text x="470" y="44" font-size="18" font-weight="700" fill="#292524">Heap</text>
+
+  <!-- s: moved-from, greyed and crossed out -->
+  <g opacity="0.45">
+    <text x="40" y="84" font-size="15" font-family="Source Code Pro, monospace" fill="#292524">s</text>
+    <rect x="40" y="94" width="230" height="96" rx="6" fill="#eee7d5" stroke="#57534e"/>
+    <g font-size="13" font-family="Source Code Pro, monospace" fill="#292524">
+      <text x="56" y="120">ptr</text><text x="56" y="148">len</text><text x="56" y="176">capacity</text>
+      <text x="190" y="148">5</text><text x="190" y="176">5</text>
+    </g>
+    <line x1="40" y1="131" x2="270" y2="131" stroke="#57534e"/>
+    <line x1="40" y1="159" x2="270" y2="159" stroke="#57534e"/>
+    <line x1="160" y1="94" x2="160" y2="190" stroke="#57534e"/>
+  </g>
+  <line x1="34" y1="88" x2="276" y2="196" stroke="#ca1717" stroke-width="3"/>
+  <line x1="276" y1="88" x2="34" y2="196" stroke="#ca1717" stroke-width="3"/>
+  <text x="40" y="214" font-size="13" fill="#ca1717">moved: using s is error[E0382]</text>
+
+  <!-- t: the new owner -->
+  <text x="40" y="250" font-size="15" font-family="Source Code Pro, monospace" fill="#292524">t</text>
+  <rect x="40" y="260" width="230" height="60" rx="6" fill="#fffdf8" stroke="#846012" stroke-width="2"/>
+  <g font-size="13" font-family="Source Code Pro, monospace" fill="#292524">
+    <text x="56" y="284">ptr</text><text x="56" y="308">len, capacity</text>
+    <text x="190" y="308">5, 5</text>
+  </g>
+  <line x1="40" y1="292" x2="270" y2="292" stroke="#846012"/>
+  <line x1="160" y1="260" x2="160" y2="292" stroke="#846012"/>
+
+  <!-- heap buffer -->
+  <g font-size="13" font-family="Source Code Pro, monospace" fill="#292524" text-anchor="middle">
+    <text x="452" y="84" text-anchor="start" font-size="12" fill="#57534e">index</text>
+    <text x="452" y="104" text-anchor="start" font-size="12" fill="#57534e">value</text>
+  </g>
+  <g font-family="Source Code Pro, monospace" text-anchor="middle">
+    <rect x="500" y="110" width="40" height="40" fill="#eee7d5" stroke="#57534e"/>
+    <rect x="540" y="110" width="40" height="40" fill="#eee7d5" stroke="#57534e"/>
+    <rect x="580" y="110" width="40" height="40" fill="#eee7d5" stroke="#57534e"/>
+    <rect x="620" y="110" width="40" height="40" fill="#eee7d5" stroke="#57534e"/>
+    <rect x="660" y="110" width="40" height="40" fill="#eee7d5" stroke="#57534e"/>
+    <g font-size="12" fill="#57534e"><text x="520" y="100">0</text><text x="560" y="100">1</text><text x="600" y="100">2</text><text x="640" y="100">3</text><text x="680" y="100">4</text></g>
+    <g font-size="16" fill="#292524"><text x="520" y="136">h</text><text x="560" y="136">e</text><text x="600" y="136">l</text><text x="640" y="136">l</text><text x="680" y="136">o</text></g>
+  </g>
+
+  <!-- pointers -->
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10z" fill="#846012"/>
+    </marker>
+    <marker id="arrow-grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10z" fill="#a8a29e"/>
+    </marker>
+  </defs>
+  <path d="M220 112 C 360 100, 420 120, 496 128" fill="none" stroke="#a8a29e" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow-grey)"/>
+  <path d="M220 276 C 380 280, 430 200, 506 154" fill="none" stroke="#846012" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="390" y="290" font-size="13" fill="#846012">t owns the buffer now</text>
+</svg>
