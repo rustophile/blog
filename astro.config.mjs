@@ -1,8 +1,11 @@
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { unified } from "@astrojs/markdown-remark";
-import rehypeExpressiveCode from "rehype-expressive-code";
+import rehypeExpressiveCode, {
+  ExpressiveCodeTheme,
+} from "rehype-expressive-code";
+import rustdocDark from "./src/styles/rustdoc-dark.json" with { type: "json" };
 import { rehypeCallouts } from "./src/plugins/rehype-callouts.ts";
 import { remarkCodeGroups, rehypeCodeTabs } from "./src/plugins/code-tabs.ts";
 import { rehypeLinks } from "./src/plugins/rehype-links.ts";
@@ -11,7 +14,8 @@ import { siteConfig } from "./src/config/site.ts";
 
 /** @type {import("rehype-expressive-code").RehypeExpressiveCodeOptions} */
 const expressiveCode = {
-  themes: ["github-dark-dimmed"],
+  // rustdoc's dark-theme highlighting (src/styles/rustdoc-dark.json), in both site themes
+  themes: [new ExpressiveCodeTheme(rustdocDark)],
   useDarkModeMediaQuery: false,
   defaultProps: {
     wrap: true,
@@ -28,8 +32,16 @@ const expressiveCode = {
     codeLineHeight: "1.6",
     codePaddingBlock: "1.25rem",
     codePaddingInline: "1.25rem",
+    textMarkers: {
+      markBackground: "color-mix(in oklab, #d2991d 16%, transparent)",
+      markBorderColor: "#d2991d",
+    },
     frames: {
       frameBoxShadowCssValue: "none",
+      editorActiveTabIndicatorTopColor: "var(--accent-bright)",
+      editorActiveTabBackground: "var(--code-bg)",
+      editorTabBarBackground: "#232323",
+      terminalTitlebarBackground: "#232323",
       editorBackground: "var(--code-bg)",
       terminalBackground: "var(--code-bg)",
     },
@@ -57,6 +69,36 @@ export default defineConfig({
       ],
     }),
   },
+  // rustdoc's typefaces, self-hosted at build time
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: "Fira Sans",
+      cssVariable: "--font-fira-sans",
+      weights: [400, 500, 600, 700],
+      styles: ["normal", "italic"],
+      subsets: ["latin"],
+      fallbacks: ["sans-serif"],
+    },
+    {
+      provider: fontProviders.google(),
+      name: "Source Serif 4",
+      cssVariable: "--font-source-serif",
+      weights: [400, 600, 700],
+      styles: ["normal", "italic"],
+      subsets: ["latin"],
+      fallbacks: ["serif"],
+    },
+    {
+      provider: fontProviders.google(),
+      name: "Source Code Pro",
+      cssVariable: "--font-source-code-pro",
+      weights: [400, 600],
+      styles: ["normal"],
+      subsets: ["latin"],
+      fallbacks: ["monospace"],
+    },
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

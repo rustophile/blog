@@ -1,17 +1,24 @@
-/* 🪨 Minrock — Global Design System & Typography */
+/* 🦀 Rustophile — Minrock's typography-first design, in the Rust standard library's colors */
 
 /* No preflight: Minrock's own base styles below set element defaults */
 @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
+/* rustdoc's typefaces: Fira Sans for UI and headings, Source Serif 4 for prose, Source Code Pro
+   for code (loaded by Astro's fonts API, see astro.config.mjs) */
 @theme {
   --font-sans:
-    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    var(--font-fira-sans), system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-source-serif), Georgia, "Times New Roman", serif;
+  --font-mono:
+    var(--font-source-code-pro), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, monospace;
 }
 
-/* Palette tokens as utilities (bg-page, text-muted, border-line, …); values switch per [data-theme] */
+/* Palette tokens as utilities (bg-page, text-muted, border-line, text-rust-trait, …); values
+   switch per [data-theme] */
 @theme inline {
   --color-page: var(--bg);
   --color-surface: var(--bg-surface);
@@ -21,70 +28,162 @@
   --color-line: var(--border);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-accent-bright: var(--accent-bright);
+  --color-on-accent: var(--on-accent);
   --color-code-bg: var(--code-bg);
   --color-code-fg: var(--code-text);
   --color-selection: var(--selection);
+  --color-rust-fn: var(--rust-fn);
+  --color-rust-type: var(--rust-type);
+  --color-rust-trait: var(--rust-trait);
+  --color-rust-macro: var(--rust-macro);
+  --color-success: var(--rust-fn);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-link-type: var(--link-type);
+  --color-link-trait: var(--link-trait);
+  --color-link-fn: var(--link-fn);
+  --color-link-macro: var(--link-macro);
+  --color-link-mod: var(--link-mod);
+  --color-link-keyword: var(--link-keyword);
+  --color-link-assoc: var(--link-assoc);
+  --color-footer: var(--footer-bg);
+  --color-footer-line: var(--footer-border);
+  --color-footer-fg: var(--footer-text);
+}
+
+/* page changes cross-fade instead of blanking (browsers without support just navigate) */
+@view-transition {
+  navigation: auto;
 }
 
 @layer base {
-  :root {
-    /* Default: Clean White (Editorial) */
-    --bg: #ffffff;
-    --bg-surface: #f8fafc;
-    --bg-subtle: #f1f5f9;
-    --text: #0f172a;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --accent: #2563eb;
-    --accent-hover: #1d4ed8;
-    --code-bg: #1e293b;
-    --code-text: #e2e8f0;
-    --selection: #cbd5e1;
-  }
-
-  [data-theme="cream"] {
-    /* Warm Paper (Long Reading Comfort) */
+  /* Two themes. Warm Paper is Minrock's cream reading palette with rustdoc's dark-theme
+     accents; std Dark is rustdoc's dark theme. Each accent comes in two shades: "-bright" is
+     rustdoc's own color, for bars, borders, focus rings and fills; the plain one is the same hue
+     adjusted to 4.5:1 or better on that theme's page, surface and subtle backgrounds, for text. */
+  :root,
+  [data-theme="paper"] {
     --bg: #f7f4ea;
     --bg-surface: #fffdf8;
     --bg-subtle: #eee7d5;
     --text: #292524;
     --text-muted: #57534e;
     --border: #e5dac1;
-    --accent: #92400e;
-    --accent-hover: #78350f;
-    --code-bg: #292524;
-    --code-text: #f5f5f4;
-    --selection: #fde68a;
+    --accent: #846012;
+    --accent-hover: #5f450d;
+    --accent-bright: #d2991d;
+    --on-accent: #ffffff;
+    --code-bg: #2a2a2a;
+    --code-text: #dddddd;
+    --selection: color-mix(in oklab, #d2991d 30%, transparent);
+    --rust-fn: #1d7443;
+    --rust-type: #1b716c;
+    --rust-trait: #8237e8;
+    --rust-macro: #067800;
+    --rust-fn-bright: #2bab63;
+    --rust-type-bright: #2dbfb8;
+    --rust-trait-bright: #b78cf2;
+    --rust-macro-bright: #09bd00;
+    --warning: #995500;
+    --danger: #ca1717;
+    --danger-bright: #ee6868;
+    /* link colors by rustdoc item kind, named after rustdoc's --*-link-color variables */
+    --link-type: var(--rust-type);
+    --link-trait: var(--rust-trait);
+    --link-fn: var(--rust-fn);
+    --link-macro: var(--rust-macro);
+    --link-mod: var(--accent);
+    --link-keyword: var(--accent);
+    --link-assoc: var(--accent);
+    /* footer in rustdoc's sidebar colors */
+    --footer-bg: #eee7d5;
+    --footer-border: #d6c9a8;
+    --footer-text: #57534e;
+    color-scheme: light;
   }
 
-  [data-theme="slate"] {
-    /* Slate Navy (Modern Dark - Linear/Vercel style) */
-    --bg: #0b1120;
-    --bg-surface: #1e293b;
-    --bg-subtle: #334155;
-    --text: #f8fafc;
-    --text-muted: #94a3b8;
-    --border: #334155;
-    --accent: #38bdf8;
-    --accent-hover: #7dd3fc;
-    --code-bg: #030712;
-    --code-text: #f3f4f6;
-    --selection: #1e3a8a;
+  [data-theme="dark"] {
+    --bg: #353535;
+    --bg-surface: #2f2f2f;
+    --bg-subtle: #2a2a2a;
+    --text: #dddddd;
+    --text-muted: #aaaaaa;
+    --border: #4a4a4a;
+    --accent: #d2991d;
+    --accent-hover: #fdbf35;
+    --accent-bright: #d2991d;
+    --on-accent: #2a2a2a;
+    --code-bg: #2a2a2a;
+    --code-text: #dddddd;
+    --selection: color-mix(in oklab, #d2991d 35%, transparent);
+    --rust-fn: #2eb569;
+    --rust-type: #2dbfb8;
+    --rust-trait: #b78cf2;
+    --rust-macro: #09bd00;
+    --rust-fn-bright: #2bab63;
+    --rust-type-bright: #2dbfb8;
+    --rust-trait-bright: #b78cf2;
+    --rust-macro-bright: #09bd00;
+    --warning: #ff8e00;
+    --danger: #f07d7d;
+    --danger-bright: #ee6868;
+    /* link colors by rustdoc item kind, named after rustdoc's --*-link-color variables */
+    --link-type: var(--rust-type);
+    --link-trait: var(--rust-trait);
+    --link-fn: var(--rust-fn);
+    --link-macro: var(--rust-macro);
+    --link-mod: var(--accent);
+    --link-keyword: var(--accent);
+    --link-assoc: var(--accent);
+    /* footer in rustdoc's sidebar colors */
+    --footer-bg: #505050;
+    --footer-border: #999999;
+    --footer-text: #c8c8c8;
+    color-scheme: dark;
   }
 
-  [data-theme="midnight"] {
-    /* Midnight OLED (Pure Dark with Neon Glow) */
-    --bg: #000000;
-    --bg-surface: #0a0e14;
-    --bg-subtle: #161b22;
-    --text: #f0f6fc;
-    --text-muted: #8b949e;
-    --border: #30363d;
-    --accent: #58a6ff;
-    --accent-hover: #79c0ff;
-    --code-bg: #0d1117;
-    --code-text: #c9d1d9;
-    --selection: #21262d;
+  /* without JavaScript nothing sets data-theme, so follow the OS */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --bg: #353535;
+      --bg-surface: #2f2f2f;
+      --bg-subtle: #2a2a2a;
+      --text: #dddddd;
+      --text-muted: #aaaaaa;
+      --border: #4a4a4a;
+      --accent: #d2991d;
+      --accent-hover: #fdbf35;
+      --accent-bright: #d2991d;
+      --on-accent: #2a2a2a;
+      --code-bg: #2a2a2a;
+      --code-text: #dddddd;
+      --selection: color-mix(in oklab, #d2991d 35%, transparent);
+      --rust-fn: #2eb569;
+      --rust-type: #2dbfb8;
+      --rust-trait: #b78cf2;
+      --rust-macro: #09bd00;
+      --rust-fn-bright: #2bab63;
+      --rust-type-bright: #2dbfb8;
+      --rust-trait-bright: #b78cf2;
+      --rust-macro-bright: #09bd00;
+      --warning: #ff8e00;
+      --danger: #f07d7d;
+      --danger-bright: #ee6868;
+      /* link colors by rustdoc item kind, named after rustdoc's --*-link-color variables */
+      --link-type: var(--rust-type);
+      --link-trait: var(--rust-trait);
+      --link-fn: var(--rust-fn);
+      --link-macro: var(--rust-macro);
+      --link-mod: var(--accent);
+      --link-keyword: var(--accent);
+      --link-assoc: var(--accent);
+      /* footer in rustdoc's sidebar colors */
+      --footer-bg: #505050;
+      --footer-border: #999999;
+      --footer-text: #c8c8c8;
+      color-scheme: dark;
+    }
   }
 
   *,
@@ -100,10 +199,6 @@
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    transition:
-      background-color 0.25s ease,
-      color 0.25s ease,
-      border-color 0.25s ease;
     scroll-behavior: smooth;
   }
 
@@ -121,7 +216,7 @@
 
   /* Accessibility Focus Ring */
   :focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--accent-bright);
     outline-offset: 3px;
     border-radius: 4px;
   }
@@ -155,6 +250,64 @@
     color: var(--accent);
   }
 
+  /* form controls don't inherit the page font by default (Tailwind's preflight, which we
+     skip, would do this) */
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+  }
+
+  /* Long-form text reads in Source Serif, as rustdoc's docs do; headings, UI and code don't */
+  .post-content {
+    font-family: var(--font-serif);
+  }
+
+  /* links in prose are colored like rustdoc's, so they read as links before hover */
+  .post-content a:not(.anchor) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklab, var(--accent) 40%, transparent);
+    text-underline-offset: 0.15em;
+  }
+
+  .post-content a:not(.anchor):hover {
+    color: var(--accent-hover);
+    text-decoration-color: currentColor;
+  }
+
+  /* links to std and docs.rs items take rustdoc's color for the item's kind (rehypeLinks
+     sets data-rust-item from the URL: struct.String.html is a type, trait.Iterator.html a trait) */
+  .post-content a.rust-item[data-rust-item] {
+    text-decoration-color: color-mix(in oklab, currentColor 40%, transparent);
+  }
+  .post-content a.rust-item[data-rust-item="type"] {
+    color: var(--link-type);
+  }
+  .post-content a.rust-item[data-rust-item="trait"] {
+    color: var(--link-trait);
+  }
+  .post-content a.rust-item[data-rust-item="fn"] {
+    color: var(--link-fn);
+  }
+  .post-content a.rust-item[data-rust-item="macro"] {
+    color: var(--link-macro);
+  }
+  .post-content a.rust-item[data-rust-item="mod"] {
+    color: var(--link-mod);
+  }
+  .post-content a.rust-item[data-rust-item="keyword"] {
+    color: var(--link-keyword);
+  }
+  .post-content a.rust-item[data-rust-item="method"],
+  .post-content a.rust-item[data-rust-item="constant"] {
+    color: var(--link-assoc);
+  }
+  .post-content a.rust-item[data-rust-item]:hover {
+    text-decoration-color: currentColor;
+  }
+
   /* Typography Defaults */
   h1,
   h2,
@@ -162,6 +315,7 @@
   h4,
   h5,
   h6 {
+    font-family: var(--font-sans);
     color: var(--text);
     line-height: 1.3;
     margin-top: 2rem;
@@ -256,7 +410,7 @@
   blockquote {
     margin: 1.5rem 0;
     padding: 0.75rem 1.25rem;
-    border-left: 4px solid var(--accent);
+    border-left: 4px solid var(--accent-bright);
     background: var(--bg-surface);
     border-radius: 0 8px 8px 0;
     color: var(--text-muted);
@@ -364,68 +518,38 @@
     margin-bottom: 0;
   }
 
-  /* Callout Variants: Tip (Emerald) */
-  .callout-tip {
-    --callout-border: #10b981;
-    --callout-color: #059669;
-    --callout-bg: rgba(16, 185, 129, 0.07);
-  }
-
-  /* Callout Variants: Important (Purple) */
-  .callout-important {
-    --callout-border: #8b5cf6;
-    --callout-color: #7c3aed;
-    --callout-bg: rgba(139, 92, 246, 0.07);
-  }
-
-  /* Callout Variants: Warning (Amber) */
-  .callout-warning {
-    --callout-border: #f59e0b;
-    --callout-color: #d97706;
-    --callout-bg: rgba(245, 158, 11, 0.08);
-  }
-
-  /* Callout Variants: Caution & Danger (Red) */
-  .callout-caution,
-  .callout-danger {
-    --callout-border: #ef4444;
-    --callout-color: #dc2626;
-    --callout-bg: rgba(239, 68, 68, 0.08);
-  }
-
-  /* Callout Variants: Note & Info (Theme Accent) */
+  /* Callout variants, in rustdoc's item colors: note = link gold, tip = function green,
+     important = trait purple, warning = rustdoc's warning orange, caution = literal red */
   .callout-note,
   .callout-info {
-    --callout-border: var(--accent);
+    --callout-border: var(--accent-bright);
     --callout-color: var(--accent);
     --callout-bg: var(--bg-surface);
   }
 
-  /* Dark Mode Callout Refinements (Slate & Midnight) */
-  [data-theme="slate"] .callout-tip,
-  [data-theme="midnight"] .callout-tip {
-    --callout-color: #34d399;
-    --callout-bg: rgba(16, 185, 129, 0.12);
+  .callout-tip {
+    --callout-border: var(--rust-fn-bright);
+    --callout-color: var(--rust-fn);
+    --callout-bg: color-mix(in oklab, var(--rust-fn-bright) 8%, transparent);
   }
 
-  [data-theme="slate"] .callout-important,
-  [data-theme="midnight"] .callout-important {
-    --callout-color: #a78bfa;
-    --callout-bg: rgba(139, 92, 246, 0.12);
+  .callout-important {
+    --callout-border: var(--rust-trait-bright);
+    --callout-color: var(--rust-trait);
+    --callout-bg: color-mix(in oklab, var(--rust-trait-bright) 8%, transparent);
   }
 
-  [data-theme="slate"] .callout-warning,
-  [data-theme="midnight"] .callout-warning {
-    --callout-color: #fbbf24;
-    --callout-bg: rgba(245, 158, 11, 0.12);
+  .callout-warning {
+    --callout-border: #ff8e00;
+    --callout-color: var(--warning);
+    --callout-bg: color-mix(in oklab, #ff8e00 8%, transparent);
   }
 
-  [data-theme="slate"] .callout-caution,
-  [data-theme="midnight"] .callout-caution,
-  [data-theme="slate"] .callout-danger,
-  [data-theme="midnight"] .callout-danger {
-    --callout-color: #f87171;
-    --callout-bg: rgba(239, 68, 68, 0.12);
+  .callout-caution,
+  .callout-danger {
+    --callout-border: var(--danger-bright);
+    --callout-color: var(--danger);
+    --callout-bg: color-mix(in oklab, var(--danger-bright) 8%, transparent);
   }
 }
 

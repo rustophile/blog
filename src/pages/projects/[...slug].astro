@@ -48,7 +48,7 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
         {project.data.stars > 0 && (
           <>
             <span class="text-muted opacity-50">·</span>
-            <span class="text-[#f59e0b] font-semibold">
+            <span class="text-warning font-semibold">
               ★ {project.data.stars} stars
             </span>
           </>
@@ -87,7 +87,7 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
             href={project.data.demoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-[0.4rem] py-[0.45rem] px-[0.9rem] rounded-md border border-accent bg-accent text-white text-[0.88rem] font-medium no-underline transition-[border-color,background-color] duration-150 ease-[ease] hover:border-accent hover:bg-accent-hover hover:text-white"
+            class="inline-flex items-center gap-[0.4rem] py-[0.45rem] px-[0.9rem] rounded-md border border-accent bg-accent text-on-accent text-[0.88rem] font-medium no-underline transition-[border-color,background-color] duration-150 ease-[ease] hover:border-accent hover:bg-accent-hover hover:text-on-accent"
           >
             Live Preview ↗
           </a>

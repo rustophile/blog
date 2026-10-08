@@ -8,6 +8,10 @@ The home of Rustophile on the internet: notes, exercises, and small projects fro
 
 - [Astro](https://astro.build) for static pages and content collections
 - The [Minrock](https://github.com/rnt-rez/minrock) theme by Renato Rezende, with search, a table of contents, text-to-speech, and share links
+- [Tailwind CSS v4](https://tailwindcss.com) for styling
+- Two themes in the Rust standard library docs' colors: **Warm Paper** (Minrock's cream reading palette with rustdoc's dark-theme accents) and **std Dark** (rustdoc's dark theme), plus a System option that follows the OS. Palette tokens live in `src/styles/global.css`
+- rustdoc's typefaces: Fira Sans, Source Serif 4, and Source Code Pro, self-hosted at build time
+- Code highlighted with rustdoc's dark-theme colors (`src/styles/rustdoc-dark.json`)
 
 ## Getting started
 

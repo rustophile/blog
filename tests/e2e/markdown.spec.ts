@@ -50,3 +50,30 @@ test("a quote ending in an attribution becomes a captioned figure", async ({
     "The Rust Programming Language",
   );
 });
+
+test("links to std items are tagged with rustdoc's item kind", async ({
+  page,
+}) => {
+  const kinds = await page
+    .locator("article a.rust-item")
+    .evaluateAll((links) =>
+      links.map((a) => [
+        a.textContent?.split(" (")[0],
+        a.getAttribute("data-rust-item"),
+      ]),
+    );
+  expect(kinds).toEqual([
+    ["String", "type"],
+    ["Copy", "trait"],
+    ["println!", "macro"],
+    ["clone", "method"],
+    ["std::rc", "mod"],
+  ]);
+
+  // and colored by kind: a trait link differs from a type link
+  const color = (name: string) =>
+    page
+      .locator("article a.rust-item", { hasText: name })
+      .evaluate((a) => getComputedStyle(a).color);
+  expect(await color("Copy")).not.toBe(await color("String"));
+});

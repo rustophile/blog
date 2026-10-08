@@ -13,6 +13,48 @@ const EXTERNAL_HREF = /^(?:https?:)?\/\//i;
 const LINKED_COLLECTIONS = new Set(["blog", "projects"]);
 const CONTENT_DIR = join(process.cwd(), "src", "content");
 
+// rustdoc pages are named <kind>.<Name>.html (struct.String.html, trait.Iterator.html,
+// macro.println.html) and modules are <path>/index.html; methods are #method.<name> anchors
+const RUSTDOC_HOSTS = new Set(["doc.rust-lang.org", "docs.rs"]);
+const ITEM_KINDS: Record<string, string> = {
+  struct: "type",
+  enum: "type",
+  union: "type",
+  type: "type",
+  primitive: "type",
+  trait: "trait",
+  traitalias: "trait",
+  fn: "fn",
+  macro: "macro",
+  derive: "macro",
+  attr: "macro",
+  keyword: "keyword",
+  constant: "constant",
+  static: "constant",
+};
+
+// the rustdoc item kind a link points at, which sets its color like rustdoc's own links
+export function rustdocKind(href: string): string | undefined {
+  let url: URL;
+  try {
+    url = new URL(href);
+  } catch {
+    return undefined;
+  }
+  if (!RUSTDOC_HOSTS.has(url.hostname)) return undefined;
+  if (/^#(?:ty)?method\./.test(url.hash)) return "method";
+  const page = url.pathname.split("/").pop() ?? "";
+  if (page === "index.html" || page === "") {
+    // /std/, /std/collections/index.html, /clap/latest/clap/ are modules or crates;
+    // the book and other guides on doc.rust-lang.org are plain links
+    return /^\/(?:std|core|alloc|proc_macro|test)\//.test(url.pathname) ||
+      url.hostname === "docs.rs"
+      ? "mod"
+      : undefined;
+  }
+  return ITEM_KINDS[/^([a-z]+)\.[^.]+\.html$/.exec(page)?.[1] ?? ""];
+}
+
 function addClass(node: Element, className: string) {
   const current = node.properties.className;
   const list = Array.isArray(current) ? current : current ? [current] : [];
@@ -48,6 +90,11 @@ export function rehypeLinks() {
         node.properties.target = "_blank";
         node.properties.rel = [...rel];
         addClass(node, "external-link");
+        const kind = rustdocKind(href.trim());
+        if (kind) {
+          addClass(node, "rust-item");
+          node.properties.dataRustItem = kind;
+        }
         node.children.push({
           type: "element",
           tagName: "span",

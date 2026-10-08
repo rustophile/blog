@@ -1,0 +1,124 @@
+{
+  "name": "rustdoc Dark",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#2a2a2a",
+    "editor.foreground": "#dddddd"
+  },
+  "tokenColors": [
+    {
+      "name": "comment (rustdoc #8d8d8b, lifted to 4.5:1 on #2a2a2a)",
+      "scope": ["comment", "punctuation.definition.comment"],
+      "settings": { "foreground": "#959593" }
+    },
+    {
+      "name": "doc comment",
+      "scope": [
+        "comment.line.documentation",
+        "comment.block.documentation",
+        "comment.line.documentation punctuation.definition.comment",
+        "comment.block.documentation punctuation.definition.comment"
+      ],
+      "settings": { "foreground": "#8ca375" }
+    },
+    {
+      "name": "keyword (kw)",
+      "scope": [
+        "keyword",
+        "keyword.control",
+        "keyword.other",
+        "keyword.declaration",
+        "storage.type",
+        "storage.modifier"
+      ],
+      "settings": { "foreground": "#ab8ac1" }
+    },
+    {
+      "name": "operators and punctuation stay plain",
+      "scope": ["keyword.operator", "punctuation"],
+      "settings": { "foreground": "#dddddd" }
+    },
+    {
+      "name": "& and mut (kw-2)",
+      "scope": ["keyword.operator.borrow", "storage.modifier.mut"],
+      "settings": { "foreground": "#769acb" }
+    },
+    {
+      "name": "types (prelude-ty)",
+      "scope": ["entity.name.type", "support.type", "support.class"],
+      "settings": { "foreground": "#769acb" }
+    },
+    {
+      "name": "Some, None, Ok, Err (prelude-val)",
+      "scope": ["entity.name.type.option", "entity.name.type.result"],
+      "settings": { "foreground": "#ee6868" }
+    },
+    {
+      "name": "self and literals",
+      "scope": [
+        "variable.language.self",
+        "variable.language",
+        "constant.language",
+        "constant.other"
+      ],
+      "settings": { "foreground": "#ee6868" }
+    },
+    {
+      "name": "attributes",
+      "scope": [
+        "meta.attribute",
+        "meta.attribute entity.name.type",
+        "meta.attribute punctuation"
+      ],
+      "settings": { "foreground": "#ee6868" }
+    },
+    {
+      "name": "strings and numbers",
+      "scope": [
+        "string",
+        "constant.numeric",
+        "constant.character",
+        "punctuation.definition.string"
+      ],
+      "settings": { "foreground": "#83a300" }
+    },
+    {
+      "name": "format-string placeholders",
+      "scope": ["string meta.interpolation"],
+      "settings": { "foreground": "#dddddd" }
+    },
+    {
+      "name": "macros (rustdoc #3e999f, lifted to 4.5:1 on #2a2a2a)",
+      "scope": ["entity.name.function.macro", "support.function.macro"],
+      "settings": { "foreground": "#4aa9ae" }
+    },
+    {
+      "name": "lifetimes",
+      "scope": [
+        "entity.name.type.lifetime",
+        "punctuation.definition.lifetime",
+        "storage.modifier.lifetime"
+      ],
+      "settings": { "foreground": "#d97f26" }
+    },
+    {
+      "name": "? operator",
+      "scope": ["keyword.operator.question"],
+      "settings": { "foreground": "#ff9011" }
+    },
+    {
+      "name": "functions and variables stay plain, as in rustdoc",
+      "scope": ["entity.name.function", "variable", "variable.other"],
+      "settings": { "foreground": "#dddddd" }
+    },
+    {
+      "name": "TOML keys and tables, shell commands",
+      "scope": [
+        "support.type.property-name",
+        "entity.name.tag",
+        "entity.name.command"
+      ],
+      "settings": { "foreground": "#769acb" }
+    }
+  ]
+}

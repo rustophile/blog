@@ -65,6 +65,8 @@ error[E0382]: borrow of moved value: `s`
   |                ^^^ value borrowed here after move
 ```
 
+Assigning `s` to `t` moves the [`String`](https://doc.rust-lang.org/std/string/struct.String.html): it doesn't implement the [`Copy`](https://doc.rust-lang.org/std/marker/trait.Copy.html) trait, so the [`println!`](https://doc.rust-lang.org/std/macro.println.html) that follows can't borrow it. Calling [`clone`](https://doc.rust-lang.org/std/clone/trait.Clone.html#tymethod.clone) first, or reaching for the [`std::rc`](https://doc.rust-lang.org/std/rc/index.html) module, are the next chapters.
+
 | Concept   | First impression     |
 | --------- | -------------------- |
 | Ownership | Strict, then obvious |

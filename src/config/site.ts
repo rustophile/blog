@@ -18,7 +18,7 @@ export interface SiteFeatures {
   tags?: boolean;
   /** Notion-style share modal and trigger bar in blog posts */
   socialShare?: boolean;
-  /** Theme toggle dropdown (White, Cream, Slate, Midnight) */
+  /** Theme picker: Warm Paper, std Dark, or follow the OS */
   themeSwitcher?: boolean;
   /** Floating smooth-scroll back-to-top button */
   backToTop?: boolean;
@@ -32,7 +32,6 @@ export interface SiteConfig {
   description: string;
   author: string;
   siteUrl: string;
-  defaultTheme: "white" | "cream" | "slate" | "midnight";
   features?: SiteFeatures;
   socialLinks: {
     github?: string;
@@ -54,7 +53,6 @@ export const siteConfig: SiteConfig = {
   author: "Rustophile",
   // production domain, used for canonical URLs, Open Graph, RSS, and the sitemap
   siteUrl: "https://rustophile.com",
-  defaultTheme: "cream",
   // Granular Feature Flags — "Complete by default, minimalist on demand"
   // Toggle any feature to false to completely omit markup & scripts in static build
   features: {

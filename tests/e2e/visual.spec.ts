@@ -6,7 +6,7 @@ import { pages } from "./pages";
 // Baselines are platform-specific and gitignored: regenerate them locally before a refactor with
 //   pnpm test:e2e --project visual --update-snapshots
 
-const themes = ["cream", "slate"];
+const themes = ["paper", "dark"];
 const viewports = {
   desktop: { width: 1280, height: 800 },
   phone: { width: 390, height: 844 },
@@ -20,7 +20,7 @@ for (const theme of themes) {
       for (const path of pages) {
         test(path, async ({ page }) => {
           await page.addInitScript((theme) => {
-            localStorage.setItem("minrock_theme", theme);
+            localStorage.setItem("rustophile_theme", theme);
           }, theme);
           await page.goto(path);
           await page.evaluate(() => document.fonts.ready);
@@ -91,7 +91,7 @@ for (const theme of themes) {
       for (const state of states) {
         test(state.name, async ({ page }) => {
           await page.addInitScript((theme) => {
-            localStorage.setItem("minrock_theme", theme);
+            localStorage.setItem("rustophile_theme", theme);
           }, theme);
           await page.goto(state.path);
           await page.evaluate(() => document.fonts.ready);

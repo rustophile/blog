@@ -22,7 +22,7 @@ const audioBtnDefault =
 
 <div
   id="audio-player-root"
-  class="group relative mx-0 mt-6 mb-8 overflow-hidden rounded-lg border border-line bg-surface transition-[border-color,box-shadow,background-color] duration-200 ease-[ease] hover:border-accent [&.is-active-player]:sticky [&.is-active-player]:top-18 [&.is-active-player]:z-35 [&.is-active-player.is-sticky]:border-accent [&.is-active-player.is-sticky]:shadow-[0_10px_28px_-6px_rgba(0,0,0,0.25),0_2px_8px_-2px_rgba(37,99,235,0.2)] [&.is-active-player.is-sticky]:backdrop-blur-[12px] [&.is-playing]:border-accent is-collapsed"
+  class="group relative mx-0 mt-6 mb-8 overflow-hidden rounded-lg border border-line bg-surface transition-[border-color,box-shadow,background-color] duration-200 ease-[ease] hover:border-accent [&.is-active-player]:sticky [&.is-active-player]:top-18 [&.is-active-player]:z-35 [&.is-active-player.is-sticky]:border-accent [&.is-active-player.is-sticky]:shadow-[0_10px_28px_-6px_rgba(0,0,0,0.25),0_2px_8px_-2px_color-mix(in_oklab,var(--accent-bright)_25%,transparent)] [&.is-active-player.is-sticky]:backdrop-blur-[12px] [&.is-playing]:border-accent is-collapsed"
   data-selector={selector}
   data-title={title}
   aria-label="Accessible audio reader"
@@ -115,7 +115,7 @@ const audioBtnDefault =
           type="button"
           class:list={[
             audioBtn,
-            "border-accent bg-accent px-3 py-[0.38rem] font-semibold text-white enabled:hover:border-accent-hover enabled:hover:bg-accent-hover enabled:hover:text-white",
+            "border-accent bg-accent px-3 py-[0.38rem] font-semibold text-on-accent enabled:hover:border-accent-hover enabled:hover:bg-accent-hover enabled:hover:text-on-accent",
           ]}
           aria-label="Play audio"
         >
@@ -654,9 +654,13 @@ const audioBtnDefault =
 
   /* Added by JS to rendered Markdown elements outside this component */
   :global(.audio-speaking-active) {
-    background-color: rgba(37, 99, 235, 0.08);
+    background-color: color-mix(
+      in oklab,
+      var(--accent-bright) 12%,
+      transparent
+    );
     border-radius: 4px;
-    outline: 2px dashed var(--accent);
+    outline: 2px dashed var(--accent-bright);
     outline-offset: 4px;
     transition: background-color 0.2s ease;
   }

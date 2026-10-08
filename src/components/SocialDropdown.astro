@@ -215,10 +215,10 @@ const icon =
       e.stopPropagation();
       // Close other dropdowns if open
       document
-        .querySelectorAll(".lang-dropdown.open, .theme-dropdown.open")
+        .querySelectorAll(".theme-dropdown.open")
         .forEach((d) => d.classList.remove("open"));
       document
-        .querySelectorAll("#lang-btn, #theme-toggle-btn")
+        .querySelectorAll("#theme-toggle-btn")
         .forEach((b) => b.setAttribute("aria-expanded", "false"));
 
       const open = dropdown?.classList.toggle("open");

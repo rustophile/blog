@@ -1,11 +1,17 @@
 ---
-// src/components/ThemeToggle.astro
-// Dropdown menu for Minrock themes (Clean White, Warm Paper, Slate Navy, Midnight OLED, Auto)
+// Theme picker: Warm Paper, std Dark, or follow the OS. The choice is stored as
+// "rustophile_theme"; BaseLayout's inline script applies it before first paint.
 
-// shared by the five options and their check marks
+const themes = [
+  { value: "paper", icon: "📜", label: "Warm Paper" },
+  { value: "dark", icon: "🌙", label: "std Dark" },
+  { value: "auto", icon: "💻", label: "System" },
+];
+
+// shared by the options and their check marks
 const option =
-  "theme-option group flex w-full cursor-pointer items-center justify-between gap-2 rounded-[5px] border-none bg-transparent px-[0.65rem] py-[0.45rem] text-left font-sans text-[0.84rem] text-fg transition-[background-color,color] duration-[120ms] ease-[ease] hover:bg-subtle hover:text-accent [&.active]:bg-subtle [&.active]:font-semibold [&.active]:text-accent";
-const check = "hidden shrink-0 text-accent group-[.active]:block";
+  "theme-option group flex w-full cursor-pointer items-center justify-between gap-2 rounded-[5px] border-none bg-transparent px-[0.65rem] py-[0.45rem] text-left font-sans text-[0.84rem] text-fg transition-[background-color,color] duration-[120ms] ease-[ease] hover:bg-subtle hover:text-accent aria-checked:bg-subtle aria-checked:font-semibold aria-checked:text-accent";
+const check = "hidden shrink-0 text-accent group-aria-checked:block";
 ---
 
 <div class="relative inline-flex items-center" id="theme-selector">
@@ -15,13 +21,13 @@ const check = "hidden shrink-0 text-accent group-[.active]:block";
     aria-label="Select color theme"
     aria-haspopup="true"
     aria-expanded="false"
-    title="Color theme / Tema visual"
+    title="Color theme"
   >
     <span
       id="theme-active-icon"
       class="inline-flex items-center justify-center text-[1rem] leading-none"
     >
-      📜
+      💻
     </span>
     <svg
       class="-ml-px opacity-60 transition-transform duration-150 ease-[ease] group-aria-expanded:rotate-180"
@@ -50,122 +56,41 @@ const check = "hidden shrink-0 text-accent group-[.active]:block";
       THEME
     </div>
 
-    <button class={option} data-theme-val="white" role="menuitem">
-      <span class="inline-flex items-center gap-[0.55rem]">
-        <span class="inline-flex w-[18px] items-center justify-center text-[0.95rem] leading-none">
-          ☀️
-        </span>
-        <span class="font-medium">Clean White</span>
-      </span>
-      <svg
-        class={check}
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <polyline points="20 6 9 17 4 12" />
-      </svg>
-    </button>
-
-    <button class={option} data-theme-val="cream" role="menuitem">
-      <span class="inline-flex items-center gap-[0.55rem]">
-        <span class="inline-flex w-[18px] items-center justify-center text-[0.95rem] leading-none">
-          📜
-        </span>
-        <span class="font-medium">Warm Paper</span>
-      </span>
-      <svg
-        class={check}
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <polyline points="20 6 9 17 4 12" />
-      </svg>
-    </button>
-
-    <button class={option} data-theme-val="slate" role="menuitem">
-      <span class="inline-flex items-center gap-[0.55rem]">
-        <span class="inline-flex w-[18px] items-center justify-center text-[0.95rem] leading-none">
-          ⚓
-        </span>
-        <span class="font-medium">Slate Navy</span>
-      </span>
-      <svg
-        class={check}
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <polyline points="20 6 9 17 4 12" />
-      </svg>
-    </button>
-
-    <button class={option} data-theme-val="midnight" role="menuitem">
-      <span class="inline-flex items-center gap-[0.55rem]">
-        <span class="inline-flex w-[18px] items-center justify-center text-[0.95rem] leading-none">
-          🌌
-        </span>
-        <span class="font-medium">Midnight OLED</span>
-      </span>
-      <svg
-        class={check}
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <polyline points="20 6 9 17 4 12" />
-      </svg>
-    </button>
-
-    <div class="my-[0.3rem] h-px bg-line"></div>
-
-    <button class={option} data-theme-val="auto" role="menuitem">
-      <span class="inline-flex items-center gap-[0.55rem]">
-        <span class="inline-flex w-[18px] items-center justify-center text-[0.95rem] leading-none">
-          💻
-        </span>
-        <span class="font-medium">System Auto</span>
-      </span>
-      <svg
-        class={check}
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <polyline points="20 6 9 17 4 12" />
-      </svg>
-    </button>
+    {themes.map(({ value, icon, label }) => (
+      <>
+        {value === "auto" && <div class="my-[0.3rem] h-px bg-line" />}
+        <button
+          class={option}
+          data-theme-val={value}
+          role="menuitemradio"
+          aria-checked="false"
+        >
+          <span class="inline-flex items-center gap-[0.55rem]">
+            <span
+              class="inline-flex w-[18px] items-center justify-center text-[0.95rem] leading-none"
+              aria-hidden="true"
+            >
+              {icon}
+            </span>
+            <span class="font-medium">{label}</span>
+          </span>
+          <svg
+            class={check}
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </button>
+      </>
+    ))}
   </div>
 </div>
 
@@ -184,161 +109,130 @@ const check = "hidden shrink-0 text-accent group-[.active]:block";
 </style>
 
 <script>
-  function setupThemeToggle() {
-    const btn = document.getElementById("theme-toggle-btn");
-    const dropdown = document.getElementById("theme-dropdown");
-    const selector = document.getElementById("theme-selector");
-    const activeIcon = document.getElementById("theme-active-icon");
+  const STORAGE_KEY = "rustophile_theme";
+  const ICONS: Record<string, string> = { paper: "📜", dark: "🌙", auto: "💻" };
+  const THEME_COLORS: Record<string, string> = {
+    paper: "#f7f4ea",
+    dark: "#353535",
+  };
+  const osDark = window.matchMedia("(prefers-color-scheme: dark)");
 
-    const themeIcons: Record<string, string> = {
-      white: "☀️",
-      cream: "📜",
-      slate: "⚓",
-      midnight: "🌌",
-      auto: "💻",
-    };
+  const btn = document.getElementById("theme-toggle-btn");
+  const dropdown = document.getElementById("theme-dropdown");
+  const selector = document.getElementById("theme-selector");
+  const activeIcon = document.getElementById("theme-active-icon");
+  const options = document.querySelectorAll<HTMLButtonElement>(".theme-option");
 
-    function getEffectiveTheme(mode: string): string {
-      if (mode === "auto") {
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "slate"
-          : "cream";
-      }
-      return mode;
+  function storedMode(): string {
+    try {
+      return localStorage.getItem(STORAGE_KEY) || "auto";
+    } catch {
+      return "auto";
     }
-
-    function updateThemeUI(storedTheme: string) {
-      const effectiveTheme = getEffectiveTheme(storedTheme);
-
-      // Update icon on the button
-      if (activeIcon) {
-        activeIcon.textContent =
-          storedTheme === "auto" ? "💻" : themeIcons[effectiveTheme] || "📜";
-      }
-
-      // Update active checks in dropdown
-      document
-        .querySelectorAll<HTMLButtonElement>(".theme-option")
-        .forEach((opt) => {
-          const val = opt.getAttribute("data-theme-val");
-          if (val === storedTheme) {
-            opt.classList.add("active");
-            opt.setAttribute("aria-selected", "true");
-          } else {
-            opt.classList.remove("active");
-            opt.removeAttribute("aria-selected");
-          }
-        });
-    }
-
-    function applyTheme(mode: string) {
-      localStorage.setItem("minrock_theme", mode);
-      const effective = getEffectiveTheme(mode);
-      document.documentElement.setAttribute("data-theme", effective);
-
-      updateThemeUI(mode);
-
-      // Dispatch event for reactive components (e.g. embedded comment themes)
-      window.dispatchEvent(
-        new CustomEvent("minrock-theme-change", {
-          detail: { theme: effective, mode },
-        }),
-      );
-    }
-
-    function positionDropdown() {
-      if (!dropdown) return;
-      if (window.innerWidth <= 768) {
-        dropdown.style.left = "50%";
-        dropdown.style.right = "auto";
-        dropdown.style.transform = "translateX(-50%)";
-
-        const rect = dropdown.getBoundingClientRect();
-        const pad = 12;
-        if (rect.left < pad) {
-          const offset = pad - rect.left;
-          dropdown.style.transform = `translateX(calc(-50% + ${offset}px))`;
-        } else if (rect.right > window.innerWidth - pad) {
-          const offset = rect.right - (window.innerWidth - pad);
-          dropdown.style.transform = `translateX(calc(-50% - ${offset}px))`;
-        }
-      } else {
-        dropdown.style.left = "";
-        dropdown.style.right = "";
-        dropdown.style.transform = "";
-      }
-    }
-
-    // Initialize UI on mount
-    const saved = localStorage.getItem("minrock_theme") || "cream";
-    updateThemeUI(saved);
-
-    // Toggle dropdown
-    btn?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      // Close other dropdowns if open
-      document
-        .querySelectorAll(".lang-dropdown.open, .social-dropdown-menu.open")
-        .forEach((d) => d.classList.remove("open"));
-      document
-        .querySelectorAll("#lang-btn, #social-menu-btn")
-        .forEach((b) => b.setAttribute("aria-expanded", "false"));
-
-      const open = dropdown?.classList.toggle("open");
-      btn.setAttribute("aria-expanded", String(!!open));
-
-      if (open) {
-        positionDropdown();
-      }
-    });
-
-    window.addEventListener("resize", () => {
-      if (dropdown?.classList.contains("open")) {
-        positionDropdown();
-      }
-    });
-
-    // Option clicks
-    document
-      .querySelectorAll<HTMLButtonElement>(".theme-option")
-      .forEach((opt) => {
-        opt.addEventListener("click", () => {
-          const val = opt.getAttribute("data-theme-val");
-          if (!val) return;
-          dropdown?.classList.remove("open");
-          btn?.setAttribute("aria-expanded", "false");
-          applyTheme(val);
-        });
-      });
-
-    // Close on click outside
-    document.addEventListener("click", (e) => {
-      if (!selector?.contains(e.target as Node)) {
-        dropdown?.classList.remove("open");
-        btn?.setAttribute("aria-expanded", "false");
-      }
-    });
-
-    // Close on Escape
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && dropdown?.classList.contains("open")) {
-        dropdown.classList.remove("open");
-        btn?.setAttribute("aria-expanded", "false");
-        btn?.focus();
-      }
-    });
-
-    // Listen to OS theme changes if on auto
-    window
-      .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", () => {
-        const current = localStorage.getItem("minrock_theme") || "cream";
-        if (current === "auto") {
-          applyTheme("auto");
-        }
-      });
   }
 
-  setupThemeToggle();
-  document.addEventListener("astro:after-swap", setupThemeToggle);
+  function effectiveTheme(mode: string): string {
+    if (mode === "auto") return osDark.matches ? "dark" : "paper";
+    return mode;
+  }
+
+  function render(mode: string) {
+    const theme = effectiveTheme(mode);
+    document.documentElement.setAttribute("data-theme", theme);
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", THEME_COLORS[theme]);
+    if (activeIcon) activeIcon.textContent = ICONS[mode] ?? ICONS.auto;
+    options.forEach((opt) =>
+      opt.setAttribute(
+        "aria-checked",
+        String(opt.getAttribute("data-theme-val") === mode),
+      ),
+    );
+    // lets embedded widgets (comments) follow the theme
+    window.dispatchEvent(
+      new CustomEvent("rustophile-theme-change", { detail: { theme, mode } }),
+    );
+  }
+
+  function choose(mode: string) {
+    try {
+      localStorage.setItem(STORAGE_KEY, mode);
+    } catch {
+      // storage blocked: the choice lasts for this page only
+    }
+    render(mode);
+  }
+
+  function setOpen(open: boolean) {
+    dropdown?.classList.toggle("open", open);
+    btn?.setAttribute("aria-expanded", String(open));
+    if (open) positionDropdown();
+  }
+
+  // on phones the menu is centred under the button, then nudged back inside the viewport
+  function positionDropdown() {
+    if (!dropdown) return;
+    if (window.innerWidth <= 768) {
+      dropdown.style.left = "50%";
+      dropdown.style.right = "auto";
+      dropdown.style.transform = "translateX(-50%)";
+
+      const rect = dropdown.getBoundingClientRect();
+      const pad = 12;
+      if (rect.left < pad) {
+        const offset = pad - rect.left;
+        dropdown.style.transform = `translateX(calc(-50% + ${offset}px))`;
+      } else if (rect.right > window.innerWidth - pad) {
+        const offset = rect.right - (window.innerWidth - pad);
+        dropdown.style.transform = `translateX(calc(-50% - ${offset}px))`;
+      }
+    } else {
+      dropdown.style.left = "";
+      dropdown.style.right = "";
+      dropdown.style.transform = "";
+    }
+  }
+
+  render(storedMode());
+
+  btn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    // one header menu open at a time
+    document
+      .querySelectorAll(".social-dropdown-menu.open")
+      .forEach((d) => d.classList.remove("open"));
+    document
+      .getElementById("social-menu-btn")
+      ?.setAttribute("aria-expanded", "false");
+    setOpen(!dropdown?.classList.contains("open"));
+  });
+
+  options.forEach((opt) =>
+    opt.addEventListener("click", () => {
+      const mode = opt.getAttribute("data-theme-val");
+      if (!mode) return;
+      setOpen(false);
+      choose(mode);
+    }),
+  );
+
+  window.addEventListener("resize", () => {
+    if (dropdown?.classList.contains("open")) positionDropdown();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!selector?.contains(e.target as Node)) setOpen(false);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && dropdown?.classList.contains("open")) {
+      setOpen(false);
+      btn?.focus();
+    }
+  });
+
+  osDark.addEventListener("change", () => {
+    if (storedMode() === "auto") render("auto");
+  });
 </script>
