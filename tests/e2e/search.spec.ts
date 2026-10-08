@@ -49,3 +49,12 @@ test("a query with no matches says so", async ({ page }) => {
     dialog.getByText('No results found for "zzzz-no-match"'),
   ).toBeVisible();
 });
+
+test("a query is shown as text, never parsed as HTML", async ({ page }) => {
+  const dialog = await openSearch(page);
+  await dialog.getByRole("textbox").fill('<img src=x onerror="alert(1)">');
+  await expect(
+    dialog.getByText('No results found for "<img src=x onerror="alert(1)">"'),
+  ).toBeVisible();
+  await expect(dialog.locator("img")).toHaveCount(0);
+});

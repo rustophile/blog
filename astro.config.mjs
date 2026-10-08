@@ -1,5 +1,6 @@
 import { defineConfig, fontProviders } from "astro/config";
 import sitemap from "@astrojs/sitemap";
+import svelte from "@astrojs/svelte";
 import tailwindcss from "@tailwindcss/vite";
 import { unified } from "@astrojs/markdown-remark";
 import rehypeExpressiveCode, {
@@ -52,7 +53,7 @@ const expressiveCode = {
 
 export default defineConfig({
   site: siteConfig.siteUrl,
-  integrations: [sitemap()],
+  integrations: [svelte(), sitemap()],
   prefetch: {
     prefetchAll: true,
     defaultStrategy: "hover",
