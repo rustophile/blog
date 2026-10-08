@@ -74,6 +74,18 @@ const states: {
     },
   },
   {
+    name: "image-zoom",
+    path: "/blog/hello-rustophile",
+    open: async (page) => {
+      const img = page.locator("article img[src*='string-move']");
+      await img.scrollIntoViewIfNeeded();
+      await img.click();
+      // wait for the zoom-in animation to finish
+      await expect(page.locator(".pswp--ui-visible")).toBeVisible();
+      await page.waitForTimeout(400);
+    },
+  },
+  {
     name: "audio-drawer",
     path: "/blog/hello-rustophile",
     open: async (page) => {

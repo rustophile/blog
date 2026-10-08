@@ -33,6 +33,7 @@
   --color-code-bg: var(--code-bg);
   --color-code-fg: var(--code-text);
   --color-selection: var(--selection);
+  --color-scrim: var(--scrim);
   --color-rust-fn: var(--rust-fn);
   --color-rust-type: var(--rust-type);
   --color-rust-trait: var(--rust-trait);
@@ -77,6 +78,8 @@
     --code-bg: #2a2a2a;
     --code-text: #dddddd;
     --selection: color-mix(in oklab, #d2991d 30%, transparent);
+    /* dims the page behind dialogs */
+    --scrim: rgba(41, 37, 36, 0.45);
     --rust-fn: #1d7443;
     --rust-type: #1b716c;
     --rust-trait: #8237e8;
@@ -117,6 +120,7 @@
     --code-bg: #2a2a2a;
     --code-text: #dddddd;
     --selection: color-mix(in oklab, #d2991d 35%, transparent);
+    --scrim: rgba(0, 0, 0, 0.55);
     --rust-fn: #2eb569;
     --rust-type: #2dbfb8;
     --rust-trait: #b78cf2;
@@ -159,6 +163,7 @@
       --code-bg: #2a2a2a;
       --code-text: #dddddd;
       --selection: color-mix(in oklab, #d2991d 35%, transparent);
+      --scrim: rgba(0, 0, 0, 0.55);
       --rust-fn: #2eb569;
       --rust-type: #2dbfb8;
       --rust-trait: #b78cf2;
@@ -720,6 +725,15 @@
 }
 
 /* ─── PhotoSwipe Lightbox overrides ─── */
+/* the image viewer dims and blurs the page like the search and share dialogs, in the
+   theme's scrim color; its icons use the theme's text color */
 .pswp {
-  --pswp-bg: rgba(0, 0, 0, 0.94);
+  --pswp-bg: var(--scrim);
+  --pswp-icon-color: var(--text);
+  --pswp-icon-color-secondary: var(--bg);
+}
+
+/* on .pswp itself: set on .pswp__bg inside it, the blur doesn't reach the page */
+.pswp {
+  backdrop-filter: blur(8px);
 }

@@ -14,6 +14,10 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? "github" : "list",
+  expect: {
+    // the default per-pixel tolerance (0.2) let whole-overlay color changes pass unnoticed
+    toHaveScreenshot: { threshold: 0.05 },
+  },
   use: {
     baseURL,
     trace: "on-first-retry",
