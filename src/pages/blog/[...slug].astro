@@ -2,7 +2,6 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import TOC from "../../components/TOC.astro";
 import ShareBar from "../../components/ShareBar.astro";
-import CopyCode from "../../components/CopyCode.astro";
 import AudioPlayer from "../../components/AudioPlayer.astro";
 import StructuredData from "../../components/StructuredData.astro";
 import { getCollection, render } from "astro:content";
@@ -206,6 +205,4 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
       </aside>
     )}
   </div>
-
-  <CopyCode />
 </BaseLayout>

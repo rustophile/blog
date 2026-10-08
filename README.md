@@ -40,6 +40,31 @@ draft: false
 ---
 ```
 
+### Markdown features
+
+Code blocks are rendered by [Expressive Code](https://expressive-code.com):
+
+- `title="src/main.rs"` gives a block a file tab; `frame="terminal"` draws a terminal window.
+- `{3-4}` highlights lines; `ins={2}` and `del={3}` mark added and removed lines.
+- Consecutive blocks with the same `group="name"` become one block with a tab per block, labelled by `tab="label"`:
+
+  ````md
+  ```rust group="hello" tab="src/main.rs"
+  fn main() {}
+  ```
+
+  ```toml group="hello" tab="Cargo.toml"
+  [package]
+  ```
+  ````
+
+Also:
+
+- `> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, and `[!CAUTION]` blockquotes become callouts; text after the marker replaces the title.
+- A blockquote whose last line starts with `— Name` becomes a quote with a caption; a link in that line becomes the quote's `cite`.
+- Off-site links open in a new tab, marked with ↗.
+- Links to `/blog/<slug>` or `/projects/<slug>` fail the build if that entry doesn't exist.
+
 ### Projects live in `src/content/projects/<slug>/index.md`
 
 The projects page shows "Nothing built yet." until the first one is added.

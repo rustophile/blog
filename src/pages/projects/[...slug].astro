@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import CopyCode from "../../components/CopyCode.astro";
 import AudioPlayer from "../../components/AudioPlayer.astro";
 import StructuredData from "../../components/StructuredData.astro";
 import { getCollection, render } from "astro:content";
@@ -118,6 +117,4 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
       </a>
     </footer>
   </article>
-
-  <CopyCode />
 </BaseLayout>
