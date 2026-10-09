@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { siteConfig } from "../../src/config/site";
+import { siteConfig } from "@/config/site";
 
 test("RSS feed lists published posts", async ({ request }) => {
   const response = await request.get("/rss.xml");

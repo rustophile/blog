@@ -13,7 +13,7 @@
   import * as Dialog from "$lib/components/ui/dialog";
   import { Kbd } from "$lib/components/ui/kbd";
   import { brandIcons, type BrandIcon } from "$lib/brand-icons";
-  import { siteConfig } from "../config/site";
+  import { siteConfig } from "@/config/site";
 
   interface Props {
     title: string;

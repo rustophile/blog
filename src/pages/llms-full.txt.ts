@@ -2,7 +2,7 @@
 // Full markdown context feed for LLMs and RAG systems
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { siteConfig } from "../config/site";
+import { siteConfig } from "@/config/site";
 
 export const GET: APIRoute = async ({ site }) => {
   const baseUrl = site?.toString().replace(/\/$/, "") || siteConfig.siteUrl;

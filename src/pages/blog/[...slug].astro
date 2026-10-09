@@ -1,13 +1,13 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import TOC from "../../components/TOC.astro";
-import ShareBar from "../../components/ShareBar.astro";
-import Comments from "../../components/Comments.astro";
-import AudioPlayer from "../../components/AudioPlayer.astro";
-import StructuredData from "../../components/StructuredData.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import TOC from "@/components/TOC.astro";
+import ShareBar from "@/components/ShareBar.astro";
+import Comments from "@/components/Comments.astro";
+import AudioPlayer from "@/components/AudioPlayer.astro";
+import StructuredData from "@/components/StructuredData.astro";
 import { getCollection, render } from "astro:content";
-import { siteConfig } from "../../config/site";
-import TagBadge from "../../components/TagBadge.svelte";
+import { siteConfig } from "@/config/site";
+import TagBadge from "@/components/TagBadge.svelte";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);

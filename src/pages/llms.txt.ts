@@ -2,7 +2,7 @@
 // Standard llms.txt manifest (https://llmstxt.org) for LLM agents and search engines
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { siteConfig } from "../config/site";
+import { siteConfig } from "@/config/site";
 
 export const GET: APIRoute = async ({ site }) => {
   const baseUrl = site?.toString().replace(/\/$/, "") || siteConfig.siteUrl;

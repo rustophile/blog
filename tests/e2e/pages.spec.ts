@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { siteConfig } from "../../src/config/site";
+import { siteConfig } from "@/config/site";
 import { pages } from "./pages";
 
 for (const path of pages) {

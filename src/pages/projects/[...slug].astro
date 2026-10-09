@@ -1,9 +1,9 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import AudioPlayer from "../../components/AudioPlayer.astro";
-import StructuredData from "../../components/StructuredData.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AudioPlayer from "@/components/AudioPlayer.astro";
+import StructuredData from "@/components/StructuredData.astro";
 import { getCollection, render } from "astro:content";
-import { siteConfig } from "../../config/site";
+import { siteConfig } from "@/config/site";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");

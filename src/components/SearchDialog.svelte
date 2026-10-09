@@ -21,7 +21,7 @@
     type SearchData,
     type SearchItem,
   } from "$lib/search";
-  import { siteConfig } from "../config/site";
+  import { siteConfig } from "@/config/site";
 
   let open = $state(false);
   let query = $state("");

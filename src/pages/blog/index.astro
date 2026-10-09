@@ -1,9 +1,9 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import ArticleCard from "../../components/ArticleCard.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ArticleCard from "@/components/ArticleCard.astro";
 import { getCollection } from "astro:content";
-import { siteConfig } from "../../config/site";
-import TagBadge from "../../components/TagBadge.svelte";
+import { siteConfig } from "@/config/site";
+import TagBadge from "@/components/TagBadge.svelte";
 
 const allPosts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),

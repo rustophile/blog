@@ -1,7 +1,7 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import ProjectCard from "../../components/ProjectCard.astro";
-import ProjectsEmpty from "../../components/ProjectsEmpty.svelte";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import ProjectsEmpty from "@/components/ProjectsEmpty.svelte";
 import { getCollection } from "astro:content";
 
 const allProjects = (await getCollection("projects")).sort(

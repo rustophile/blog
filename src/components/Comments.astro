@@ -1,7 +1,7 @@
 ---
 // Giscus comments (GitHub Discussions), one discussion per post, matched by pathname.
 // Renders nothing until siteConfig.comments has its repo and category IDs.
-import { siteConfig } from "../config/site";
+import { siteConfig } from "@/config/site";
 
 const { repo, repoId, category, categoryId } = siteConfig.comments;
 const enabled = Boolean(repoId && categoryId);

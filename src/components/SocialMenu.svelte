@@ -4,7 +4,7 @@
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import MailIcon from "@lucide/svelte/icons/mail";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
-  import { siteConfig } from "../config/site";
+  import { siteConfig } from "@/config/site";
 
   const { github, linkedin, email } = siteConfig.socialLinks;
   const links = [
