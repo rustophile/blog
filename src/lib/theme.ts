@@ -1,5 +1,5 @@
 // The site's color theme. The reader's choice is "paper", "dark", or "auto" (follow the OS),
-// stored in localStorage. BaseLayout's inline script applies it before first paint with the
+// stored in localStorage. Base's inline script applies it before first paint with the
 // same rules; keep the two in step.
 
 export type ThemeMode = "paper" | "dark" | "auto";

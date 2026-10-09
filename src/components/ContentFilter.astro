@@ -1,0 +1,42 @@
+---
+interface Props {
+  id?: string;
+  label: string;
+  placeholder: string;
+  class?: string;
+}
+
+const {
+  id = "search-input",
+  label,
+  placeholder,
+  class: className,
+} = Astro.props;
+---
+
+<div class:list={["flex-1", className]}>
+  <div class="flex items-center gap-2 rounded-[6px] border border-border bg-card px-[0.85rem] py-[0.45rem] text-muted-foreground">
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.3-4.3"></path>
+    </svg>
+    <input
+      type="text"
+      {id}
+      class="w-full border-none bg-transparent font-sans text-[0.9rem] text-foreground outline-none placeholder:text-muted-foreground"
+      {placeholder}
+      aria-label={label}
+      autocomplete="off"
+    />
+  </div>
+</div>

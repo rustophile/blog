@@ -1,13 +1,14 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import Base from "@/layouts/Base.astro";
+import ArticleHeader from "@/components/ArticleHeader.astro";
 import TOC from "@/components/TOC.astro";
 import ShareBar from "@/components/ShareBar.astro";
 import Comments from "@/components/Comments.astro";
 import AudioPlayer from "@/components/AudioPlayer.astro";
+import PostNavigation from "@/components/PostNavigation.astro";
 import StructuredData from "@/components/StructuredData.astro";
 import { getCollection, render } from "astro:content";
 import { siteConfig } from "@/config/site";
-import TagBadge from "@/components/TagBadge.svelte";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
@@ -19,13 +20,6 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
-
-const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
-  timeZone: "UTC",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
 
 // Reading time calculation
 const words = (post.body ?? "").split(/\s+/).filter(Boolean).length;
@@ -43,18 +37,12 @@ const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
 const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
 
 const features = siteConfig.features ?? {};
-const showReadingTime = features.readingTime !== false;
-const showTags = features.tags !== false;
 const showAudio = features.audioPlayer !== false;
 const showShare = features.socialShare !== false;
 const showToc = features.tableOfContents !== false && headings.length > 0;
 ---
 
-<BaseLayout
-  title={post.data.title}
-  description={post.data.description}
-  wide={true}
->
+<Base title={post.data.title} description={post.data.description} wide={true}>
   <StructuredData
     type="article"
     title={post.data.title}
@@ -75,52 +63,13 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
     <!-- Main Content Column -->
     <div class="post-main min-w-0">
       <article>
-        <header class="post-header mb-8 border-b border-border pb-6">
-          <div class="mb-3 flex flex-wrap items-center gap-[0.65rem] text-[0.88rem] text-muted-foreground">
-            <time datetime={post.data.pubDate.toISOString()}>
-              {formattedDate}
-            </time>
-            {showReadingTime && (
-              <>
-                <span class="text-muted-foreground opacity-50">·</span>
-                <span class="inline-flex items-center gap-[0.35rem]">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                  {readingMin} min read
-                </span>
-              </>
-            )}
-            {showTags && post.data.tags && post.data.tags.length > 0 && (
-              <>
-                <span class="text-muted-foreground opacity-50">·</span>
-                <span class="inline-flex flex-wrap items-center gap-[0.35rem]">
-                  {post.data.tags.map((tag: string) => (
-                    <TagBadge tag={tag} />
-                  ))}
-                </span>
-              </>
-            )}
-          </div>
-
-          <h1 class="post-title mt-0 mb-3 text-[2.4rem] leading-[1.25] tracking-[-0.025em]">
-            {post.data.title}
-          </h1>
-          <p class="post-description m-0 text-[1.15rem] leading-[1.6] text-muted-foreground">
-            {post.data.description}
-          </p>
-        </header>
+        <ArticleHeader
+          title={post.data.title}
+          description={post.data.description}
+          pubDate={post.data.pubDate}
+          readingMinutes={readingMin}
+          tags={post.data.tags}
+        />
 
         <!-- 🔊 Accessible Audio Player (Text-to-Speech) -->
         {showAudio && post.data.audio !== false && (
@@ -153,42 +102,7 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
           />
         )}
 
-        <!-- Prev / Next Navigation -->
-        <nav
-          class="mt-10 grid grid-cols-[1fr_1fr] gap-4 border-t border-border pt-6 max-[600px]:grid-cols-[1fr]"
-          aria-label="Post navigation"
-        >
-          {prevPost ? (
-            <a
-              href={`/blog/${prevPost.id}`}
-              class="group flex flex-col gap-[0.35rem] rounded-lg border border-border bg-card p-4 no-underline transition-[border-color,background-color,transform] duration-[0.2s,0.2s,0.15s] ease-[ease] hover:border-link hover:bg-muted hover:[transform:translateY(-2px)]"
-            >
-              <span class="font-mono text-[0.75rem] tracking-[0.05em] text-muted-foreground uppercase">
-                ← Older
-              </span>
-              <span class="text-[0.95rem] leading-[1.4] font-medium text-foreground group-hover:text-link">
-                {prevPost.data.title}
-              </span>
-            </a>
-          ) : (
-            <div class="block"></div>
-          )}
-          {nextPost ? (
-            <a
-              href={`/blog/${nextPost.id}`}
-              class="group flex flex-col gap-[0.35rem] rounded-lg border border-border bg-card p-4 no-underline transition-[border-color,background-color,transform] duration-[0.2s,0.2s,0.15s] ease-[ease] hover:border-link hover:bg-muted hover:[transform:translateY(-2px)] items-end text-right"
-            >
-              <span class="font-mono text-[0.75rem] tracking-[0.05em] text-muted-foreground uppercase">
-                Newer →
-              </span>
-              <span class="text-[0.95rem] leading-[1.4] font-medium text-foreground group-hover:text-link">
-                {nextPost.data.title}
-              </span>
-            </a>
-          ) : (
-            <div class="block"></div>
-          )}
-        </nav>
+        <PostNavigation older={prevPost} newer={nextPost} />
 
         <Comments />
       </article>
@@ -204,4 +118,4 @@ const showToc = features.tableOfContents !== false && headings.length > 0;
       </aside>
     )}
   </div>
-</BaseLayout>
+</Base>

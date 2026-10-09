@@ -1,6 +1,6 @@
 <!--
   Theme picker: Light, std Dark, or System (follow the OS). The button's icon follows
-  <html data-theme-mode>, which BaseLayout's inline script sets before first paint, so it
+  <html data-theme-mode>, which Base's inline script sets before first paint, so it
   shows the right icon before this island hydrates.
 -->
 <script lang="ts">

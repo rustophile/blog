@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import Base from "@/layouts/Base.astro";
 import ArticleCard from "@/components/ArticleCard.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
 import { getCollection } from "astro:content";
@@ -23,7 +23,7 @@ for (const post of allPosts) {
 const topTags = [...tagsMap.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
-<BaseLayout>
+<Base>
   <section class="pt-10 px-0 pb-12 border-b border-border mb-10">
     <h1 class="text-[2.4rem] leading-[1.25] mt-0 mb-4 tracking-[-0.03em]">
       Learn Rust, one borrow at a time.
@@ -136,4 +136,4 @@ const topTags = [...tagsMap.entries()].sort((a, b) => b[1] - a[1]);
       </div>
     </section>
   )}
-</BaseLayout>
+</Base>

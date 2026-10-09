@@ -1,7 +1,8 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import Base from "@/layouts/Base.astro";
 import ArticleCard from "@/components/ArticleCard.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
+import PageHeader from "@/components/PageHeader.astro";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
@@ -33,28 +34,25 @@ export async function getStaticPaths() {
 
 const { posts, projects = [], tag } = Astro.props;
 const totalCount = posts.length + projects.length;
+const summary = `${totalCount} ${totalCount === 1 ? "item" : "items"} found (${posts.length} articles, ${projects.length} projects)`;
 ---
 
-<BaseLayout
-  title={`#${tag}`}
-  description={`Browse content tagged with #${tag}`}
->
-  <header class="mb-10 pb-6 border-b border-border">
-    <div class="flex items-center gap-2 text-[0.88rem] text-muted-foreground mb-3">
+<Base title={`#${tag}`} description={`Browse content tagged with #${tag}`}>
+  <PageHeader description={summary} descriptionSize="compact">
+    <div
+      slot="before"
+      class="mb-3 flex items-center gap-2 text-[0.88rem] text-muted-foreground"
+    >
       <a href="/tags" class="text-link">
         Tags
       </a>
       <span>/</span>
       <span>#{tag}</span>
     </div>
-    <h1 class="text-[2.25rem] mt-0 mb-2 tracking-[-0.025em]">
+    <Fragment slot="title">
       Content tagged with <span class="text-link">#{tag}</span>
-    </h1>
-    <p class="m-0 text-muted-foreground text-[1rem]">
-      {totalCount} {totalCount === 1 ? "item" : "items"} found ({posts.length}{" "}
-      articles, {projects.length} projects)
-    </p>
-  </header>
+    </Fragment>
+  </PageHeader>
 
   {posts.length > 0 && (
     <section class="mb-10">
@@ -92,4 +90,4 @@ const totalCount = posts.length + projects.length;
       </div>
     </section>
   )}
-</BaseLayout>
+</Base>

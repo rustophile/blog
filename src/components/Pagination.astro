@@ -1,0 +1,43 @@
+---
+interface Props {
+  itemName: string;
+}
+
+const { itemName } = Astro.props;
+---
+
+<div
+  class="mt-8 mb-4 flex justify-center"
+  id="pagination-bottom"
+  data-pagination
+  style="display: none;"
+>
+  <nav
+    class="inline-flex items-center gap-[0.4rem] rounded-[8px] border border-border bg-card px-2 py-[0.3rem]"
+    aria-label={`${itemName} pagination`}
+  >
+    <button
+      type="button"
+      class="inline-flex h-[32px] min-w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-transparent bg-transparent px-[0.45rem] py-0 font-mono text-[0.85rem] text-muted-foreground transition-[background-color,color,border-color] duration-150 ease-[ease] not-disabled:hover:border-link not-disabled:hover:bg-muted not-disabled:hover:text-link disabled:cursor-not-allowed disabled:opacity-30"
+      id="page-prev-bottom"
+      data-pagination-prev
+      aria-label="Previous page"
+    >
+      ←
+    </button>
+    <div
+      class="inline-flex items-center gap-[0.4rem]"
+      id="pagination-pages-bottom"
+      data-pagination-pages
+    ></div>
+    <button
+      type="button"
+      class="inline-flex h-[32px] min-w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-transparent bg-transparent px-[0.45rem] py-0 font-mono text-[0.85rem] text-muted-foreground transition-[background-color,color,border-color] duration-150 ease-[ease] not-disabled:hover:border-link not-disabled:hover:bg-muted not-disabled:hover:text-link disabled:cursor-not-allowed disabled:opacity-30"
+      id="page-next-bottom"
+      data-pagination-next
+      aria-label="Next page"
+    >
+      →
+    </button>
+  </nav>
+</div>

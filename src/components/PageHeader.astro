@@ -1,0 +1,65 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  size?: "default" | "large";
+  margin?: "default" | "compact";
+  titleTracking?: "tight" | "inherit";
+  descriptionSize?: "compact" | "default" | "medium" | "large";
+  class?: string;
+  descriptionClass?: string;
+}
+
+const {
+  title,
+  description,
+  size = "default",
+  margin = "default",
+  titleTracking = "tight",
+  descriptionSize = "default",
+  class: className,
+  descriptionClass,
+} = Astro.props;
+
+const hasTitle = Boolean(title) || Astro.slots.has("title");
+const hasDescription = Boolean(description) || Astro.slots.has("description");
+const descriptionSizes = {
+  compact: "text-[1rem]",
+  default: "text-[1.1rem]",
+  medium: "text-[1.05rem]",
+  large: "text-[1.15rem]",
+};
+---
+
+<header
+  class:list={[
+    "border-b border-border pb-6",
+    margin === "compact" ? "mb-8" : "mb-10",
+    className,
+  ]}
+>
+  <slot name="before" />
+  {hasTitle && (
+    <h1
+      class:list={[
+        "mt-0 mb-2",
+        size === "large" ? "text-[2.4rem]" : "text-[2.25rem]",
+        titleTracking === "tight" && "tracking-[-0.025em]",
+      ]}
+    >
+      <slot name="title">{title}</slot>
+    </h1>
+  )}
+  {hasDescription && (
+    <p
+      class:list={[
+        "m-0 text-muted-foreground",
+        descriptionSizes[descriptionSize],
+        descriptionClass,
+      ]}
+    >
+      <slot name="description">{description}</slot>
+    </p>
+  )}
+  <slot />
+</header>

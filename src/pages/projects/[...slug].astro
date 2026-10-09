@@ -1,6 +1,7 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import Base from "@/layouts/Base.astro";
 import AudioPlayer from "@/components/AudioPlayer.astro";
+import ProjectHeader from "@/components/ProjectHeader.astro";
 import StructuredData from "@/components/StructuredData.astro";
 import { getCollection, render } from "astro:content";
 import { siteConfig } from "@/config/site";
@@ -16,17 +17,10 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content } = await render(project);
 
-const formattedDate = project.data.date.toLocaleDateString("en-US", {
-  timeZone: "UTC",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
-
 const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
 ---
 
-<BaseLayout title={project.data.title} description={project.data.description}>
+<Base title={project.data.title} description={project.data.description}>
   <StructuredData
     type="article"
     title={project.data.title}
@@ -37,63 +31,16 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
   />
 
   <article class="pt-4">
-    <header class="project-header mb-10 pb-7 border-b border-border">
-      <div class="flex items-center gap-[0.65rem] text-[0.88rem] text-muted-foreground mb-3 flex-wrap">
-        <span class="text-[1.3rem]">{project.data.emoji}</span>
-        <span class="text-[0.75rem] font-mono py-[0.2rem] px-2 rounded-sm bg-card border border-border text-link uppercase">
-          {project.data.category}
-        </span>
-        <span class="text-muted-foreground opacity-50">·</span>
-        <time datetime={project.data.date.toISOString()}>{formattedDate}</time>
-        {project.data.stars > 0 && (
-          <>
-            <span class="text-muted-foreground opacity-50">·</span>
-            <span class="text-warning font-semibold">
-              ★ {project.data.stars} stars
-            </span>
-          </>
-        )}
-      </div>
-
-      <h1 class="project-title mt-0 mb-3 text-[2.4rem] leading-[1.25] tracking-[-0.025em]">
-        {project.data.title}
-      </h1>
-      <p class="project-description text-[1.15rem] text-muted-foreground mt-0 mx-0 mb-6 leading-[1.6]">
-        {project.data.description}
-      </p>
-
-      <div class="flex items-center gap-3">
-        {project.data.repoUrl && (
-          <a
-            href={project.data.repoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-[0.4rem] py-[0.45rem] px-[0.9rem] rounded-md border border-border bg-card text-foreground text-[0.88rem] font-medium no-underline transition-[border-color,background-color] duration-150 ease-[ease] hover:border-link hover:bg-muted hover:text-link"
-          >
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z" />
-            </svg>
-            GitHub Repository
-          </a>
-        )}
-        {project.data.demoUrl && (
-          <a
-            href={project.data.demoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-[0.4rem] py-[0.45rem] px-[0.9rem] rounded-md border border-link bg-primary text-primary-foreground text-[0.88rem] font-medium no-underline transition-[border-color,background-color] duration-150 ease-[ease] hover:border-link hover:bg-link-hover hover:text-primary-foreground"
-          >
-            Live Preview ↗
-          </a>
-        )}
-      </div>
-    </header>
+    <ProjectHeader
+      title={project.data.title}
+      description={project.data.description}
+      date={project.data.date}
+      category={project.data.category}
+      emoji={project.data.emoji}
+      stars={project.data.stars}
+      repoUrl={project.data.repoUrl}
+      demoUrl={project.data.demoUrl}
+    />
 
     <!-- 🔊 Accessible Audio Player (Text-to-Speech) -->
     {siteConfig.features?.audioPlayer !== false && (
@@ -117,4 +64,4 @@ const currentUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).href;
       </a>
     </footer>
   </article>
-</BaseLayout>
+</Base>

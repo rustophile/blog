@@ -1,0 +1,68 @@
+---
+import TagBadge from "@/components/TagBadge.svelte";
+import { siteConfig } from "@/config/site";
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  readingMinutes: number;
+  tags?: string[];
+}
+
+const { title, description, pubDate, readingMinutes, tags = [] } = Astro.props;
+const formattedDate = pubDate.toLocaleDateString("en-US", {
+  timeZone: "UTC",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+const features = siteConfig.features ?? {};
+const showReadingTime = features.readingTime !== false;
+const showTags = features.tags !== false && tags.length > 0;
+---
+
+<header class="post-header mb-8 border-b border-border pb-6">
+  <div class="mb-3 flex flex-wrap items-center gap-[0.65rem] text-[0.88rem] text-muted-foreground">
+    <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+    {showReadingTime && (
+      <>
+        <span class="text-muted-foreground opacity-50">·</span>
+        <span class="inline-flex items-center gap-[0.35rem]">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          {readingMinutes} min read
+        </span>
+      </>
+    )}
+    {showTags && (
+      <>
+        <span class="text-muted-foreground opacity-50">·</span>
+        <span class="inline-flex flex-wrap items-center gap-[0.35rem]">
+          {tags.map((tag) => (
+            <TagBadge {tag} />
+          ))}
+        </span>
+      </>
+    )}
+  </div>
+
+  <h1 class="post-title mt-0 mb-3 text-[2.4rem] leading-[1.25] tracking-[-0.025em]">
+    {title}
+  </h1>
+  <p class="post-description m-0 text-[1.15rem] leading-[1.6] text-muted-foreground">
+    {description}
+  </p>
+</header>

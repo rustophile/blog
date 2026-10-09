@@ -1,6 +1,9 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import Base from "@/layouts/Base.astro";
 import ArticleCard from "@/components/ArticleCard.astro";
+import ContentFilter from "@/components/ContentFilter.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import Pagination from "@/components/Pagination.astro";
 import { getCollection } from "astro:content";
 import { siteConfig } from "@/config/site";
 import TagBadge from "@/components/TagBadge.svelte";
@@ -16,16 +19,15 @@ const allTags = Array.from(
 const showTags = siteConfig.features?.tags !== false;
 ---
 
-<BaseLayout title="Blog">
+<Base title="Blog">
   <div class="pt-4">
-    <header class="mb-10 border-b border-border pb-6">
-      <h1 class="mt-0 mb-2 text-[2.4rem] tracking-[-0.025em]">
-        Articles &amp; Notes
-      </h1>
-      <p class="mb-5 text-[1.05rem] leading-[1.6] text-muted-foreground">
-        Notes, exercises, and wrong turns from learning Rust.
-      </p>
-
+    <PageHeader
+      title="Articles & Notes"
+      description="Notes, exercises, and wrong turns from learning Rust."
+      size="large"
+      descriptionSize="medium"
+      descriptionClass="mb-5 leading-[1.6]"
+    >
       {showTags && allTags.length > 0 && (
         <div class="flex flex-wrap items-center gap-2 text-[0.85rem]">
           <span class="font-semibold text-muted-foreground">Topics:</span>
@@ -38,7 +40,7 @@ const showTags = siteConfig.features?.tags !== false;
           ))}
         </div>
       )}
-    </header>
+    </PageHeader>
 
     <section class="mt-4">
       <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
@@ -47,33 +49,11 @@ const showTags = siteConfig.features?.tags !== false;
           <span class="text-[1.1rem] text-muted-foreground">→</span>
         </h2>
 
-        <!-- Simple Search Filter Box -->
-        <div class="min-w-[220px] max-w-[360px] flex-1">
-          <div class="flex items-center gap-2 rounded-[6px] border border-border bg-card px-[0.85rem] py-[0.45rem] text-muted-foreground">
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </svg>
-            <input
-              type="text"
-              id="search-input"
-              class="w-full border-none bg-transparent font-sans text-[0.9rem] text-foreground outline-none placeholder:text-muted-foreground"
-              placeholder="Filter articles..."
-              aria-label="Filter articles"
-              autocomplete="off"
-            />
-          </div>
-        </div>
+        <ContentFilter
+          label="Filter articles"
+          placeholder="Filter articles..."
+          class="min-w-[220px] max-w-[360px]"
+        />
       </div>
 
       <div class="flex flex-col gap-6" id="posts-list">
@@ -90,38 +70,7 @@ const showTags = siteConfig.features?.tags !== false;
         ))}
       </div>
 
-      <!-- Bottom Pagination -->
-      <div
-        class="mt-8 mb-4 flex justify-center"
-        id="pagination-bottom"
-        style="display: none;"
-      >
-        <nav
-          class="inline-flex items-center gap-[0.4rem] rounded-[8px] border border-border bg-card px-2 py-[0.3rem]"
-          aria-label="Bottom article pagination"
-        >
-          <button
-            type="button"
-            class="inline-flex h-[32px] min-w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-transparent bg-transparent px-[0.45rem] py-0 font-mono text-[0.85rem] text-muted-foreground transition-[background-color,color,border-color] duration-150 ease-[ease] not-disabled:hover:border-link not-disabled:hover:bg-muted not-disabled:hover:text-link disabled:cursor-not-allowed disabled:opacity-30"
-            id="page-prev-bottom"
-            aria-label="Previous page"
-          >
-            ←
-          </button>
-          <div
-            class="inline-flex items-center gap-[0.4rem]"
-            id="pagination-pages-bottom"
-          ></div>
-          <button
-            type="button"
-            class="inline-flex h-[32px] min-w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-transparent bg-transparent px-[0.45rem] py-0 font-mono text-[0.85rem] text-muted-foreground transition-[background-color,color,border-color] duration-150 ease-[ease] not-disabled:hover:border-link not-disabled:hover:bg-muted not-disabled:hover:text-link disabled:cursor-not-allowed disabled:opacity-30"
-            id="page-next-bottom"
-            aria-label="Next page"
-          >
-            →
-          </button>
-        </nav>
-      </div>
+      <Pagination itemName="Article" />
 
       <div
         id="no-results"
@@ -132,7 +81,7 @@ const showTags = siteConfig.features?.tags !== false;
       </div>
     </section>
   </div>
-</BaseLayout>
+</Base>
 
 <script>
   function setupArticlePagination() {

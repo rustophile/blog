@@ -1,5 +1,6 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import Base from "@/layouts/Base.astro";
+import PageHeader from "@/components/PageHeader.astro";
 import { getCollection } from "astro:content";
 import TagBadge from "@/components/TagBadge.svelte";
 
@@ -22,17 +23,15 @@ projects.forEach((proj) => {
 const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
 ---
 
-<BaseLayout title="Tags" description="Explore articles by topic and tag.">
-  <header class="mb-10 pb-6 border-b border-border">
-    <h1 class="text-[2.25rem] mt-0 mb-2 tracking-[-0.025em]">Explore by Tag</h1>
-    <p class="m-0 text-[1.1rem] text-muted-foreground">
-      Browse notes and articles grouped by topics.
-    </p>
-  </header>
+<Base title="Tags" description="Explore articles by topic and tag.">
+  <PageHeader
+    title="Explore by Tag"
+    description="Browse notes and articles grouped by topics."
+  />
 
   <div class="flex flex-wrap gap-3 py-4">
     {sortedTags.map(([tag, count]) => (
       <TagBadge tag={tag} variant="pill" count={count} />
     ))}
   </div>
-</BaseLayout>
+</Base>

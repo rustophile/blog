@@ -1,16 +1,17 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import Base from "@/layouts/Base.astro";
+import PageHeader from "@/components/PageHeader.astro";
 import { siteConfig } from "@/config/site";
 ---
 
-<BaseLayout title="About" description={siteConfig.description}>
+<Base title="About" description={siteConfig.description}>
   <article class="pt-4">
-    <header class="mb-8 border-b border-border pb-6">
-      <h1 class="mt-0 mb-2 text-[2.25rem]">About</h1>
-      <p class="m-0 text-[1.1rem] text-muted-foreground">
-        {siteConfig.tagline}
-      </p>
-    </header>
+    <PageHeader
+      title="About"
+      description={siteConfig.tagline}
+      margin="compact"
+      titleTracking="inherit"
+    />
 
     <div class="text-[1.05rem] leading-[1.8]">
       <p>
@@ -91,4 +92,4 @@ import { siteConfig } from "@/config/site";
       </p>
     </div>
   </article>
-</BaseLayout>
+</Base>

@@ -1,7 +1,10 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import Base from "@/layouts/Base.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
 import ProjectsEmpty from "@/components/ProjectsEmpty.svelte";
+import ContentFilter from "@/components/ContentFilter.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import Pagination from "@/components/Pagination.astro";
 import { getCollection } from "astro:content";
 
 const allProjects = (await getCollection("projects")).sort(
@@ -14,14 +17,14 @@ const topProjects = allProjects.filter((p) => p.data.featured).slice(0, 2);
 const categories = ["All", ...new Set(allProjects.map((p) => p.data.category))];
 ---
 
-<BaseLayout title="Projects" description="Things built while learning Rust.">
+<Base title="Projects" description="Things built while learning Rust.">
   <div class="pt-4">
-    <header class="mb-10 pb-6 border-b border-border">
-      <h1 class="mt-0 mb-2 text-[2.4rem] tracking-[-0.025em]">Projects</h1>
-      <p class="text-[1.15rem] text-muted-foreground m-0">
-        Things built while learning Rust.
-      </p>
-    </header>
+    <PageHeader
+      title="Projects"
+      description="Things built while learning Rust."
+      size="large"
+      descriptionSize="large"
+    />
 
     {topProjects.length > 0 && (
       <section class="mb-14">
@@ -57,33 +60,11 @@ const categories = ["All", ...new Set(allProjects.map((p) => p.data.category))];
             <span class="text-muted-foreground text-[1.1rem]">→</span>
           </h2>
 
-          <!-- Search Filter Box (Live) -->
-          <div class="flex-1 max-w-[400px] min-w-[240px]">
-            <div class="flex items-center gap-2 py-[0.45rem] px-[0.85rem] border border-border rounded-md bg-card text-muted-foreground">
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </svg>
-              <input
-                type="text"
-                id="search-input"
-                class="w-full border-none bg-transparent text-foreground text-[0.9rem] font-sans outline-none placeholder:text-muted-foreground"
-                placeholder="Filter projects..."
-                aria-label="Filter projects"
-                autocomplete="off"
-              />
-            </div>
-          </div>
+          <ContentFilter
+            label="Filter projects"
+            placeholder="Filter projects..."
+            class="min-w-[240px] max-w-[400px]"
+          />
         </div>
 
         <!-- Category Filter Pills -->
@@ -129,38 +110,7 @@ const categories = ["All", ...new Set(allProjects.map((p) => p.data.category))];
           ))}
         </div>
 
-        <!-- Bottom Pagination -->
-        <div
-          class="flex justify-center mt-8 mb-4"
-          id="pagination-bottom"
-          style="display: none;"
-        >
-          <nav
-            class="inline-flex items-center border border-border rounded-lg bg-card py-[0.3rem] px-2 gap-[0.4rem]"
-            aria-label="Bottom projects pagination"
-          >
-            <button
-              type="button"
-              class="inline-flex items-center justify-center min-w-[32px] h-[32px] py-0 px-[0.45rem] border border-transparent rounded-md bg-transparent text-muted-foreground text-[0.85rem] font-mono cursor-pointer transition-[background-color,color,border-color] duration-150 ease-[ease] hover:not-disabled:text-link hover:not-disabled:bg-muted hover:not-disabled:border-link disabled:opacity-30 disabled:cursor-not-allowed"
-              id="page-prev-bottom"
-              aria-label="Previous page"
-            >
-              ←
-            </button>
-            <div
-              class="inline-flex items-center gap-[0.4rem]"
-              id="pagination-pages-bottom"
-            ></div>
-            <button
-              type="button"
-              class="inline-flex items-center justify-center min-w-[32px] h-[32px] py-0 px-[0.45rem] border border-transparent rounded-md bg-transparent text-muted-foreground text-[0.85rem] font-mono cursor-pointer transition-[background-color,color,border-color] duration-150 ease-[ease] hover:not-disabled:text-link hover:not-disabled:bg-muted hover:not-disabled:border-link disabled:opacity-30 disabled:cursor-not-allowed"
-              id="page-next-bottom"
-              aria-label="Next page"
-            >
-              →
-            </button>
-          </nav>
-        </div>
+        <Pagination itemName="Projects" />
 
         <div
           id="no-results"
@@ -172,7 +122,7 @@ const categories = ["All", ...new Set(allProjects.map((p) => p.data.category))];
       </section>
     )}
   </div>
-</BaseLayout>
+</Base>
 
 <script>
   function setupProjectFilters() {
